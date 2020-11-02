@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: PR
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -20,6 +18,5 @@ jobs:
       - name: Slack notification
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_CUSTOM_PAYLOAD: '{"Content": "*{{ EVENT_PAYLOAD.pull_request.title}}*\n @{{ GITHUB_ACTOR }} published a new pull request: {{ EVENT_PAYLOAD.pull_request.html_url }}"}'
         uses: Ilshidur/action-slack@2.0.2
-        with:
-          args: 'A new PR https://github.com/aws-samples/aws-bootstrap-kit-examples/pull/{{ EVENT_PAYLOAD.pull_request.id }} has been pushed.'
