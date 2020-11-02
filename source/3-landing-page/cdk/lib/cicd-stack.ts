@@ -37,6 +37,7 @@ export class LandingPackPipelineStack extends cdk.Stack{
                     {
                         sourceArtifact,
                         cloudAssemblyArtifact,
+                        subdirectory: 'source/3-landing-page/cdk',
                         installCommand: 'npm install'
                     }
                 ),
