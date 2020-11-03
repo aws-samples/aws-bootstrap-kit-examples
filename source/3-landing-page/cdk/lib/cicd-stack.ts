@@ -39,7 +39,13 @@ export class LandingPagePipelineStack extends cdk.Stack{
                         sourceArtifact,
                         cloudAssemblyArtifact,
                         subdirectory: 'source/3-landing-page/cdk',
-                        installCommand: 'npm install'
+                        installCommand: 'npm install',
+                        rolePolicyStatements: [
+                            new iam.PolicyStatement({
+                            actions: ['organizations:ListAccounts'],
+                            resources: ['*'],
+                            }),
+                        ],
                     }
                 ),
                 cloudAssemblyArtifact: cloudAssemblyArtifact
