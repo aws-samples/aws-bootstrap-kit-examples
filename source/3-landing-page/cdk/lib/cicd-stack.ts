@@ -4,6 +4,7 @@ import * as awscodepipeline from '@aws-cdk/aws-codepipeline';
 import * as awscodepipelineactions from '@aws-cdk/aws-codepipeline-actions';
 import { LandingPageStack } from "./landing-page-stack";
 import * as AWS from "aws-sdk";
+import * as iam from "@aws-cdk/aws-iam"
 
 
 export class LandingPageStage extends cdk.Stage {
@@ -14,7 +15,7 @@ export class LandingPageStage extends cdk.Stage {
     }
   }
 
-export class LandingPackPipelineStack extends cdk.Stack{
+export class LandingPagePipelineStack extends cdk.Stack{
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
@@ -96,6 +97,10 @@ export class LandingPackPipelineStack extends cdk.Stack{
                     }
                     case 'ExpiredTokenException': {
                         console.error("\x1b[31m", `Token expired, run "aws sso login --profile ${AWS_PROFILE}"\n\n`);
+                        break;
+                    }
+                    case 'AccessDeniedException': {
+                        console.error("\x1b[31m", `Unable to call the AWS Organizations ListAccounts API. Make sure to add add a PolicyStatement with the organizations:ListAccounts action to your synth action`);
                         break;
                     }
                     default: {
