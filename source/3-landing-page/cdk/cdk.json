@@ -7,6 +7,6 @@
     "@aws-cdk/core:stackRelativeExports": "true",
     "github_alias": "aws-samples",
     "github_repo_name": "aws-bootstrap-kit-examples",
-    "github_repo_branch": "bouteru/landing-page"
+    "github_repo_branch": "main"
   }
 }
