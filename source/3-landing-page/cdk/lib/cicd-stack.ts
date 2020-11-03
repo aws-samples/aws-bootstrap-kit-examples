@@ -104,11 +104,11 @@ export class LandingPagePipelineStack extends cdk.Stack{
                         break;
                     }
                     default: {
-                        console.error(error.message);
-                        //force CDK to fail in case of an unknown exception
-                        process.exit(1);
+                        console.error(error.message);                     
                     }
-                }   
+                }  
+                //force CDK to fail in case of an unknown exception
+                process.exit(1); 
             }
         )
     }
