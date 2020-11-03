@@ -5,8 +5,8 @@
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true",
     "@aws-cdk/core:stackRelativeExports": "true",
-    "github_alias": "aws-samples",
-    "github_repo_name": "aws-bootstrap-kit-examples",
-    "github_repo_branch": "main"
+    "github_alias": "<YOUR GITHUB ALIAS>",
+    "github_repo_name": "<YOUR GITHUB REPO NAME>",
+    "github_repo_branch": "<YOUR GITHUB BRANCH NAME>"
   }
 }
