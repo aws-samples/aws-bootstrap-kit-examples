@@ -100,7 +100,7 @@ export class LandingPagePipelineStack extends cdk.Stack{
                         break;
                     }
                     case 'AccessDeniedException': {
-                        console.error("\x1b[31m", `Unable to call the AWS Organizations ListAccounts API. Make sure to add add a PolicyStatement with the organizations:ListAccounts action to your synth action`);
+                        console.error("\x1b[31m", `Unable to call the AWS Organizations ListAccounts API. Make sure to add a PolicyStatement with the organizations:ListAccounts action to your synth action`);
                         break;
                     }
                     default: {
