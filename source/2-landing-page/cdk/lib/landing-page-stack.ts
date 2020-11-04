@@ -1,12 +1,11 @@
-import * as cdk from '@aws-cdk/core';
 import { BlockPublicAccess, Bucket } from '@aws-cdk/aws-s3';
 import { BucketDeployment, Source } from '@aws-cdk/aws-s3-deployment';
 import { CloudFrontWebDistribution, OriginAccessIdentity } from '@aws-cdk/aws-cloudfront';
-import { CfnOutput } from '@aws-cdk/core';
+import { Construct, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
 
 
-export class LandingPageStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class LandingPageStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const landingPageBucket = new Bucket(this, 'LandingPageBucket', {
@@ -40,9 +39,8 @@ export class LandingPageStack extends cdk.Stack {
       ]
     });
 
-    new CfnOutput(this, "CloudFrontWebDistributionUrl", {
-      value: landingPageWebDistribution.distributionDomainName,
-      exportName: "LandingPageUrl"
+    new CfnOutput(this, "LandingPageUrl", {
+      value: landingPageWebDistribution.distributionDomainName
     })
   }
 }

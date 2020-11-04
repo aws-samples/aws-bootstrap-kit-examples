@@ -108,9 +108,9 @@ What this setup fight for:
 
 In this respository, you will find:
 * the source code of the examples used in the documentation
-  1. a CDK app that creates several accounts for you through AWS Organizations and sets up the appropriate centralized audit logs.
-  1. a CDK app that deploys a centralized Route53 DNS service to manage your subdomains.
-  1. a CDK app deploying a web site on top of the different resources created in the previous one.
+  1. the [SDLC Organization CDK app](./source/1-SDLC-organization/README.md) that creates several accounts for you through AWS Organizations and sets up the appropriate centralized audit logs.
+  1. the [Landing Page CDK app](./source/2-landing-page/README.md) that demonstrates how to deploy a static web site in the Dev account.
+  1. the [Landing Page with Pipeline CDK app](./source/3-landing-page/README.md) that demonstrates how to deploy a static web site accross your Staging and Prod environment thanks to a CI/CD pipeline.
 
 
 ## What you won't find in this repository

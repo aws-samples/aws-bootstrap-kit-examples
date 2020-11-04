@@ -1,47 +1,47 @@
-import * as cdk from "@aws-cdk/core";
-import * as cdkpipelines from "@aws-cdk/pipelines";
-import * as awscodepipeline from '@aws-cdk/aws-codepipeline'; 
-import * as awscodepipelineactions from '@aws-cdk/aws-codepipeline-actions';
+import { Construct, Stack, StackProps, Stage, StageProps, SecretValue } from "@aws-cdk/core";
+import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
+import { Artifact } from '@aws-cdk/aws-codepipeline'; 
+import { GitHubSourceAction } from '@aws-cdk/aws-codepipeline-actions';
 import { LandingPageStack } from "./landing-page-stack";
-import * as AWS from "aws-sdk";
-import * as iam from "@aws-cdk/aws-iam"
+import { config, SharedIniFileCredentials, Organizations } from "aws-sdk";
+import { PolicyStatement } from "@aws-cdk/aws-iam"
 
 
-export class LandingPageStage extends cdk.Stage {
-    constructor(scope: cdk.Construct, id: string, props: cdk.StageProps) {
+export class LandingPageStage extends Stage {
+    constructor(scope: Construct, id: string, props: StageProps) {
       super(scope, id, props);
   
       new LandingPageStack(this, 'LandingPageStack', props);
     }
   }
 
-export class LandingPagePipelineStack extends cdk.Stack{
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class LandingPagePipelineStack extends Stack{
+    constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
-        const sourceArtifact = new awscodepipeline.Artifact();
-        const cloudAssemblyArtifact = new awscodepipeline.Artifact();
+        const sourceArtifact = new Artifact();
+        const cloudAssemblyArtifact = new Artifact();
 
-        const pipeline = new cdkpipelines.CdkPipeline(this, "LandingPagePipeline",
+        const pipeline = new CdkPipeline(this, "LandingPagePipeline",
             {
-                sourceAction: new awscodepipelineactions.GitHubSourceAction(
+                sourceAction: new GitHubSourceAction(
                     {
                         actionName: "GitHub",
                         output: sourceArtifact,
                         owner: this.node.tryGetContext('github_alias'),
                         repo: this.node.tryGetContext('github_repo_name'),
                         branch: this.node.tryGetContext("github_repo_branch"),
-                        oauthToken: cdk.SecretValue.secretsManager('GITHUB_TOKEN')
+                        oauthToken: SecretValue.secretsManager('GITHUB_TOKEN')
                     }
                 ),
-                synthAction: cdkpipelines.SimpleSynthAction.standardNpmSynth(
+                synthAction: SimpleSynthAction.standardNpmSynth(
                     {
                         sourceArtifact,
                         cloudAssemblyArtifact,
                         subdirectory: 'source/3-landing-page/cdk',
                         installCommand: 'npm install',
                         rolePolicyStatements: [
-                            new iam.PolicyStatement({
+                            new PolicyStatement({
                             actions: ['organizations:ListAccounts'],
                             resources: ['*'],
                             }),
@@ -54,11 +54,11 @@ export class LandingPagePipelineStack extends cdk.Stack{
 
         const AWS_PROFILE = 'cicd';
         if(!process.env.CODEBUILD_BUILD_ID) {
-            AWS.config.credentials = new AWS.SharedIniFileCredentials({profile: AWS_PROFILE});
+            config.credentials = new SharedIniFileCredentials({profile: AWS_PROFILE});
         }
         
 
-        const orgClient = new AWS.Organizations({region: 'us-east-1'});
+        const orgClient = new Organizations({region: 'us-east-1'});
         orgClient.listAccounts().promise().then(
             results => {
                 let stagesDetails = [];
