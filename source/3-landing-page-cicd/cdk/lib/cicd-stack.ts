@@ -38,7 +38,7 @@ export class LandingPagePipelineStack extends Stack{
                     {
                         sourceArtifact,
                         cloudAssemblyArtifact,
-                        subdirectory: 'source/3-landing-page/cdk',
+                        subdirectory: 'source/3-landing-page-cicd/cdk',
                         installCommand: 'npm install',
                         rolePolicyStatements: [
                             new PolicyStatement({
