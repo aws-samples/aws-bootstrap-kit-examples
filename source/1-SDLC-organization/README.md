@@ -208,9 +208,16 @@ Sorry we can't automate those step yet :cry:
 
 We want to be able to manage two groups of users:
 * the **Administrators**  who will have access to all accounts with **AdministratorAccess** permissions
-* the **Developers**  who will have access only to the Dev account with **PowerUserAccess** permissions and **ViewOnlyAccess** permissions to the Staging and Prod accounts
+* the **Developers**  who will have access only to the Dev account with **DeveloperAccess** permissions, **DevOpsAccess**/**ApproverAccess** for CI/CD Account and **ViewOnlyAccess** permissions to the Staging and Prod accounts
 
-The **PowerUserAccess** permissions provide Developers full access to AWS services and resources, but do not allow management of Users and groups.
+Through 5 set of permissions:
+* **AdministratorAccess** grants administrator access to an AWS account. A user with this permission set is able to create, update or delete any resources in an AWS account including IAM users, roles and groups. It relies on the AdministratorAccess AWS managed job function policy.
+* **DeveloperAccess** allows developers to create, update or delete AWS resources from an account excluding users and groups. A developer with this permission set is also able to create, delete and update roles as well as creating, updating, deleting and attaching role policies to a resource. It allows a developer to deploy a CDK app into and account directly with the cdk deploy command. It relies on the PowerUserAccess AWS managed job function policy plus a set of IAM actions.
+* **DevOpsAccess**  allows DevOps engineers to deploy and manage CI/CD pipelines through CDK. It relies on 5 AWS managed policies: *AWSCloudFormationFullAcces, AWSCodeBuildAdminAccess, AWSCodePipelineFullAccess, AmazonS3FullAccess, AmazonEC2ContainerRegistryFullAccess, SecretsManagerReadWrite*. It relies on a set of IAM, KMS and Organizations actions.
+* **ApproverAccess** allows users to view and approve manual changes for all pipelines. It relies on the *AWSCodePipelineApproverAccess* AWS managed policy.
+* **ViewOnlyAccess** allows users to view resources and basic metadata across all AWS services. It relies on the *ViewOnlyAccess* AWS managed policy.
+
+##### AdministratorAccess
 
 To set up these accesses, we first need to create a permission set which correspond to the set of permissions that an Administrator will have when going to a specific account:
 
@@ -218,28 +225,137 @@ To set up these accesses, we first need to create a permission set which corresp
 
 1. Go to *Permission sets* tab and click *Create permission set*
 
-1. Select *Use an existing job function policy* and click *Next: Details* 
+1. Select *Create a custom permission set* and click *Next: Details*
 
-1. Select *AdminsitratorAccess* job function policy and click *Next: Tags* 
+1. Type in the info
+    1. Name: *AdministratorAccess*
+    1. Session duaration: *X hours*
+    1. Check the *Attach AWS managed policies* and *Create a custom permissions policy* boxes. 
+    1. Select the *AdministratorAccess* managed policy
+    1. Enter the following custom permissions policy:
+    
+    ```{}```
+
+1. click *Next: Tags* 
+
 1. Skip *tags* by click *Next: Review* 
 
-1. Click *Create* to finalize the creation of the permissions set (PS: you can extend the session duration if you think the default 1 hour is too low, this will make your access through  AWS Console or CLI last longer before being automatically logged out)
+1. Click *Create* to finalize the creation of the permissions set
 
-1. Repeat steps 2 to 6 to create the **PowerUserAccess** permission set
 
-1. Repeat steps 2 to 6 to create the **ViewOnlyAccess** permission set
+#####  DeveloperAccess
+
+1. Repeat previous steps with
+    1. Name: *DeveloperAccess*
+    1. Manage policies: 
+        * *PowerUserAccess*
+    1. Custom policy:
+        ```
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Action": [
+                        "iam:CreateRole",
+                        "iam:DeleteRole",
+                        "iam:GetRole",
+                        "iam:PassRole",
+                        "iam:UpdateRole",
+                        "iam:AttachRolePolicy",
+                        "iam:DetachRolePolicy",
+                        "iam:PutRolePolicy",
+                        "iam:DeleteRolePolicy"
+                    ],
+                    "Effect": "Allow",
+                    "Resource": "*"
+                }
+            ]
+        }
+        ```
+
+##### DevOpsAccess
+
+1. Repeat previous steps with
+    1. Name: *DeveloperAccess*
+    1. Manage policies: 
+        * *AWSCloudFormationFullAccess*
+        * *AWSCodeBuildAdminAccess*
+        * *AWSCodePipelineFullAccess*
+        * *AmazonS3FullAccess*
+        * *AmazonEC2ContainerRegistryFullAccess
+        * *SecretsManagerReadWrite*
+    1. Custom policy:
+        ```
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Action": [
+                        "iam:CreateRole",
+                        "iam:DeleteRole",
+                        "iam:GetRole",
+                        "iam:PassRole",
+                        "iam:AttachRolePolicy",
+                        "iam:DetachRolePolicy",
+                        "iam:PutRolePolicy",
+                        "iam:GetRolePolicy",
+                        "iam:DeleteRolepolicy",
+                        "kms:CreateKey",
+                        "kms:PutKeyPolicy",
+                        "kms:DescribeKey",
+                        "kms:CreateAlias",
+                        "kms:DeleteAlias",
+                        "kms:ScheduleKeyDeletion",
+                        "organizations:ListAccounts"
+                    ],
+                    "Effect": "Allow",
+                    "Resource": "*"
+                },
+                {
+                    "Action": [
+                        "sts:AssumeRole"
+                    ],
+                    "Effect": "Allow",
+                    "Resource": "arn:aws:iam::*:role/cdk*"
+                }
+            ]
+        }
+        ```
+
+##### ApproverAccess
+
+1. Repeat previous steps with
+    1. Name: *ApproverAccess*
+    1. Manage policies: 
+        * *AWSCodePipelineApproverAccess*
+        
+    1. Custom policy:
+        ```
+        {}
+        ```
+
+##### ViewOnlyAccess
+
+1. Repeat previous steps with
+    1. Name: *ViewOnlyAccess*
+    1. Manage policies: 
+        * *ViewOnlyAccess*
+        
+    1. Custom policy:
+        ```
+        {}
+        ```
 
 You must end with the following permission sets:
 
-* PowerUserAccess
 * ViewOnlyAccess
+* ApproverAccess
+* DevOpsAccess
+* DeveloperAccess
 * AdministratorAccess
 
 
-
 #### Create your groups
-
-
 
 Now we are going to create the **Administrators** and **Developers** groups, we basically will follow the steps listed in the [official documentation](https://docs.aws.amazon.com/singlesignon/latest/userguide/addgroups.html):
 
@@ -249,8 +365,7 @@ Now we are going to create the **Administrators** and **Developers** groups, we 
 
 1. Type **Adminstrators** as group name and click *Create*
 
-1. Repeat steps 1 to 3 for **Developers**
-
+1. Repeat steps 1 to 3 for **Developers**, **DevOpsEngineers**, **Approvers**
 
 
 #### Link Admin group to main account and permission set
@@ -269,6 +384,17 @@ Now we are going to assign the **Administrators** group to all the accounts with
 1. It will take a few seconds to configure all your accounts
 
 1. When all is complete, click on *Proceed to AWS accounts*
+
+1. Repeat 1 to 6 with **Developers**, **DevOpsEngineers** and **Approvers** groups with the following associations:
+
+| Groups  | PermissionSets  | Accounts  |
+|---|---|---|
+| Developers  | DeveloperAccess  | Dev  |
+| Developers  | ReadOnlyAccess  | Staging, Prod  |
+| DevOpsEngineers  | DevOpsAccess  | CICD  |
+| Approvers  | ApproverAccess  | CICD  |
+
+
 
 **Now let's create your Administrator user !** 
 
