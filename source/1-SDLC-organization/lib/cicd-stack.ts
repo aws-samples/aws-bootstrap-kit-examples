@@ -1,6 +1,6 @@
 /*
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-  
+
 Licensed under the Apache License, Version 2.0 (the "License").
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -23,13 +23,25 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as bootstrapKit from 'aws-bootstrap-kit/lib/index.js';
 
 /**
-* Your application
-*
-* May consist of one or more Stacks (here, two)
-*
-* By declaring our DatabaseStack and our ComputeStack inside a Stage,
-* we make sure they are deployed together, or not at all.
-*/
+ * Properties for create Landing Zone pipeline stack
+ */
+export interface AWSBootstrapKitLandingZonePipelineStackProps extends bootstrapKit.AwsOrganizationsStackProps{
+
+  /**
+   * Regions for the applications to be deployed. The format of values is the region short-name (e.g. eu-west-1).
+   *
+   * We use AWS CDK to deploy applications in our application CI/CD pipeline. CDK requires some resources
+   * (e.g. AWS S3 bucket) to perform deployment. The regions specified here will be bootstraped with these resources
+   * so that it is deployable.
+   *
+   * See https://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html
+   */
+  readonly pipelineDeployableRegions: string[],
+}
+
+/**
+ * Stage in the pipeline for deploying LandingZone via aws-bootstrap-kit
+ */
 export class AWSBootstrapKitLandingZoneStage extends Stage {
   constructor(scope: Construct, id: string, props: bootstrapKit.AwsOrganizationsStackProps) {
     super(scope, id, props);
@@ -39,10 +51,10 @@ export class AWSBootstrapKitLandingZoneStage extends Stage {
 }
 
 /**
-* Stack to hold the pipeline
-*/
+ * Stack to hold the pipeline to deploy Landing Zone
+ */
 export class AWSBootstrapKitLandingZonePipelineStack extends Stack {
-  constructor(scope: Construct, id: string, props: bootstrapKit.AwsOrganizationsStackProps) {
+  constructor(scope: Construct, id: string, props: AWSBootstrapKitLandingZonePipelineStackProps) {
     super(scope, id, props);
 
     const sourceArtifact = new codepipeline.Artifact();
@@ -72,13 +84,18 @@ export class AWSBootstrapKitLandingZonePipelineStack extends Stack {
   const INDEX_START_DEPLOY_STAGE =  prodStage.nextSequentialRunOrder() - 2; // 2 = Prepare (changeSet creation) + Deploy (cfn deploy)
   prodStage.addManualApprovalAction({actionName: 'Validate', runOrder: INDEX_START_DEPLOY_STAGE});
 
-  prodStage.addActions(new ShellScriptAction(
+
+  const deployableRegions = props.pipelineDeployableRegions ?? [Stack.of(this).region];
+  const regionsInShellScriptArrayFormat = deployableRegions.join(' ');
+
+    prodStage.addActions(new ShellScriptAction(
     {
       actionName: 'CDKBootstrapAccounts',
       commands: [
         'cd ./source/1-SDLC-organization/',
         'npm install',
-        './lib/auto-bootstrap.sh'
+        `REGIONS_TO_BOOTSTRAP="${regionsInShellScriptArrayFormat}"`,
+        './lib/auto-bootstrap.sh "$REGIONS_TO_BOOTSTRAP"'
       ],
       additionalArtifacts: [sourceArtifact],
       rolePolicyStatements: [

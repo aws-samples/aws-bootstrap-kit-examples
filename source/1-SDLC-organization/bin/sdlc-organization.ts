@@ -1,6 +1,6 @@
 /*
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-  
+
 Licensed under the Apache License, Version 2.0 (the "License").
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -16,45 +16,53 @@ limitations under the License.
 
 import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
-import * as bootstrapKit from 'aws-bootstrap-kit/lib/index.js';
-import {AWSBootstrapKitLandingZonePipelineStack, AWSBootstrapKitLandingZoneStage} from '../lib/cicd-stack';
+import {
+    AWSBootstrapKitLandingZonePipelineStack,
+    AWSBootstrapKitLandingZoneStage
+} from '../lib/cicd-stack';
 
 const app = new cdk.App();
 
-let stackProps: bootstrapKit.AwsOrganizationsStackProps;
-stackProps = {
-    email: app.node.tryGetContext("email"),
-    nestedOU: [
-        {
-            name: 'SharedServices',
-            accounts: [
-                {
-                    name: 'CICD'
-                }
-            ]
-        },
-        {
-            name: 'SDLC',
-            accounts: [
-                {
-                    name: 'Dev'
-                },
-                {
-                    name: 'Staging'
-                }
-            ]
-        },
-        {
-            name: 'Prod',
-            accounts: [
-                {
-                    name: 'Prod'
-                }
-            ]
-        }
-    ]
-}
+const email = app.node.tryGetContext("email");
+const pipelineDeployableRegions = app.node.tryGetContext("pipeline_deployable_regions");
+const nestedOU = [
+    {
+        name: 'SharedServices',
+        accounts: [
+            {
+                name: 'CICD'
+            }
+        ]
+    },
+    {
+        name: 'SDLC',
+        accounts: [
+            {
+                name: 'Dev'
+            },
+            {
+                name: 'Staging'
+            }
+        ]
+    },
+    {
+        name: 'Prod',
+        accounts: [
+            {
+                name: 'Prod'
+            }
+        ]
+    }
+];
 
-new AWSBootstrapKitLandingZoneStage(app, 'AWSBootstrapKit-LandingZone-Dev', stackProps);
 
-new AWSBootstrapKitLandingZonePipelineStack(app, 'AWSBootstrapKit-LandingZone-PipelineStack', stackProps);
+new AWSBootstrapKitLandingZoneStage(app, 'AWSBootstrapKit-LandingZone-Dev',{
+  email,
+  nestedOU,
+});
+
+new AWSBootstrapKitLandingZonePipelineStack(app, 'AWSBootstrapKit-LandingZone-PipelineStack', {
+  email,
+  pipelineDeployableRegions,
+  nestedOU
+});
