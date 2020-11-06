@@ -433,48 +433,12 @@ Now we are going to create an Administrator user, we basically will follow the s
 **Let's assign the Developers group to Dev, Staging and Prod accounts with this new SSO Administrator user**
 
 
-
-#### Link Developers group to proper AWS accounts and proper permissions
-
-
-
-Now we are going to assign the **Developers** group to the Dev account with the **PowerUserAccess** permission set. We will also asign it to the Staging and Prod accounts with the **ViewOnlyAccess** permission set.
-
-1. Search for *SSO* on the console home page and go to the service
-
-1. Click on *AWS Accounts*
-
-1. Select your *Dev* account and click *Assign users*
-
-1. Go to *Groups* tab, select *Developers* group and click *Next: Permissions set*
-
-1. Select *PowerUserAccess* permissions set and click *Finish*
-
-1. It will take a few seconds to configure your Dev account
-
-1. Click on *Proceed to AWS accounts*
-
-1. Select your *Staging* and *Prod* accounts and click *Assign users*
-
-1. Go to *Groups* tab, select *Developers* group and click *Next: Permissions set*
-
-1. Select *ViewOnlyAccess* permissions set and click *Finish*
-
-1. It will take a few seconds to configure your *Staging* and *Prod* account
-
-1. Click on *Proceed to AWS accounts*
-
-**Now let's create your Developer user !** 
-
-
-
 #### Create a developer SSO user
-
 
 
 (This section is optional but will be one to use each time you want to onboard a new dev in your team)
 
-Now we are going to create a Developer user, we basically will follow the steps listed in the [official documentation](https://docs.aws.amazon.com/singlesignon/latest/userguide/addusers.html):
+Now we are going to create a Developer user with enough rate to develop and publish an app to the different environemnt, we basically will follow the steps listed in the [official documentation](https://docs.aws.amazon.com/singlesignon/latest/userguide/addusers.html):
 
 1. Click on the *Users* section
 
@@ -484,7 +448,7 @@ Now we are going to create a Developer user, we basically will follow the steps 
     * *username* will be used for future login
     * *Email address* will be used for enrolling so need to be a valid email
 
-1. Select the *Developers* group created previously and click *Add user*
+1. Select the *Developers*, *DevOpsEngineers* and *Approvers*  groups created previously and click *Add user*
 
 1. Check your email and *Accept invitation*
 
