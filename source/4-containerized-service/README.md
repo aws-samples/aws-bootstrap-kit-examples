@@ -13,7 +13,7 @@ The pipeline created consists of several stages:
 2. building the code
 3. deployment stage: deploying the Ecommerce Infrastructure using CDK along with deployment of App
 
-## Ecommerce App Stack
+## Ecommerce App Infrastructure Stack
 
 - Cloud Front Distribution for S3 Bucket storing image assets
 - Aurora Serverless with MySQL Engine for products details
@@ -127,7 +127,7 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
 
 ### Update the cdk.json file parameters
 
-1. You must update the following values in your _source/3-landing-page-with-cicd/cdk/cdk.json_ file:
+1. You must update the following values in your _source/4-containerized-service/cdk/cdk.json_ file:
 
    - "github_alias": <YOUR_GITHUB_ALIAS>
    - "github_repo_name": <YOUR_GITHUB_REPOSITORY>,
@@ -135,10 +135,10 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
 
 ### Install dependencies
 
-1. Go to the _3-landing-page-cicd_ folder
+1. Go to the _4-containerized-service_ folder
 
    ```
-   cd source/3-landing-page-cicd/cdk
+   cd source/4-containerized-service/cdk
    ```
 
 1. Install dependencies
@@ -147,7 +147,7 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
    npm install
    ```
 
-### Deploy the **LandingPagePipelineStack**
+### Deploy the **PipelineStack**
 
 1. Build the CDK application
 
@@ -155,20 +155,20 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
    npm run build
    ```
 
-1. Deploy default stack of the CDK application, the **LandingPagePipelineStack** one.
+1. Deploy default stack of the CDK application, the **PipelineStack** one.
    ```
    cdk deploy --profile cicd
    ```
 
-### Destroy the **LandingPagePipelineStack**
+### Destroy the **PipelineStack**
 
-You can easily destroy the **LandingPagePipelineStack** and free up the deployed AWS resources on the CICD account:
+You can easily destroy the **PipelineStack** and free up the deployed AWS resources on the CICD account:
 
 ```
 cdk destroy --profile cicd
 ```
 
-> Deleting the pipeline stack doesn't delete the **LandingPageStack** from the Staging and Prod accounts. You have to delete them manually whether through the AWS CloudFormation console or the AWS CLI.
+> Deleting the pipeline stack doesn't delete the **InfrastructureStack** from the Staging and Prod accounts. You have to delete them manually whether through the AWS CloudFormation console or the AWS CLI.
 
 ### Troubleshooting
 
