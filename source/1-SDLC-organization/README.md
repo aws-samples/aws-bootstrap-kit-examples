@@ -108,6 +108,7 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
         * `github_alias` coresponding to your github username (`your_alias` in `https://github.com/your_alias/SDLC-LandingZone`)
         * `github_repo_name` corresponding to the name when you created the repository (`SDLC-LandingZone` in this example)
         * `gihub_repo_branch` corresponding to the main branch of your repo. (should be called `main`)
+        * `pipeline_deployable_regions` (Optional) List of regions which you application pipelines will deploy to. The format of each value is the region short-name (e.g. eu-west-1). If not provided, it will use the region of the SDLC Pipeline stack.
         
             it should look like:
             ```
