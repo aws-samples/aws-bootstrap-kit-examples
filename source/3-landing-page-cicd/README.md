@@ -14,13 +14,25 @@ The CDK application source code is in the `source\3-landing-page-cicd\cdk` folde
 
 ## Deployments
 
-### Prerequisites
+The table below describes the high level steps you will go through to set up your CI/CD pipeline.
+
+Step # | Feature | Description
+-- | -- | --
+0 | [Initial setup](./README.md#step-0-initial-setup) | Setup the development environment and clone the repositories.
+1 | [Configure your cicd profile](./README.md#step-1-configure-your-cicd-profile) | Configure the credentials to trigger the pipeline.
+2 | [Customize the input parameters](./README.md#step-0-initial-setup) | Configure the input parameters to match your own environement
+3 | [Deploy the App](./README.md#step-3-deploy-the-app) | Deploy the initial frontend application.
+4 | [Cleanup and Troubleshooting](./README.md#step-4-cleanup-and-troubleshooting) | How to remove all of the workshop's resources from your account and troubleshoot issues
+
+### Step 0 - Initial Setup
+
+#### Prerequisites
 
 * A [GitHub](https://github.com) account
 * [npm](https://npmjs.org) and [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) installed
 * A SDLC Organization deployed with the [SDLC Organization CDK app](../1-SDLC-organization/README.md)
 
-### Fork and clone the repository
+#### Fork and clone the repository
 
 1. Fork the repository on your GitHub account by clicking [here](https://github.com/aws-samples/aws-bootstrap-kit-examples/fork).
 
@@ -29,7 +41,11 @@ The CDK application source code is in the `source\3-landing-page-cicd\cdk` folde
     git clone https://github.com/<YOUR_GITHUB_ALIAS>/aws-bootstrap-kit-examples
     ```
 
-### Give appropriate permissions to your *Developer* user to deploy a pipeline in the CICD account
+
+
+### Step 1 - Configure your cicd profile
+
+#### Give appropriate permissions to your *Developer* user to deploy a pipeline in the CICD account
 
 <details>
 <summary> Put your Administrator hat and click to expand or ask your Administrator to give you the appropriate permission following those steps. 
@@ -81,7 +97,7 @@ Right now, the *Developer* user that you are using has no access to the CICD acc
 
 </details>
 
-### Configure a profile with appropriate permissions to deploy a pipeline in the CICD account
+#### Configure a profile with appropriate permissions to deploy a pipeline in the CICD account
 
 1. Execute `aws configure sso --profile cicd` and follow the instructions
 
@@ -111,7 +127,9 @@ Right now, the *Developer* user that you are using has no access to the CICD acc
 
 1. Execute `cdk-sso-sync cicd`
 
-### Create a secret with your GitHub Personal Access Token in the CICD account
+### Step 2 - Customize the input parameters
+
+#### Create a secret with your GitHub Personal Access Token in the CICD account
 
 When you have gone through the [SDLC Organization CDK app](../1-SDLC-organization/README.md) setup procedure, you have created a secret in AWS Secrets Manager in your main account to store your GitHub Personal Access Token. The secret is only accessible from the main account.
 
@@ -121,7 +139,7 @@ Now, we have to create the same secret in the *CICD* account so that the CodePip
 aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-string <YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
 ```
 
-### Update the cdk.json file parameters
+#### Update the cdk.json file parameters
 
 1. You must update the following values in your *source/3-landing-page-with-cicd/cdk/cdk.json* file:
 
@@ -130,7 +148,9 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
     * "github_repo_branch": <YOUR_GITHUB_BRANCH>
 
 
-### Install dependencies
+### Step 3 - Deploy the app
+
+#### Install dependencies
 
 1. Go to the *3-landing-page-cicd* folder
 
@@ -144,7 +164,7 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
     npm install
     ```
 
-### Deploy the **LandingPagePipelineStack**
+#### Deploy the **LandingPagePipelineStack**
 
 1. Build the CDK application
     ```
@@ -156,7 +176,7 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
     cdk deploy --profile cicd
     ```
 
-### Checking your deployment
+#### Checking your deployment
 
 <details>
 
@@ -218,7 +238,11 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
 
 </details>
 
-### Destroy the **LandingPagePipelineStack**
+
+
+### Step 4 - Cleanup and Troubleshooting
+
+#### Destroy the **LandingPagePipelineStack**
 
 You can easily destroy the **LandingPagePipelineStack** and free up the deployed AWS resources on the CICD account:
 
@@ -229,7 +253,7 @@ cdk destroy --profile cicd
 > Deleting the pipeline stack doesn't delete the **LandingPageStack** from the Staging and Prod accounts. You have to delete them manually whether through the AWS CloudFormation console or the AWS CLI.
 
 
-### Troubleshooting
+#### Troubleshooting
 
 * If you get a CloudFormation Internal Failure error while deploying the stack, please check you have properly created the GITHUB_TOKEN secret
 * If you get an error 400 message as a detailed error message when CodeBuild fails, please check you have properly modify your cdk.json file
