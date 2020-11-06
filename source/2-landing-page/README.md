@@ -72,3 +72,7 @@ You can easily destroy the **LandingPageStack** and free up the deployed AWS res
 cdk destroy --profile dev
 ```
 
+### Next
+
+You can jump to the [Landing Page with Pipeline CDK app example](../3-landing-page-cicd) to learn how to set up a CI/CD pipeline to deploy this stack on the Staging and Prod environment.
+

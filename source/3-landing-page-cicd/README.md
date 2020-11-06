@@ -31,11 +31,13 @@ The CDK application source code is in the `source\3-landing-page-cicd\cdk` folde
 
 ### Configure a profile with appropriate permissions to deploy a pipeline in the CICD account
 
+> For this part, ask your Administrator or put your Administrator hat to give you the appropriate permission following those steps.
+
 If you followed the whole [SDLC Organization CDK app](../1-SDLC-organization/README.md) setup procedure, you have created a user group called **DevOpsEngineers** and you gave it the permission to access the CICD account with the **DevOpsAccess** permission set. If you don't have followed these steps, please run them now as the following steps are based on it.
 
 Right now, the *Developer* user that you are using has no access to the CICD account as it is only member of the *Developers* group. Let's add it to the **DevOpsEngineers** group to give it access to the CICD account with the appropriate permissions.
 
-1. Navigate to your SSO portal Url and sign in with your administrator user
+1. Navigate to your SSO portal Url and sign in with your *administrator* user
 
     ![SSO portal sign in page with administrator filled in the username field and some masked characters in the password field](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-1.png)
 
@@ -43,7 +45,7 @@ Right now, the *Developer* user that you are using has no access to the CICD acc
 
     ![The home page of the SSO portal with the AWS Account card](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-2.png)
 
-1. Click on the the main account row to expand it
+1. Click on the *main* account row to expand it
 
     ![The home page of the SSO portal with the AWS Account card and the list of account expanded](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-3.png)
 
@@ -148,6 +150,63 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
     cdk deploy --profile cicd
     ```
 
+### Checking your deployment
+
+1. Navigate to your SSO portal Url and sign in with your *Developer* user
+
+    ![SSO portal sign in page with Devloper filled in the username field and some masked characters in the password field](../../doc/landing-page-with-cicd-check-deployment-1.png)
+
+1. Click on the AWS Account card
+
+    ![The home page of the SSO portal with the AWS Account card](../../doc/landing-page-with-cicd-check-deployment-2.png)
+
+1. Click on the *Dev* account row to expand it
+
+    ![The home page of the SSO portal with the AWS Account card and the list of account expanded](../../doc/landing-page-with-cicd-check-deployment-3.png)
+
+1. Click on the *Management console* link for the **DevOpsAccess** permission set
+
+    ![The home page of the SSO portal with the AWS Account card and the list of account expanded and the list of permission set for the Dev account expanded](../../doc/landing-page-with-cicd-check-deployment-4.png)
+
+1. Seach for the AWS CodePipeline service thanks to the Find Services field
+
+    ![The AWS Console home page with codepipeline entered in the Find Services field](../../doc/landing-page-with-cicd-check-deployment-5.png)
+
+1. Click on the *LandingPageStackPipeline*
+
+    ![The AWS CodePipeline Console home page with the list of deployed pipelines](../../doc/landing-page-with-cicd-check-deployment-6.png)
+
+1. Scroll down to check if the Staging et Prod stages are all green. If they are still in progress, wait until they are green.
+
+    ![The AWS CodePipeline Console pipeline details page](../../doc/landing-page-with-cicd-check-deployment-7.png)
+
+1. Navigate to your SSO portal and click on the *Staging* row to expand it, and click on the *Management console* link for the *ViewOnly* permission set
+
+    ![The home page of the SSO portal with the AWS Account card and the list of account expanded and the list of permission set for the Staging account expanded](../../doc/landing-page-with-cicd-check-deployment-8.png)
+
+1. Seach for the AWS CloudFormation service thanks to the Find Services field
+
+    ![The AWS Console home page with cloudformation entered in the Find Services field](../../doc/landing-page-with-cicd-check-deployment-9.png)
+
+1. Click on the *Staging-LandingPageStack*
+
+    ![The AWS CloudFormation Console home page with with the list of deployed stacks](../../doc/landing-page-with-cicd-check-deployment-10.png)
+
+1. Click on the *Outputs* tab
+
+    ![The AWS CloudFormation Console stack details  page ](../../doc/landing-page-with-cicd-check-deployment-11.png)
+
+1. Get the Url of your CloudFront distribution
+
+    ![The AWS CloudFormation Console stack details page focus on the Outputs](../../doc/landing-page-with-cicd-check-deployment-12.png)
+
+1. Navigate to the Url to validate that it works
+
+    ![The AWS CloudFormation Console stack details page focus on the Outputs](../../doc/landing-page-with-cicd-check-deployment-13.png)
+
+1. Repeat steps 8 to 13 with the Prod account
+
+
 ### Destroy the **LandingPagePipelineStack**
 
 You can easily destroy the **LandingPagePipelineStack** and free up the deployed AWS resources on the CICD account:
@@ -161,6 +220,6 @@ cdk destroy --profile cicd
 
 ### Troubleshooting
 
-* If you get an CloudFormation Internal Failure error while deploying the stack, please check you have properly created the GITHUB_TOKEN secret
+* If you get a CloudFormation Internal Failure error while deploying the stack, please check you have properly created the GITHUB_TOKEN secret
 * If you get an error 400 message as a detailed error message when CodeBuild fails, please check you have properly modify your cdk.json file
-* If you get an error message stating *Cannot have more thant 1 builds in queue for the account* as a detailed error message when CodeBuild fails, please retry the step in CodePipeline. You are reaching a limit due to the fact that your AWS account is new. You can make a support request to increase the limit.
+* If you get an error message stating *Cannot have more thant 1 builds in queue for the account* as a detailed error message when CodeBuild fails, please retry the step in CodePipeline. You get this error because your AWS account is new. After a few retry, the limit will automatically increase.
