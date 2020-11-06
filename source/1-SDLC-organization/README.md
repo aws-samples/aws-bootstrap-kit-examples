@@ -45,6 +45,8 @@ Step # | Feature | Description
 * An AWS account with an IAM user with Administrator permission
 
 ### Configure your local credentials
+<details>
+<summary>Click to go through this step</summary>
 
 To authenticate requests made using the CLI, we need to give your IAM user credentials and the region you want to use to the Command line:
 
@@ -78,8 +80,12 @@ This command show you basically what your current crendentials are attached to :
 
 To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config).
 
+</details>
+
 ### Clone and init the repo
 
+<details>
+<summary>Click to go through this step</summary>
 
 1. Clone our examples repo
     1. clone the repo
@@ -145,7 +151,12 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
         git push
         ```
 
+</details>
+
 ### Install dependencies and deploy the pipeline
+
+<details>
+<summary>Click to go through this step</summary>
 
 1. Go to the SDLC Organization folder
 
@@ -185,6 +196,8 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
 
     Check the [doc](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) for more details.
 
+</details>
+
 **Your Operator Environment is ready! Now let's open it to the team!**
 
 ## Going further
@@ -205,6 +218,9 @@ Staying with IAM users and groups would means not getting a central portal with 
 </a>
 
 ### Setup your SSO domain
+
+<details>
+<summary>Click to go through this step</summary>
 
 Sorry we can't automate those step yet :cry:
 
@@ -450,8 +466,12 @@ From now on, you or any of your developers won't have to login anymore directly 
 
 **Tada !! You can now login to AWS Console through your SSO portal using your customized url !**
 
+</details>
 
 ### Setup your dev environment
+
+<details>
+<summary>Click to go through this step</summary>
 
 #### Create a developer SSO user
 
@@ -603,6 +623,13 @@ At the time of writting, we support the following IDEs:
 
 **You are now Ready to start coding !**
 
+</details>
+
 ## Next step
 
+<details>
+<summary>Click to go through this step</summary>
+
 Start coding and deploy your first website by jumping to the [landing page app example](../2-landing-page/README.md).
+
+</details>
