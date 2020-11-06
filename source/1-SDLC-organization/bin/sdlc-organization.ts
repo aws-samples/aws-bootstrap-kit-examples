@@ -31,6 +31,9 @@ const nestedOU = [
         accounts: [
             {
                 name: 'CICD'
+            },
+            {
+                name: 'DNS'
             }
         ]
     },
@@ -38,10 +41,10 @@ const nestedOU = [
         name: 'SDLC',
         accounts: [
             {
-                name: 'Dev'
+                name: 'WorkloadA-Alpha'
             },
             {
-                name: 'Staging'
+                name: 'WorkloadA-Beta'
             }
         ]
     },
@@ -49,7 +52,7 @@ const nestedOU = [
         name: 'Prod',
         accounts: [
             {
-                name: 'Prod'
+                name: 'WorkloadA-Prod'
             }
         ]
     }
