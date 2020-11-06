@@ -185,5 +185,5 @@ By default, this solution occurs less than 1$ / month bill (price may slightly v
   
 ## Next
 
-We put together a step by step process in a [workshop](https://module02.d2kkvlxdfcyvu3.amplifyapp.com/020_landingzone/).
+Let's deploy your [Software Development Life Cycle Organization](./source/1-SDLC-organization/README.md).
 
