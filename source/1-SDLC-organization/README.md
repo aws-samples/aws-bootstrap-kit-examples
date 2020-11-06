@@ -605,4 +605,4 @@ At the time of writting, we support the following IDEs:
 
 ## Next step
 
-Start coding and deploy your first website by jumping to the [landing page app example](./source/2-landing-page/README.md).
+Start coding and deploy your first website by jumping to the [landing page app example](../2-landing-page/README.md).

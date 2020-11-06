@@ -182,7 +182,12 @@ By default, this solution occurs less than 1$ / month bill (price may slightly v
   * You already have an AWS Organizations setup
   * You already have a [AWS Config recorder](https://docs.aws.amazon.com/config/latest/developerguide/stop-start-recorder.html) (created automatically if you used AWS Config before)
 * Auto CDK bootstrap is only done in the original deployment region
-  
+
+
+## Getting Help
+
+The best way to interact with our team is through GitHub. You can open an issue and choose from one of our templates for bug reports, feature requests, documentation issues, or guidance.
+
 ## Next
 
 Let's deploy your [Software Development Life Cycle Organization](./source/1-SDLC-organization/README.md).
