@@ -84,7 +84,7 @@ Here is a diagram showing the different services involved and how they are inter
 
 ## Getting started
 
-We put together a step by step process in a [workshop](https://module02.d2kkvlxdfcyvu3.amplifyapp.com/020_landingzone/).
+Let's deploy your [Software Development Life Cycle Organization](./source/1-SDLC-organization/README.md).
 
 ## Tenets
 
