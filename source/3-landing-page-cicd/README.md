@@ -29,9 +29,11 @@ The CDK application source code is in the `source\3-landing-page-cicd\cdk` folde
     git clone https://github.com/<YOUR_GITHUB_ALIAS>/aws-bootstrap-kit-examples
     ```
 
-### Configure a profile with appropriate permissions to deploy a pipeline in the CICD account
+### Give appropriate permissions to your *Developer* user to deploy a pipeline in the CICD account
 
-> For this part, ask your Administrator or put your Administrator hat to give you the appropriate permission following those steps.
+<details>
+<summary> Put your Administrator hat and click to expand or ask your Administrator to give you the appropriate permission following those steps. 
+</summary>
 
 If you followed the whole [SDLC Organization CDK app](../1-SDLC-organization/README.md) setup procedure, you have created a user group called **DevOpsEngineers** and you gave it the permission to access the CICD account with the **DevOpsAccess** permission set. If you don't have followed these steps, please run them now as the following steps are based on it.
 
@@ -76,6 +78,10 @@ Right now, the *Developer* user that you are using has no access to the CICD acc
 1. Go back to your SSO portal and click on *Sign out*
 
     ![The home page of the SSO portal](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-11.png)
+
+</details>
+
+### Configure a profile with appropriate permissions to deploy a pipeline in the CICD account
 
 1. Execute `aws configure sso --profile cicd` and follow the instructions
 
@@ -152,6 +158,10 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
 
 ### Checking your deployment
 
+<details>
+
+<summary>Click to expand</summary>
+
 1. Navigate to your SSO portal Url and sign in with your *Developer* user
 
     ![SSO portal sign in page with Devloper filled in the username field and some masked characters in the password field](../../doc/landing-page-with-cicd-check-deployment-1.png)
@@ -206,6 +216,7 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
 
 1. Repeat steps 8 to 13 with the Prod account
 
+</details>
 
 ### Destroy the **LandingPagePipelineStack**
 
