@@ -18,13 +18,15 @@ The table below describes the high level steps you will go through to set up you
 
 Step # | Feature | Description
 -- | -- | --
-0 | [Initial setup](./README.md#step-0-initial-setup) | Setup the development environment and clone the repositories.
-1 | [Configure your cicd profile](./README.md#step-1-configure-your-cicd-profile) | Configure the credentials to trigger the pipeline.
-2 | [Customize the input parameters](./README.md#step-0-initial-setup) | Configure the input parameters to match your own environement
-3 | [Deploy the App](./README.md#step-3-deploy-the-app) | Deploy the initial frontend application.
-4 | [Cleanup and Troubleshooting](./README.md#step-4-cleanup-and-troubleshooting) | How to remove all of the workshop's resources from your account and troubleshoot issues
+0 | [Initial setup](#step-0---initial-setup) | Setup the development environment and clone the repositories.
+1 | [Configure your cicd profile](#step-1---configure-your-cicd-profile) | Configure the credentials to trigger the pipeline.
+2 | [Customize the input parameters](#step-2---customize-the-input-parameters) | Configure the input parameters to match your own environement
+3 | [Deploy the App](#step-3---deploy-the-app) | Deploy the initial frontend application.
+4 | [Cleanup and Troubleshooting](#step-4---cleanup-and-troubleshooting) | How to remove all of the workshop's resources from your account and troubleshoot issues
 
 ### Step 0 - Initial Setup
+<details>
+<summary>Click to go through this step</summary>
 
 #### Prerequisites
 
@@ -43,7 +45,11 @@ Step # | Feature | Description
 
 
 
+</details>
+
 ### Step 1 - Configure your cicd profile
+<details>
+<summary>Click to go through this step</summary>
 
 #### Give appropriate permissions to your *Developer* user to deploy a pipeline in the CICD account
 
@@ -127,7 +133,11 @@ Right now, the *Developer* user that you are using has no access to the CICD acc
 
 1. Execute `cdk-sso-sync cicd`
 
+</details>
+
 ### Step 2 - Customize the input parameters
+<details>
+<summary>Click to go through this step</summary>
 
 #### Create a secret with your GitHub Personal Access Token in the CICD account
 
@@ -147,8 +157,11 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
     * "github_repo_name": <YOUR_GITHUB_REPOSITORY>,
     * "github_repo_branch": <YOUR_GITHUB_BRANCH>
 
+</details>
 
 ### Step 3 - Deploy the app
+<details>
+<summary>Click to go through this step</summary>
 
 #### Install dependencies
 
@@ -238,10 +251,11 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
 
 </details>
 
-
+</details>
 
 ### Step 4 - Cleanup and Troubleshooting
-
+<details>
+<summary>Click to go through this step</summary>
 #### Destroy the **LandingPagePipelineStack**
 
 You can easily destroy the **LandingPagePipelineStack** and free up the deployed AWS resources on the CICD account:
@@ -258,3 +272,5 @@ cdk destroy --profile cicd
 * If you get a CloudFormation Internal Failure error while deploying the stack, please check you have properly created the GITHUB_TOKEN secret
 * If you get an error 400 message as a detailed error message when CodeBuild fails, please check you have properly modify your cdk.json file
 * If you get an error message stating *Cannot have more thant 1 builds in queue for the account* as a detailed error message when CodeBuild fails, please retry the step in CodePipeline. You get this error because your AWS account is new. After a few retry, the limit will automatically increase.
+
+</details>
