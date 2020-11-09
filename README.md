@@ -1,21 +1,20 @@
-
 # AWS Bootstrap Kit Examples Overview
 
 - [AWS Bootstrap Kit Examples Overview](#aws-bootstrap-kit-examples-overview)
-  * [Who is this for ?](#who-is-this-for--)
-  * [What you will get with it ?](#what-you-will-get-with-it--)
+  * [Who is this for?](#who-is-this-for)
+  * [What you will get with it?](#what-you-will-get-with-it)
     + [As an Operator](#as-an-operator)
     + [As a developer](#as-a-developer)
     + [As a developer oncall](#as-a-developer-oncall)
-  * [What you will get with it ? (the AWS infrastructure)](#what-you-will-get-with-it----the-aws-infrastructure-)
+  * [What you will get with it? (the AWS infrastructure)](#what-you-will-get-with-it-the-aws-infrastructure)
   * [Getting started](#getting-started)
   * [Tenets](#tenets)
   * [What you will find in this repository](#what-you-will-find-in-this-repository)
-  * [What you won't find in this repository](#what-you-won-t-find-in-this-repository)
-  * [Do I need to be familiar with the AWS Services used under the hood?](#do-i-need-to-be-familiar-with-the-aws-services-used-under-the-hood-)
+  * [What you won't find in this repository](#what-you-wont-find-in-this-repository)
+  * [Do I need to be familiar with the AWS Services used under the hood?](#do-i-need-to-be-familiar-with-the-aws-services-used-under-the-hood)
   * [Concept](#concept)
     + [Infrastructure as Code](#infrastructure-as-code)
-    + [CI/CD](#ci-cd)
+    + [CI/CD](#cicd)
     + [Multi accounts strategy](#multi-accounts-strategy)
   * [Security](#security)
     + [Control deployment](#control-deployment)
@@ -29,7 +28,7 @@ This repository contains examples of using the AWS Bootstrap Kit to set your dev
 
 Let's start small but with potential for future growth without adding tech debt.
 
-## Who is this for ?
+## Who is this for?
 
 Here is the list of the personas targeted by this solution:
 
@@ -37,7 +36,7 @@ Here is the list of the personas targeted by this solution:
 * Developers
 * Oncall developers (aka Ops)
 
-## What you will get with it ?
+## What you will get with it?
 
 A structured set of environments to develop and operate your software on AWS for your different team roles:
 
@@ -65,7 +64,7 @@ Most of it as Infrastructure as Code artifact.
 
 * A Web Portal enabling to log in to the different environment you are in charge to monitor
 
-## What you will get with it ? (the AWS infrastructure)
+## What you will get with it? (the AWS infrastructure)
 
 Basically the same as above but:
 * Environments = [AWS Accounts](https://aws.amazon.com/organizations/faqs/#Organizing_AWS_accounts) (not a *user* account but actually a isolated environment tight to an email (& password) and unique id)
