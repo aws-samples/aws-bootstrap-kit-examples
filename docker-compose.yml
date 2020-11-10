@@ -1,0 +1,21 @@
+services:
+  web:
+    image: nginx
+    ports:
+      - "80:80"
+  php:
+    image: php
+    ports:
+      - "9000:9000"
+    environment:
+      DOMAIN: "localhost"
+      SECRETS: '{"host": "localhost", "username": "admin", "password":"random_password", "dbname": "ecommerce" }'
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: random_password
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: random_password

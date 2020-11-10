@@ -105,7 +105,7 @@
         var stripe = Stripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
         var checkoutButton = document.getElementById("checkout-button");
         checkoutButton.addEventListener("click", function () {
-          fetch("/create-session.php?id=" + basket[0].productId, {
+          fetch(`/create-session.php?ids=[${basket.map(item => item.productId).join(',')}]`, {
             method: "POST",
           })
             .then(function (response) {

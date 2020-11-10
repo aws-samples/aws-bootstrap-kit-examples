@@ -123,11 +123,11 @@ export class InfrastructureStack extends Stack {
 
     const phpContainer = taskDefinition.addContainer("ab-php", {
       image: ContainerImage.fromAsset(__dirname + "/../../php-fpm"),
-      secrets: {
-        SECRETS: Secret.fromSecretsManager(db.secret!),
-      },
       environment: {
         DOMAIN: "http://" + fargateService.loadBalancer.loadBalancerDnsName,
+      },
+      secrets: {
+        SECRETS: Secret.fromSecretsManager(db.secret!),
       },
       logging: PHPLogDriver,
     });
