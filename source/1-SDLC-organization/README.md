@@ -1,16 +1,16 @@
-# Welcome to the Software Development Life Cycle (SDLC) Orgnaization CDK app
+# Welcome to the Software Development Life Cycle (SDLC) Organization CDK app
 
-As described in root [README](../../README.md), this [CDK](https://docs.aws.amazon.com/cdk/latest/guide/apps.html) app strive to give you a clean and easy to use set of environments (AWS Accounts) to develop and operate sofware on AWS following best practices.
+As described in root [README](../../README.md), this [CDK](https://docs.aws.amazon.com/cdk/latest/guide/apps.html) app strives to give you a clean and easy to use set of environments (AWS Accounts) to develop and operate software on the following AWS best practices.
 
 ## MUST READ
 
-* This first CDK app is deploying several AWS accounts which are resources with specific contraints in regards to deletion ([Official doc](https://aws.amazon.com/premiumsupport/knowledge-center/close-aws-account/), such as 90 days wait period). Therefore, be aware that rolling back the creation of those resources is not supported.
+* This first CDK app is deploying several AWS accounts which are resources with specific constraints in regards to deletion ([Official doc](https://aws.amazon.com/premiumsupport/knowledge-center/close-aws-account/), such as 90 days wait period). Therefore, be aware that rolling back the creation of those resources is not supported.
 
-* Since everything is code in a repository, access and permission of to this repository needs to be carefully managed.
+* Since everything is code in a repository, access and permission to this repository needs to be carefully managed.
 
 ## Under the hood
 
-This CDK app will instanciate the following resources:
+This CDK app will instantiate the following resources:
 
 * An [AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html)
 * Multiple [AWS Accounts](https://aws.amazon.com/organizations/faqs/#Organizing_AWS_accounts) under different [Organizational Unit](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_ous.html)
@@ -41,14 +41,14 @@ Step # | Feature | Description
 * [npm](https://npmjs.org) and [awscli](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) installed
 * A valid email (can be your root account one) 
   * without "+" in it
-  * provided by a provider supporting [subaddressing](https://en.wikipedia.org/wiki/Plus_address) which means supporting '+' email extension (Most providers such as gmail/google, outlook etc. support it. If you're not sure check [this page](https://en.wikipedia.org/wiki/Comparison_of_webmail_providers#Features) "Address modifiers" column or send an email to yourself adding a plus extension such as `myname+test@myemaildomain.com` . if you receive it, you're good).   
+  * provided by a provider supporting [subaddressing](https://en.wikipedia.org/wiki/Plus_address) which means supporting '+' email extension (Most providers such as gmail/google, outlook etc. support it. If you're not sure check [this page](https://en.wikipedia.org/wiki/Comparison_of_webmail_providers#Features) "Address modifiers" column or send an email to yourself adding a plus extension such as `myname+test@myemaildomain.com`. If you receive it, you're good).   
 * An AWS account with an IAM user with Administrator permission
 
 ### Configure your local credentials
 <details>
 <summary>Click to go through this step</summary>
 
-To authenticate requests made using the CLI, we need to give your IAM user credentials (If you don't have one follow [this instruction](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) with *Programmatic access Access type* selected and *AdministratorAccess* policy) and the region you want to use to the Command line:
+To authenticate requests made using the CLI, we need to give your IAM user credentials (If you don't have one follow [this instruction](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) to create an IAM user with *Programmatic access Access type* selected and *AdministratorAccess* policy) and the region you want to use to the Command line:
 
 ```sh
 aws configure --profile main-admin
@@ -58,10 +58,9 @@ Default region name [None]: eu-west-1
 Default output format [None]: json
 ```
 
-Here we use the `--profile` parameter with `main-admin` in order to, in the future be able to swtich between accounts.
+Here we use the `--profile` parameter with `main-admin` in order to, in the future be able to switch between accounts.
 
-
-You can now test our set up:
+You can now test your setup:
 
 ```sh
 aws --profile=main-admin  sts get-caller-identity
@@ -73,16 +72,16 @@ aws --profile=main-admin  sts get-caller-identity
 }
 ```
 
-This command show you basically what your current crendentials are attached to :
-* `Account` tell you which Account Id you are talking to
-* `Arn` tell you which Role you are using
+This command shows you what your current credentials are attached to:
+* `Account` tells you which Account Id you are talking to
+* `Arn` tells you which Role you are using
 
 
-To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config).
+To learn more, check the [official documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config).
 
 </details>
 
-### Fork and init the repo
+### Fork and initialize the repo
 
 <details>
 <summary>Click to go through this step</summary>
@@ -95,18 +94,18 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
     ```
 
 1. Link your GitHub repository to AWS by 
-    1. Pushing your github personal secret token (follow [this instruction](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) if you don't have one with **admin:repo_hook** full control and **repo** full control) in AWS Secrets Manager, a service that stores your secret securely
+    1. Pushing your GitHub personal secret token (follow [this instruction](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) if you don't have one with **admin:repo_hook** full control and **repo** full control) in AWS Secrets Manager, a service that stores your secret securely:
         ```sh
         aws --profile main-admin secretsmanager create-secret --name GITHUB_TOKEN --secret-string <YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
         ```
     1. Set in `source/1-SDLC-organization/cdk.json` the following variables:
 
         * `email` corresponding to the administrator email that will be used to create additional AWS account (without "+" character)
-        * `github_alias` coresponding to your github username (`your_alias` in `https://github.com/your_alias/your_repo`)
+        * `github_alias` corresponding to your GitHub username (`your_alias` in `https://github.com/your_alias/your_repo`)
         * `github_repo_name` corresponding to the name when you created the repository (`your_repo` in this example)
-        * `gihub_repo_branch` corresponding to the main branch of your repo. (should be called `main`)
+        * `github_repo_branch` corresponding to the main branch of your repo. (should be called `main`)
         * `pipeline_deployable_regions` corresponding to the lists of [AWS regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-regions) you plan to deploy your future applications to.
-            it should look like:
+            It should look like:
             ```
             cd <YOUR REPO>
             cat 1-SDLC-organization/cdk.json
@@ -161,7 +160,7 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
     npm run bootstrap
     ```
 
-1. build and deploy package
+1. Build and deploy package
 
     ```
     npm run build
@@ -176,10 +175,10 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
     PS: You can inspect what is going to be deployed by clicking "Details" link of "orgStack.Prepare" action.
 
 1. When all green, you should be able to 
-    1. check your organization structure in AWS Organizations console
+    1. Check your organization structure in AWS Organizations console
     1. Get into any of those sub accounts by getting the Account ID from AWS Organizations console and using the switch role button on top left drop down of the screen and the `OrganizationAccountAccessRole` Role name.
 
-    Check the [doc](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) for more details.
+    Check the [documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html) for more details.
 
 </details>
 
@@ -187,16 +186,16 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
 
 ## Going further
 
-In order to facilitate the management of permissions on the access to this different accounts we suggest to setup an SSO portal following the steps described bellow. That's going to give you the capability to centrally manage and access your different AWS account with a single identity (login and password) or even delegate this to a third party provider such as Google Workspace (GSuite).
+In order to facilitate the management of permissions on the access to these different accounts we suggest to setup an SSO portal following the steps described below. That's going to give you the capability to centrally manage and access your different AWS account with a single identity (login and password) or even delegate this to a third party provider such as Google Workspace (GSuite).
 
-Staying with IAM users and groups would means not getting a central portal with a single identity and would force you to remember the different account ID and role to login into:
+Staying with IAM users and groups would mean not getting a central portal with a single identity and would force you to remember the different account ID and role to login into:
 
 
 
 ![A diagram showing IAM sign in page versus SSO one](../../doc/sign-in-iam-vs-sso.png) 
 
 
-*Whatch this quick presentation video to learn more:*
+*Watch this quick presentation video to learn more:*
 
 <a href="https://www.youtube.com/watch?v=_qNkFxp1Z_k" target="_blank">
     <img src="https://img.youtube.com/vi/_qNkFxp1Z_k/hqdefault.jpg"  alt="AWS Single Sign On video"/>
@@ -207,7 +206,7 @@ Staying with IAM users and groups would means not getting a central portal with 
 <details>
 <summary>Click to go through this step</summary>
 
-Sorry we can't automate those step yet :cry:
+Sorry we can't automate these steps yet :cry:
 
 #### Enable SSO
 
@@ -219,10 +218,10 @@ We want to be able to manage two groups of users:
 * the **Administrators**  who will have access to all accounts with **AdministratorAccess** permissions
 * the **Developers**  who will have access only to the Dev account with **DeveloperAccess** permissions and **ViewOnlyAccess** permissions to the Staging and Prod accounts
 
-Through 5 set of permissions:
+Through 5 sets of permissions:
 * **AdministratorAccess** grants administrator access to an AWS account. A user with this permission set is able to create, update or delete any resources in an AWS account including IAM users, roles and groups. It relies on the AdministratorAccess AWS managed job function policy.
 * **DeveloperAccess** allows developers to create, update or delete AWS resources from an account excluding users and groups. A developer with this permission set is also able to create, delete and update roles as well as creating, updating, deleting and attaching role policies to a resource. It allows a developer to deploy a CDK app into and account directly with the cdk deploy command. It relies on the PowerUserAccess AWS managed job function policy plus a set of IAM actions.
-* **DevOpsAccess**  allows DevOps engineers to deploy and manage CI/CD pipelines through CDK. It relies on 5 AWS managed policies: *AWSCloudFormationFullAcces, AWSCodeBuildAdminAccess, AWSCodePipelineFullAccess, AmazonS3FullAccess, AmazonEC2ContainerRegistryFullAccess, SecretsManagerReadWrite*. It relies on a set of IAM, KMS and Organizations actions.
+* **DevOpsAccess**  allows DevOps engineers to deploy and manage CI/CD pipelines through CDK. It relies on 5 AWS managed policies: *AWSCloudFormationFullAccess, AWSCodeBuildAdminAccess, AWSCodePipelineFullAccess, AmazonS3FullAccess, AmazonEC2ContainerRegistryFullAccess, SecretsManagerReadWrite*. It relies on a set of IAM, KMS and Organizations actions.
 * **ApproverAccess** allows users to view and approve manual changes for all pipelines. It relies on the *AWSCodePipelineApproverAccess* AWS managed policy.
 * **ViewOnlyAccess** allows users to view resources and basic metadata across all AWS services. It relies on the *ViewOnlyAccess* AWS managed policy.
 
@@ -238,16 +237,16 @@ To set up these accesses, we first need to create a permission set which corresp
 
 1. Type in the info
     1. Name: *AdministratorAccess*
-    1. Session duaration: *X hours*
+    1. Session duration: *X hours*
     1. Check the *Attach AWS managed policies* and *Create a custom permissions policy* boxes. 
     1. Select the *AdministratorAccess* managed policy
     1. Enter the following custom permissions policy:
     
     ```{}```
 
-1. click *Next: Tags* 
+1. Click *Next: Tags* 
 
-1. Skip *tags* by click *Next: Review* 
+1. Skip *tags* by clicking *Next: Review* 
 
 1. Click *Create* to finalize the creation of the permissions set
 
@@ -308,7 +307,7 @@ To set up these accesses, we first need to create a permission set which corresp
                         "iam:DetachRolePolicy",
                         "iam:PutRolePolicy",
                         "iam:GetRolePolicy",
-                        "iam:DeleteRolepolicy",
+                        "iam:DeleteRolePolicy",
                         "kms:CreateKey",
                         "kms:PutKeyPolicy",
                         "kms:DescribeKey",
@@ -366,13 +365,13 @@ You must end with the following permission sets:
 
 #### Create your groups
 
-Now we are going to create the **Administrators**, **Developers**, **DevOpsEngineers** and **Approvers** groups, we basically will follow the steps listed in the [official documentation](https://docs.aws.amazon.com/singlesignon/latest/userguide/addgroups.html):
+Now we are going to create the **Administrators**, **Developers**, **DevOpsEngineers** and **Approvers** groups. We will basically follow the steps listed in the [official documentation](https://docs.aws.amazon.com/singlesignon/latest/userguide/addgroups.html):
 
 1. Click on the *Groups* Tab
 
 1. Click *Create group*
 
-1. Type **Adminstrators** as group name and click *Create*
+1. Type **Administrators** as group name and click *Create*
 
 1. Repeat steps 1 to 3 for **Developers**, **DevOpsEngineers**, **Approvers**
 
@@ -380,15 +379,15 @@ Now we are going to create the **Administrators**, **Developers**, **DevOpsEngin
 #### Link groups to accounts and permission sets
 
 
-Now we are going to assign the **Administrators** group to all the accounts with the the **AdministratorAccess** permission set. It will result to giving *Administrator* access to users in the **Administrators** group to all your  accounts:
+Now we are going to assign the **Administrators** group to all the accounts with the the **AdministratorAccess** permission set. It will result in giving *Administrator* access to users in the **Administrators** group to all your  accounts:
 
 1. Come back to *AWS Accounts* section
 
 1. Select all your accounts and click *Assign users*
 
-1. Go to *Groups* tab, select *Admninistrators* group and click *Next: Permissions set*
+1. Go to *Groups* tab, select *Administrators* group and click *Next: Permissions set*
 
-1. Select *AdminstriatorAccess* permissions set and click *Finish* 
+1. Select *AdministratorAccess* permissions set and click *Finish* 
 
 1. It will take a few seconds to configure all your accounts
 
@@ -429,19 +428,19 @@ Now we are going to create an Administrator user, we basically will follow the s
 
 1. Well done your account has been successfully activated! Click *Continue*
 
-1. You have now access to your SSO app list. Click on *AWS Account* card to expand the list of accounts
+1. You now have access to your SSO app list. Click on *AWS Account* card to expand the list of accounts
 
 1. Click on your main account to expand the list of your access to this account
 
 1. Click on *Management console* to access to the console of your main account
 
-1. Your are now connected with your new SSO Administrator user
+1. You are now connected with your new SSO Administrator user
 
 **Let's assign the Developers group to Dev, Staging and Prod accounts with this new SSO Administrator user**
 
 #### Customize your SSO endpoint
 
-From now on, you or any of your developers won't have to login anymore directly to AWS console but directly through AWS SSO portal. In the previous step you might have noticed that your SSO console is accessible through a unique URL such as `https://d-123456789a.awsapps.com/start ` which is not that easy to remember, let's customize it to match your company domain:
+From now on, you or any of your developers won't have to login directly to AWS console but directly through AWS SSO portal. In the previous step you might have noticed that your SSO console is accessible through a unique URL such as `https://d-123456789a.awsapps.com/start ` which is not that easy to remember, let's customize it to match your company domain:
 
 1. Search for *SSO* on the console home page and go to the service
 
@@ -449,7 +448,7 @@ From now on, you or any of your developers won't have to login anymore directly 
 
 1. Type your domain name and click *Save*
 
-**Tada !! You can now login to AWS Console through your SSO portal using your customized url !**
+**Tada !! You can now login to AWS Console through your SSO portal using your customized URL !**
 
 </details>
 
@@ -462,7 +461,7 @@ From now on, you or any of your developers won't have to login anymore directly 
 
 (This section is optional but will be one to use each time you want to onboard a new dev in your team)
 
-Now we are going to create a Developer user with enough rate to develop and publish an app to the different environemnt, we basically will follow the steps listed in the [official documentation](https://docs.aws.amazon.com/singlesignon/latest/userguide/addusers.html):
+Now we are going to create a Developer user with enough rate to develop and publish an app to the different environment, we will basically follow the steps listed in the [official documentation](https://docs.aws.amazon.com/singlesignon/latest/userguide/addusers.html):
 
 1. Click on the *Users* section
 
@@ -480,7 +479,7 @@ Now we are going to create a Developer user with enough rate to develop and publ
 
 1. Well done your account has been successfully activated! Click *Continue*
 
-1. You have now access to your SSO app list with your Developer user
+1. You now have access to your SSO app list with your Developer user
 
 
 #### AWS CLI V2
@@ -507,7 +506,7 @@ aws sso login --profile dev
 ---
 
 
-In order to interact with your different environment through the [awscli](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) or any AWS SDKs locally, you will need to get your credentials.
+In order to interact with your different environments through the [awscli](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) or any AWS SDKs locally, you will need to get your credentials.
 
 To authenticate requests made using the CLI, we need to give the credentials generated by AWS SSO and link them to what we call `profile`. So for each environment you want to have access to through AWS CLI v2 and CDK you will have to configure a specific profile for it running the command below. 
 
@@ -538,7 +537,7 @@ Here we setup your first profile that will be used to replace your IAM user admi
  aws s3 ls --profile dev
  ```
   
- Here we use the `--profile` parameter with `dev` in order to, in the future be able to swtich between accounts.
+ Here we use the `--profile` parameter with `dev` in order to, in the future be able to switch between accounts.
   
   
  You can now test our set up:
@@ -553,16 +552,16 @@ Here we setup your first profile that will be used to replace your IAM user admi
  }
  ```
   
- This command show you basically what your current crendentials are attached to :
+ This command shows you basically what your current credentials are attached to:
  * `Account` tell you which Account Id you are talking to
  * `Arn` tell you which Role you are using
   
    To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html).
 
-This procedure should be repeted for all the AWS Account you want to interact with.
+This procedure should be repeated for all the AWS Account you want to interact with.
 
 
-Then, when token expire, you can refresh it by running
+Then, when the token expires, you can refresh it by running:
 
 ```
 aws sso login --profile dev
@@ -572,9 +571,9 @@ aws sso login --profile dev
 
 #### CDK and SSO
 
-CDK and AWS SSO are not yet friends (see github issue [5455](https://github.com/aws/aws-cdk/issues/5455)). So since in the future we will have to deploy infrastructure as code apps into multiple environment, we  will need to make it work.
+CDK and AWS SSO are not yet friends (see GitHub issue [5455](https://github.com/aws/aws-cdk/issues/5455)). Since in the future we will have to deploy infrastructure as code apps into multiple environments, we  will need to make it work.
 
-There is several workaround and here is one using a quick utility written in nodejs called "cdk-sso-sync":
+There are several workarounds and here is one using a quick utility written in Nodejs called "cdk-sso-sync":
 
 ```
 npm install -g cdk-sso-sync
@@ -593,9 +592,9 @@ This will simply extract the credentials you got from the `aws sso login` comman
 
 ### Leverage AWS IDE Toolkits
 
-In order to improve your productivity, do not hesitate to leverage AWS IDE Toolkits by checking the [official docmumentation](https://aws.amazon.com/getting-started/tools-sdks/#IDE_and_IDE_Toolkits).
+In order to improve your productivity, do not hesitate to leverage AWS IDE Toolkits by checking the [official documentation](https://aws.amazon.com/getting-started/tools-sdks/#IDE_and_IDE_Toolkits).
 
-At the time of writting, we support the following IDEs:
+At the time of writing, we support the following IDEs:
 * [AWS Cloud9](https://aws.amazon.com/cloud9/)
 * [Eclipse](https://aws.amazon.com/eclipse/)
 * [IntelliJ](https://aws.amazon.com/intellij/)
