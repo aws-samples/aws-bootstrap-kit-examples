@@ -21,7 +21,7 @@ The pipeline created consists of several stages:
 - A simple PHP App container with NGINX proxy container
 - Cloud Watch Dashboard to monitor services
 
-> Be aware that there are 2 types CDK Code, one which you deployed locally that only sets up the pipeline `Pipeline Stack`, the second one `Infrastructure Stack` is used by the pipeline to set up the App's Infrastucture
+> Be aware that there are 2 seperate CDK Code, one which you deployed locally that only sets up the pipeline `Pipeline Stack`, the second one `Infrastructure Stack` is used by the pipeline to set up the App's Infrastucture
 
 # Prerequisites
 
@@ -68,7 +68,7 @@ The pipeline created consists of several stages:
    npm run build
    ```
 
-1. Deploy default stack of the CDK application, the **PipelineStack** one.
+1. Deploy the **PipelineStack**, which will then deploy **InfrastructureStack** to your Staging & Prod Environments
    ```
    cdk deploy --profile cicd
    ```
@@ -85,9 +85,9 @@ cdk destroy --profile cicd
 
 ## Troubleshooting
 
-- If you get an CloudFormation Internal Failure error while deploying the stack, please check you have properly created the GITHUB_TOKEN secret
-- If you get an error 400 message as a detailed error message when CodeBuild fails, please check you have properly modify your cdk.json file
-- If you get an error message stating _Cannot have more thant 1 builds in queue for the account_ as a detailed error message when CodeBuild fails, please retry the step in CodePipeline. You are reaching a limit due to the fact that your AWS account is new. You can make a support request to increase the limit.
+- If you get a CloudFormation Internal Failure error while deploying the stack, please check you have properly created the GITHUB_TOKEN secret
+- If you get an error 400 message as a detailed error message when CodeBuild fails, please check you have properly modified your cdk.json file
+- If you get an error message stating _Cannot have more thant 1 build in queue for the account_ as a detailed error message when CodeBuild fails, please retry the step in CodePipeline. You are reaching a limit due to the fact that your AWS account is new. You can make a support request to increase the limit.
 
 # WalkThrough
 
@@ -102,11 +102,11 @@ The app consists of the following:
 - Dockerized NGINX as proxy server
 - Dockerized PHP-FPM (FastCGI Process Manager) to process requests
 - MySQL Database
-- static assets i.e product images
+- Static Assets i.e product images
 
 ### Vanilla Frontend
 
-The Frontend app will be a static vanila web app served by our backend. The home page as displayed below, lists a few products which can be added to basket and then on checkout the user will be redirected to a Stripe payment platform, which on success/failure will then be redirected to our Success/Failure Page.
+The Frontend app will be a static vanila web app served by our backend. The home page as displayed below lists a few products which can be added to basket and then on checkout the user will be redirected to a Stripe payment platform, which on Success/Failure will then be redirected to our Success/Failure Page.
 
 ![apps homepage](../../doc/Ecommerce-Frontend-App.png)
 
@@ -115,8 +115,6 @@ There are mainly 2 endpoints that are called:
 - `/get-products.php` to list all products available on homepage
 - `/create-session.php` to create a session with Stripe that includes purchase details when checking out
 
-so our backend wil need to handle these 2 requests
-
 Finally there are 2 more static web files:
 
 - Success Page: to confirm purchase was successful
@@ -124,21 +122,21 @@ Finally there are 2 more static web files:
 
 ### Dockerized NGINX & PHP-FPM
 
-To run PHP a combination of a web server and FastCGI is required. in this example we chose to use a popular combination of NGINX and PHP-FPM. It is recommended when running more than one processes is to containerize each process seperately and therefore we created seperate docker files
+To run PHP, a combination of a web server and FastCGI is required. In this example we chose to use a popular combination of NGINX and PHP-FPM. It is recommended when running more than one process to containerize each process seperately and therefore we created seperate docker files
 
 ### PHP Backend
 
-as mentioned we required 2 main endpoints:
+As mentioned we required 2 main endpoints:
 
 #### /get-products.php
 
-this endpoint is straightforward it just connects to our MySQL Database using PHP PDO (PHP Data Objects)
+This endpoint is straightforward, it just connects to our MySQL Database using PDO (PHP Data Objects)
 
 ```
 $conn = new PDO("mysql:host=$host;dbname=$dbName", $username, $password);
 ```
 
-and then fetches all the products with a simple SQL Statement
+and then fetches all the products with a simple SQL Select Statement
 
 ```
 $stmt = $conn->prepare("SELECT * FROM products");
@@ -154,8 +152,7 @@ echo $json_response;
 
 #### /create-session.php
 
-this endpoint is called after a user has added their products into their basket and clicked the checkout button, the queryString contains the productIds.
-our endpoint will query the database with the the product Ids
+This endpoint is called after a user has added their products into their basket and clicked the checkout button, the queryString contains the list of productIds. Our endpoint will query the database for these Ids
 
 ```
 $query = $_GET['ids'];
@@ -181,7 +178,7 @@ $checkout_session = \Stripe\Checkout\Session::create([
 echo json_encode(['id' => $checkout_session->id]);
 ```
 
-Finally the sessionId is return to the FrontEnd which it will use when redirecting the user to the stripe platform
+Finally the sessionId is returned to the Client, to pass along when redirecting the user to the stripe platform
 
 ### MySQL Database
 
@@ -203,7 +200,7 @@ On the cloud we will use Aurora Serverless which is MySQL Compatible, but for lo
 
 ### Run Locally
 
-to developer and run locally we will use docker-compose to run all three images as seen below:
+To developer and run locally we will use docker-compose to run all three images as seen below:
 
 ```
 services:
@@ -229,14 +226,14 @@ docker-compose up
 
 ## Pipeline Stack
 
-from here on we will be using CDK to set up our infrastructure on the Cloud and as mentioned we split our CDK code into 2 stacks, the first one being the Pipeline stack, this is will be deployed to our CICD Environment and will be responsible for deploying our App's Infrastructure Stack to other environments, in our case it will be Staging and Prod.
+From here on we will be using CDK to set up our infrastructure on the Cloud and as mentioned previously we split our CDK code into 2 stacks, the first one being the Pipeline stack, this is will be deployed to our CICD Environment and will be responsible for deploying our App's Infrastructure Stack to other environments, in our case it will be Staging and Prod.
 
 ![CICD Flow](../../doc/Ecommerce-SDLC.png)
 
 so let's take look go through [pipeline-stack.ts](./cdk/pipeline-stack.ts)
-we will be using CdkPipeline Construct to set up our pipeline
+we will be using [CdkPipeline](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-codepipeline-readme.html) Construct to set up our pipeline
 
-so below we are passing a sourceAction property to defing our code source which is a GitHub repo and second property is synthAction to define build commands.
+below we are passing a sourceAction property to defing our code source which in our case is a GitHub repo and second property is synthAction to define build commands.
 
 ```
 const pipeline = new CdkPipeline(this, "Pipeline", {
@@ -261,11 +258,7 @@ const pipeline = new CdkPipeline(this, "Pipeline", {
 
 standardNpmSynth builds using NPM and runs `cdk synth` by default, the last property used rolePolicyStatements will give us the authority to list AWS Accounts, which will be handy later
 
-so far our pipeline has two stages a source stage and a build stage
-
-now we need a stage that actually deploys our infrastructure code into the destination environments
-
-so the Pipeline construct provides the method `addApplicationStage` to add more stages, as you can see below
+so far our pipeline has two stages a source stage and a build stage, now we need a stage that actually deploys our infrastructure code into its destination environments using Pipeline's `addApplicationStage` method
 
 ```
 const infraStage = new InfrastructureStage(this, stageDetails.name, {
@@ -285,30 +278,28 @@ applicationStage.addActions(
 );
 ```
 
-first we actually call our Infrastructure Stack that will be deployed by our pipeline and specifying the accountId for the environment we are deploying to whether it is Staging or Prod. the manualApproval flag determines whether the actual deployment needs a manual approval for it to be deployment basically adding a human action in the process.
+First we actually call our Infrastructure Stack that will be deployed by our pipeline and specify the accountId for the environment we are deploying to, whether it is Staging or Prod.
+The manualApproval flag determines whether the actual deployment needs to be manually approved first, basically adding a human action in the process.
 
-finally an End to End Testing is created by adding an Action, this allows me set up a simple shell script, which in this scenario run a simple curl command to check that service is up. but in order to run the curl command we need to know what our endpoint will be and this is available in our pipeline's stackOutput which is provided by our stack and passed to the pipeline using CfnOutput, we will discuss this later when going through our infrastructure stack
+Finally an End to End Testing is created by adding an additonal Action, this allows me set up a simple shell script, which in this scenario runs a simple curl command to check that service is up. but in order to run the curl command we need to know what our endpoint will be and this is available in our pipeline's stackOutput which is provided by our stack and passed to the pipeline using CfnOutput, we will discuss this later when going through our infrastructure stack
 
-so this explains how to deploy to a particular environment, but now we need to run this for each environment. so the plan is to first list all the accounts and this is where we gave ourselves the permission to do so in the rolePolicyStatement we mentioned earlier. so we will take our previous code of adding Stage and wrap it in this loop below going through each environment listed
+So far this explains how to deploy to a particular environment, but now we need to run this for each environment. so the plan is to first list all the accounts and this is where we gave ourselves the permission to do so in the rolePolicyStatement as we mentioned earlier in `standardNpmSynth`. so we will take our previous code for adding the Stage and wrap it in this loop below going through each environment listed
 
 ```
-const orders = { Staging: 1, Prod: 2 };
+const orders: any = { "WorkloadA-Beta": 1, "WorkloadA-Prod": 2 };
 const orgs = new Organizations({ region: "us-east-1" });
-const { Accounts = [] } = await orgs.listAccounts();
+const { Accounts = [] } = await orgs.listAccounts().promise();
 
-Accounts.map((account: any) => ({
-  ...account,
-  order: orders[account.Name],
-}))
-  .sort((a, b) => a.order - b.order)
-  .forEach((account) => {
-     // addApplicationStage for each Environment
-  });
+Accounts.filter((account) => orders[account.Name!])
+   .sort((a, b) => orders[a.Name!] - orders[b.Name!])
+   .forEach((account) => {
+   // addApplicationStage for each Environment
+});
 ```
 
-> you'll notice in the actuall code, i added a condition to only have manual Approvals for Prod Environmnet, and therefore all environment will be deployed automatically except for Prod, it will require someone to push the button
+> you'll notice in the actual code, I added a condition to only have manual Approvals for Prod Environmet, and therefore all environment will be deployed automatically except for Prod, it will require someone to manually approve.
 
-So Finally to actually to deploy our pipeline you just need to run the following commands
+Finally to actually to deploy our pipeline you just need to run the following commands
 
 ```
 npm run build
@@ -316,7 +307,7 @@ npm run cdk synth
 npm run cdk deploy --profile cicd
 ```
 
-unlike your main Infrastructure Stack, your Pipeline will not be redeployed when changes are pushed to your Repo, you will need to redeploy it via the cmd locally everytime as there is no pipeline to redeploy your pipeline. However the Pipeline Construct has a nice feature called selfMutate which actually addresses this need with a selfMutating prop which is true by default, but in my code I passed in a false value to make the objective of this feature clear and noticable, so if you just delete this one line i added `selfMutating: false,` you will notice a new stage is added called self-Mutate and this will check if the pipeline needs updating and then updates itself before moving on
+Unlike your main Infrastructure Stack, your Pipeline will not be redeployed when changes are pushed to your Repo, you will need to redeploy it via the command line locally everytime as there is no pipeline to redeploy your pipeline. However the Pipeline Construct has a nice feature called selfMutate which actually addresses this need with a selfMutating prop which is true by default, but in my code I passed in a false value to make the objective of this feature clear and noticable, so if you just delete this one line I added which is `selfMutating: false,` you will notice a new stage created in the pipeline called self-Mutate and this will check if the pipeline needs updating and then updates itself before moving on
 
 ## Infrasctructure Stack
 
@@ -334,7 +325,7 @@ Our Infrastructure will consist of the following:
 
 ### VPC
 
-ofcoarse nothing can be created in AWS without having our VPC first, with this construct I can define my VPC and also specify the Availabilty Zones it will cover, in our current design it will be 2 Availability Zones
+Ofcoarse nothing can be created in AWS without having our VPC first, with this construct I can define our VPC and also specify the Availabilty Zones it will cover, in our current design it will be 2 Availability Zones
 
 ```
 const vpc = new Vpc(this, "MyVpc", { maxAzs: 2 });
@@ -342,13 +333,13 @@ const vpc = new Vpc(this, "MyVpc", { maxAzs: 2 });
 
 ### S3 and CloudFront
 
-normally to serve static content, you would need to set up and configure s3 construct and cloudFront construct seperately, but one the advantages of CDK is you can build and share your own combination of construct and in our [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs) there many constructs open sourced for us to use, and I will be using `aws-cloud-s3` which does this out of the box with one line
+Normally to serve static content, you would need to set up and configure S3 and CloudFront seperately, but one the many advantages of CDK is that you can build and share your own combination of constructs and in our [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs) there many constructs open sourced for us to use, and I will be using `aws-cloud-s3` which does this out of the box with just one line
 
 ```
 const cloudFront = new CloudFrontToS3(this, "my-cloudfront-s3", {});
 ```
 
-one more thing to add currently our new bucket created will be empty and for our App to work out of the box, we need bootsrap it with a few images, this is where our Bucketdeployment Construct can be used
+One more thing to add, currently our new bucket created will be empty and for our App to work out of the box, we need to bootsrap it with a few images, this is where our [Bucketdeployment](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-deployment-readme.html) Construct can be used
 
 ```
 new BucketDeployment(this, "DeployS3Images", {
@@ -360,7 +351,7 @@ new BucketDeployment(this, "DeployS3Images", {
 
 ### Aurora Serverless MySQL
 
-the Serverless Cluster Construct below creates the our Database specifying that we require a MySQL Enging and enabling the HttpEndpoint switch's on Data API feature which will makes requests easier using http requests instead of managing connections
+The [Serverless Cluster](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-rds.ServerlessCluster.html) Construct below creates our Database specifying that we require a MySQL Enging and enabling the HttpEndpoint will switch on the Data API feature which will makes SQL requests easier using http instead of managing connections
 
 ```
 const db = new ServerlessCluster(this, "MyDatabase", {
@@ -371,9 +362,8 @@ const db = new ServerlessCluster(this, "MyDatabase", {
 });
 ```
 
-however same issue we had previously the Database is empty, so for our App to work out of the box, we need prepopulate it with a few products
-
-and our Construct doesn't provide a method to do that, and in these scenarios you can use AwsCustomResources, CloudFormation sends lifecycle events to customResources and therefore you can add handlers to events like in our case would be the create event, and AwsCustomResources is a type of CustomeResources that allows you to use AWS SDK to make api calls, so in our case we will execute 2 SQL Statements, first one to create a table and second one to insert a few products.
+However same issue we had previously the Database is empty, so for our App to work out of the box, we need to prepopulate it with a few products and our Construct doesn't provide a method to do that.
+In such scenarios you can use [CustomResources](https://docs.aws.amazon.com/cdk/api/latest/docs/custom-resources-readme.html), CloudFormation sends lifecycle events to CustomResources and therefore you can add handlers to events like in our case would be the create event, and [AwsCustomResources](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_custom-resources.AwsCustomResource.html) is a type of CustomeResources that allows you to use AWS SDK to make api calls, so in our case we will execute 2 SQL Statements, first one to create a table and second one to insert a few products.
 
 ```
 const createTable = new AwsCustomResource(this, "CreateTable", {
@@ -398,16 +388,16 @@ To ensure that first one runs before the other we can add one as a dependant to 
 insertTable.node.addDependency(createTable);
 ```
 
-### ECS (Fargate)
+### Container Orchestration using ECS (Fargate)
 
-to give a brief description ECS (Elastic Container Service) is our Container orchestration service and Fargate is a layer added to make ECS Serverless and hence takes over all the heavylifting of configuring ECS. this section will consist of few parts:
+To give a brief description ECS (Elastic Container Service) is our Container orchestration service and Fargate is a layer added to make ECS Serverless and therefore takes over all the heavylifting of configuring ECS. these are the main components we are dealing with:
 
 - ECS Cluster
 - Fargate Service
 - LoadBalancer
 - Task Definitions that defines our Containers
 
-As usual instead we have a nice Construct that sets up alot under the hood `ApplicationLoadBalancedFargateService` and this sets up a Fargate service running on an ECS cluster fronted by an application load balancer, and a Nat Gateway for our containers to be able to send request to our 3rd party payment service
+There a nice Construct that sets up alot under the hood [ApplicationLoadBalancedFargateService](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecs-patterns.ApplicationLoadBalancedFargateService.html) and this sets up a Fargate service running on an ECS cluster fronted by an application load balancer, and a Nat Gateway for our containers to be able to send request to our 3rd party payment service
 
 ```
 const fargateService = new ApplicationLoadBalancedFargateService(
@@ -422,9 +412,10 @@ const fargateService = new ApplicationLoadBalancedFargateService(
 );
 ```
 
-ECS run Tasks which can contain more than one containers, so we defined a desiredCount of 2 Tasks and the loadBalancer will distribute traffic to them. and as mentioned prevously we seperated our processes into 2 containers, but even though they are seperate they are still tightly couple as for every PHP-FPM process you need an NGINX infront of it, therefore we put both containers together into one Task.
+ECS run Tasks which can contain more than one containers, so we defined a desiredCount of 2 Tasks and the loadBalancer will distribute traffic to them, as you might have noticed in our FrontEnd Image the Ip address of the container is displayed and everytime you refresh it changes showing you the loadbalancing in action.
+As mentioned prevously we seperated our processes into 2 containers, but even though they are seperate they are still tightly couple as for every PHP-FPM process you need an NGINX proxy infront of it, therefore we put both containers together into one Task.
 
-so we create a task definition and add both containers
+So we create a task definition and add both containers
 
 ```
 const taskDefinition = new FargateTaskDefinition(this, "TaskDef");
@@ -434,7 +425,7 @@ const nginxContainer = taskDefinition.addContainer("ab-nginx", {
 });
 ```
 
-the amazing benefit with this construct is instead of manually dealing with an image registery to upload your docker images and then figure out how to fetch and build them for your Container service, instead it can abstracts all that away from you and you just need to use the `ContainerImage.fromAsset` point it to where you image is. finally to keep track of logging we add a logDriver, which later we can use in our CloudWatch Dashboard to monitor our container's output
+The amazing benefit with this construct is instead of manually dealing with an image registery to upload your docker images and then figure out how to fetch and build them for your Container service, instead it can abstract all that away from you and you just need to use the `ContainerImage.fromAsset` to point to where you Dockerfile is. Finally to keep track of logging we add a logDriver, which later we can use in our CloudWatch Dashboard to monitor our container's output
 
 now for our PHPContainer, we have a few extra properties
 
@@ -450,17 +441,17 @@ const phpContainer = taskDefinition.addContainer("ab-php", {
 });
 ```
 
-the environment property allows you to pass any environment variable to your containers, and in these case we need to have to our domain endpoint which will the loadBalancer's DNS name. and this is one of the perks of using CDK you take advantage of the patterns you use in programming language as it comes naturally to you, all we have to do is access the loadBalancer Instance inside our FargateService that we called and the dns name will be available as a property. the second property called secrets also has the same purpose of passing in environment variables, however the problem it solves is that the values listed in environment property will be exposed in the CloudFormation Template generated by CDK, so by using secrets these sensitive data will not be vulnerable.
+The environment property allows you to pass any environment variable to your containers, and in this case we need to have to our domain endpoint which will be the loadBalancer's DNS name. This is one of the perks of using CDK, you take advantage of the patterns you use in programming languages as it comes naturally to you, all we have to do is access the loadBalancer Instance inside our FargateService that we called and the dns name will be available as a property. The second property called secrets also has the same purpose of passing in environment variables, however the problem it solves is that the values listed in environment property will be exposed in the CloudFormation Template generated by CDK, so by using secrets these sensitive data will not be vulnerable.
 
 ### CloudWatch Dashboard
 
-for Monitoring side of the App, CloudWatch provides several Metrics for us to monitor and we can customize a dashboard for display
+For Monitoring side of the App, CloudWatch provides several Metrics for us to monitor and we can customize a dashboard for display
 
-so far i have added 4 widgets in the dashboard
+so far I have added 4 widgets in the dashboard
 
 - loadBalancer Request Count
 - loadBalancer Latency Response Time
 - NGINX Logs
 - PHP Logs
 
-so these are the main components of our Apps Infrastucture Stack and we don't need to do anything to deploy it, cause as soon as you push any changes to your Repo the Pipeline will pick it up, build and deploy accordingly
+These are the main components of our Apps Infrastucture Stack and we don't need to do anything to deploy it, cause as soon as you push any changes to your Repo the Pipeline will pick it up, build and deploy accordingly

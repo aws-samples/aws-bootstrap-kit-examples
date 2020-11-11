@@ -146,14 +146,17 @@
             .then(data => {
                 products = data;
                 productsList.innerHTML = data.map(product =>
-                    `<div class="itemContainer">
-                <h4 style="text-align: center;">${product.name}</h4>
-                <div class="item">
-                    <img width="90px;" src="${product.image}" >
-                    <p style="margin:10px;max-width:300px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-                    <button type="button" class="btn btn-primary" onclick="addToBasket(${product.productId});">add to Basket</button>
-                </div>
-             </div>`
+                `<div class="itemContainer">
+                    <h4 style="text-align: center;">${product.name}</h4>
+                    <div class="item">
+                        <img width="90px;" src="${product.image}" >
+                        <p style="margin:10px;max-width:300px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+                        <div>
+                            <h5 style="text-align:center;">$${product.price}</h5>
+                            <button type="button" class="btn btn-primary" onclick="addToBasket(${product.productId});">add to Basket</button>
+                        </div>
+                    </div>
+                </div>`
                 ).join('');
             });
     </script>

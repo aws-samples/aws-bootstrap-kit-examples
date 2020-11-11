@@ -75,87 +75,44 @@ export class PipelineStack extends Stack {
       });
     }
 
-    const orgClient = new Organizations({ region: "us-east-1" });
-    orgClient
-      .listAccounts()
-      .promise()
-      .then((results) => {
-        let stagesDetails = [];
-        if (results.Accounts) {
-          for (const account of results.Accounts) {
-            switch (account.Name) {
-              case "Staging": {
-                stagesDetails.push({
-                  name: account.Name,
-                  accountId: account.Id,
-                  order: 1,
-                });
-                break;
-              }
-              case "Prod": {
-                stagesDetails.push({
-                  name: account.Name,
-                  accountId: account.Id,
-                  order: 2,
-                });
-                break;
-              }
-              default: {
-                console.log(`Ignoring stage ${account.Name}`);
-                break;
-              }
-            }
-          }
-        }
-        stagesDetails.sort((a, b) => (a.order > b.order ? 1 : -1));
-        for (let stageDetailsIndex in stagesDetails) {
-          let stageDetails = stagesDetails[stageDetailsIndex];
-          const infraStage = new InfrastructureStage(this, stageDetails.name, {
-            env: { account: stageDetails.accountId },
+    (async () => {
+      try {
+        const orders: any = { Staging: 1, Prod: 2 };
+        const orgs = new Organizations({ region: "us-east-1" });
+        const { Accounts = [] } = await orgs.listAccounts().promise();
+
+        Accounts.filter((account) => orders[account.Name!])
+          .sort((a, b) => orders[a.Name!] - orders[b.Name!])
+          .forEach((account) => {
+            const infraStage = new InfrastructureStage(this, account.Name!, {
+              env: { account: account.Id },
+            });
+            const applicationStage = pipeline.addApplicationStage(infraStage, {
+              manualApprovals: account.Name === "Prod",
+            });
+            applicationStage.addActions(
+              new ShellScriptAction({
+                actionName: "IntegrationTesting",
+                commands: ["curl -Ssf $URL/info.php"],
+                useOutputs: {
+                  URL: pipeline.stackOutput(infraStage.loadBalancerAddress),
+                },
+              })
+            );
           });
-          const applicationStage = pipeline.addApplicationStage(infraStage, {
-            manualApprovals: stageDetails.name === "Prod",
-          });
-          applicationStage.addActions(
-            new ShellScriptAction({
-              actionName: "IntegrationTesting",
-              commands: ["curl -Ssf $URL/info.php"],
-              useOutputs: {
-                URL: pipeline.stackOutput(infraStage.loadBalancerAddress),
-              },
-            })
-          );
-        }
-      })
-      .catch((error) => {
-        switch (error.code) {
-          case "CredentialsError": {
-            console.error(
-              "\x1b[31m",
-              `Failed to get credentials for "${AWS_PROFILE}" profile. Make sure to run "aws configure sso --profile ${AWS_PROFILE} && aws sso login --profile ${AWS_PROFILE}"\n\n`
-            );
-            break;
-          }
-          case "ExpiredTokenException": {
-            console.error(
-              "\x1b[31m",
-              `Token expired, run "aws sso login --profile ${AWS_PROFILE}"\n\n`
-            );
-            break;
-          }
-          case "AccessDeniedException": {
-            console.error(
-              "\x1b[31m",
-              `Unable to call the AWS Organizations ListAccounts API. Make sure to add a PolicyStatement with the organizations:ListAccounts action to your synth action`
-            );
-            break;
-          }
-          default: {
-            console.error(error.message);
-          }
-        }
-        //force CDK to fail in case of an unknown exception
-        process.exit(1);
-      });
+      } catch (error) {
+        const messages: any = {
+          CredentialsError: `Failed to get credentials for "${AWS_PROFILE}" profile. Make sure to run "aws configure sso --profile ${AWS_PROFILE} && aws sso login --profile ${AWS_PROFILE}"\n\n`,
+          ExpiredTokenException: `Token expired, run "aws sso login --profile ${AWS_PROFILE}"\n\n`,
+          AccessDeniedException: `Unable to call the AWS Organizations ListAccounts API. Make sure to add a PolicyStatement with the organizations:ListAccounts action to your synth action`,
+        };
+        const message = messages[error.code];
+        message
+          ? console.error("\x1b[31m", message)
+          : console.error(error.message);
+
+        process.exit(1); //force CDK to fail in case of an unknown exception
+      }
+    })();
   }
 }
