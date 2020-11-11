@@ -454,4 +454,6 @@ so far I have added 4 widgets in the dashboard
 - NGINX Logs
 - PHP Logs
 
+![Dashboard](../../doc/Ecommerce-Dashboard.png)
+
 These are the main components of our Apps Infrastucture Stack and we don't need to do anything to deploy it, cause as soon as you push any changes to your Repo the Pipeline will pick it up, build and deploy accordingly
