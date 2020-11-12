@@ -10,7 +10,7 @@ export class LandingPageStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    Tags.of(this).add('StackType', this.node.tryGetContext('service_name'));
+    Tags.of(this).add('ServiceName', this.node.tryGetContext('service_name'));
 
     const landingPageBucket = new Bucket(this, 'LandingPageBucket', {
       websiteIndexDocument: 'index.html',
