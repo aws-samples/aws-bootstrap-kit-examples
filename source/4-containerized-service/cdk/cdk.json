@@ -7,6 +7,7 @@
     "@aws-cdk/core:newStyleStackSynthesis": "true",
     "github_alias": "<YOUR GITHUB ALIAS>",
     "github_repo_name": "<YOUR GITHUB REPO NAME>",
-    "github_repo_branch": "<YOUR GITHUB BRANCH NAME>"
+    "github_repo_branch": "<YOUR GITHUB BRANCH NAME>",
+    "service_name": "Containerized-Ecommerce-App"
   }
 }
