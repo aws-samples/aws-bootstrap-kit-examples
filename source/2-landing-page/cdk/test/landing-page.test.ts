@@ -13,7 +13,7 @@ test('Stack is Tagged', () => {
     haveResource('AWS::S3::Bucket', {
       Tags: [
         {
-          Key: 'StackType',
+          Key: 'ServiceName',
           Value: 'Landing-Page'
         }
       ]
@@ -23,7 +23,7 @@ test('Stack is Tagged', () => {
     haveResource('AWS::Lambda::Function', {
       Tags: [
         {
-          Key: 'StackType',
+          Key: 'ServiceName',
           Value: 'Landing-Page'
         }
       ]

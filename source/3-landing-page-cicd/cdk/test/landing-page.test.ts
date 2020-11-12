@@ -5,7 +5,7 @@ import * as LandingPage from '../lib/landing-page-stack';
 test('Stack is Tagged', () => {
   const app = new cdk.App({
     context: {
-      service_name: 'Landing-Page-CICD'
+      service_name: 'Landing-Page'
     }
   });
   const stack = new LandingPage.LandingPageStack(app, 'MyTestStack');
@@ -13,8 +13,8 @@ test('Stack is Tagged', () => {
     haveResource('AWS::S3::Bucket', {
       Tags: [
         {
-          Key: 'StackType',
-          Value: 'Landing-Page-CICD'
+          Key: 'ServiceName',
+          Value: 'Landing-Page'
         }
       ]
     })
@@ -23,8 +23,8 @@ test('Stack is Tagged', () => {
     haveResource('AWS::Lambda::Function', {
       Tags: [
         {
-          Key: 'StackType',
-          Value: 'Landing-Page-CICD'
+          Key: 'ServiceName',
+          Value: 'Landing-Page'
         }
       ]
     })
