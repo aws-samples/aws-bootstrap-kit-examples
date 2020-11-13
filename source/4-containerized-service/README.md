@@ -200,27 +200,24 @@ On the cloud we will use Aurora Serverless which is MySQL Compatible, but for lo
 
 ### Run Locally
 
-To developer and run locally we will use docker-compose to run all three images as seen below:
+To develop and run locally we will use docker-compose to run all three images as seen below:
 
 ```
 services:
     web:
-        image: ecommerce-nginx
-        ports:
-            - "8080:80"
+        build: ./nginx/
+        ...
     php:
-        image: ecommerce-php
-        ports:
-            - "9000:9000"
+        build: ./php-fpm/
+        ...
     db:
-        image: mysql:5.7
+        image: mysql
+        ...
 ```
 
-the commands to run are:
+so just run this single command and it will spin up the App with a local prepopulated database :
 
 ```
-docker build -t ecommerce-nginx ./nginx/
-docker build -t ecommerce-php ./php/
 docker-compose up
 ```
 

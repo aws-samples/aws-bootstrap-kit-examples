@@ -1,3 +1,3 @@
-FROM nginx:1.14
-COPY ./default.conf /etc/nginx/conf.d/default.conf
+FROM nginx
+COPY ./default.conf.template /etc/nginx/templates/default.conf.template
 EXPOSE 80

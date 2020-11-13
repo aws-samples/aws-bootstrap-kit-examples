@@ -107,6 +107,9 @@ export class InfrastructureStack extends Stack {
 
     const nginxContainer = taskDefinition.addContainer('ab-nginx', {
       image: ContainerImage.fromAsset(__dirname + '/../../nginx'),
+      environment: {
+        PHP_HOST: 'localhost'
+      },
       logging: NGINXLogDriver
     });
     nginxContainer.addPortMappings({ containerPort: 80 });
