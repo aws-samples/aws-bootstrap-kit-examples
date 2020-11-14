@@ -196,7 +196,7 @@ A simple MySQL is required to store the products details with the following sche
 
 ```
 
-On the cloud we will use Aurora Serverless which is MySQL Compatible, but for local development we will use a MySQL Docker Image
+On the cloud we will use Aurora Serverless which is MySQL Compatible, but for local development we will use a MySQL Docker Image and an SQL dump file to prepopulate it
 
 ### Run Locally
 
@@ -215,7 +215,7 @@ services:
         ...
 ```
 
-so just run this single command and it will spin up the App with a local prepopulated database :
+so just run this single command and it will spin up the App running on `localhost:8080` :
 
 ```
 docker-compose up
@@ -419,6 +419,7 @@ const taskDefinition = new FargateTaskDefinition(this, "TaskDef");
 const nginxContainer = taskDefinition.addContainer("ab-nginx", {
   image: ContainerImage.fromAsset(__dirname + "/../../nginx"),
   logging: new AwsLogDriver({ streamPrefix: "myNGINX" }),
+  ...
 });
 ```
 
