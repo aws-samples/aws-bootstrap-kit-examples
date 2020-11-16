@@ -34,25 +34,6 @@ const nestedOU = [
             }
         ]
     },
-    {
-        name: 'SDLC',
-        accounts: [
-            {
-                name: 'Dev'
-            },
-            {
-                name: 'Staging'
-            }
-        ]
-    },
-    {
-        name: 'Prod',
-        accounts: [
-            {
-                name: 'Prod'
-            }
-        ]
-    }
 ];
 
 
