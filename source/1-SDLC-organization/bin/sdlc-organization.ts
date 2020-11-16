@@ -57,12 +57,12 @@ const nestedOU = [
 
 
 new AWSBootstrapKitLandingZoneStage(app, 'AWSBootstrapKit-LandingZone-Dev',{
-  email,
-  nestedOU,
+    email,
+    nestedOU,
 });
 
 new AWSBootstrapKitLandingZonePipelineStack(app, 'AWSBootstrapKit-LandingZone-PipelineStack', {
-  email,
-  pipelineDeployableRegions,
-  nestedOU
+    email,
+    pipelineDeployableRegions,
+    nestedOU
 });
