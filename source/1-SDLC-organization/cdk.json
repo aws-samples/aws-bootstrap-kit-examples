@@ -5,10 +5,10 @@
     "aws-cdk:enableDiffNoFail": "true",
     "@aws-cdk/core:stackRelativeExports": "true",
     "@aws-cdk/core:newStyleStackSynthesis": true,
-    "github_alias": "<YOUR GITHUB ALIAS>",
+    "github_alias": "ijemmy",
     "github_repo_name": "aws-bootstrap-kit-examples",
-    "github_repo_branch": "main",
-    "email": "<YOUR ROOT EMAIL>",
+    "github_repo_branch": "chadvit/integTest",
+    "email": "chadvit@amazon.com",
     "pipeline_deployable_regions": [
       "us-east-1",
       "eu-west-1"
