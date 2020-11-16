@@ -37,7 +37,7 @@ const nestedOU = [
 ];
 
 
-new AWSBootstrapKitLandingZoneStage(app, 'AWSBootstrapKit-LandingZone-Dev',{
+new AWSBootstrapKitLandingZoneStage(app, 'Prod',{
   email,
   nestedOU,
 });
