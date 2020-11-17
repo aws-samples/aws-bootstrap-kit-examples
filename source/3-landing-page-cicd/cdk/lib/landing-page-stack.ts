@@ -23,31 +23,31 @@ export class LandingPageStack extends Stack {
       retainOnDelete: false
     });
 
-    const landingPageOAI = new OriginAccessIdentity(this, 'LandingPageOAI');
-
-    const landingPageWebDistribution = new CloudFrontWebDistribution(
-      this,
-      'LandingPageDistribution',
-      {
-        originConfigs: [
-          {
-            s3OriginSource: {
-              s3BucketSource: landingPageBucket,
-              originAccessIdentity: landingPageOAI
-            },
-            behaviors: [
-              {
-                isDefaultBehavior: true
-              }
-            ]
-          }
-        ]
-      }
-    );
-
-    new CfnOutput(this, 'CloudFrontWebDistributionUrl', {
-      value: landingPageWebDistribution.distributionDomainName,
-      exportName: 'LandingPageUrl'
-    });
+    // const landingPageOAI = new OriginAccessIdentity(this, 'LandingPageOAI');
+    //
+    // const landingPageWebDistribution = new CloudFrontWebDistribution(
+    //   this,
+    //   'LandingPageDistribution',
+    //   {
+    //     originConfigs: [
+    //       {
+    //         s3OriginSource: {
+    //           s3BucketSource: landingPageBucket,
+    //           originAccessIdentity: landingPageOAI
+    //         },
+    //         behaviors: [
+    //           {
+    //             isDefaultBehavior: true
+    //           }
+    //         ]
+    //       }
+    //     ]
+    //   }
+    // );
+    //
+    // new CfnOutput(this, 'CloudFrontWebDistributionUrl', {
+    //   value: landingPageWebDistribution.distributionDomainName,
+    //   exportName: 'LandingPageUrl'
+    // });
   }
 }
