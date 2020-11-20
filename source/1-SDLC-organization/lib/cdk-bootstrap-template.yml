@@ -490,7 +490,7 @@ Resources:
               - iam:AttachRolePolicy
               - iam:DetachRolePolicy
               - iam:PutRolePolicy
-              - iam:DeleteRolepolicy
+              - iam:DeleteRolePolicy
             Resource: "*"
             Condition:
               ForAnyValue:StringEquals:
