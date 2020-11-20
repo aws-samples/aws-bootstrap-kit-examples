@@ -1,16 +1,17 @@
 import { Construct, Stack, StackProps, Stage, StageProps, SecretValue } from "@aws-cdk/core";
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
-import { Artifact } from '@aws-cdk/aws-codepipeline'; 
+import { Artifact } from '@aws-cdk/aws-codepipeline';
 import { GitHubSourceAction } from '@aws-cdk/aws-codepipeline-actions';
 import { LandingPageStack } from "./landing-page-stack";
 import { config, SharedIniFileCredentials, Organizations } from "aws-sdk";
 import { PolicyStatement } from "@aws-cdk/aws-iam"
+import {PermissionsBoundary} from "./permission-boundary";
 
 
 export class LandingPageStage extends Stage {
     constructor(scope: Construct, id: string, props: StageProps) {
       super(scope, id, props);
-  
+
       new LandingPageStack(this, 'LandingPageStack', props);
     }
   }
@@ -52,11 +53,11 @@ export class LandingPagePipelineStack extends Stack{
             });
 
 
-        const AWS_PROFILE = 'cicd';
+        const AWS_PROFILE = 'ptbskcicd';
         if(!process.env.CODEBUILD_BUILD_ID) {
             config.credentials = new SharedIniFileCredentials({profile: AWS_PROFILE});
         }
-        
+
 
         const orgClient = new Organizations({region: 'us-east-1'});
         orgClient.listAccounts().promise().then(
@@ -110,11 +111,11 @@ export class LandingPagePipelineStack extends Stack{
                         break;
                     }
                     default: {
-                        console.error(error.message);                     
+                        console.error(error.message);
                     }
-                }  
+                }
                 //force CDK to fail in case of an unknown exception
-                process.exit(1); 
+                process.exit(1);
             }
         )
     }

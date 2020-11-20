@@ -27,7 +27,7 @@ for ACCOUNT in $ACCOUNTS; do
     echo "Bootrapping account $ACCOUNT_NAME..."
     case $ACCOUNT_NAME in
         CICD)
-            npm run cdk bootstrap -- --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess --profile ${ACCOUNT_NAME}
+            npm run cdk bootstrap -- --template ./lib/cdk-bootstrap-template.yml --profile ${ACCOUNT_NAME}
             ;;
         Dev|Staging|Prod)
             for REGION in $REGIONS_TO_BOOTSTRAP; do
