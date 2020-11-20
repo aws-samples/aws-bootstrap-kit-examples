@@ -5,7 +5,6 @@ import { GitHubSourceAction } from '@aws-cdk/aws-codepipeline-actions';
 import { LandingPageStack } from "./landing-page-stack";
 import { config, SharedIniFileCredentials, Organizations } from "aws-sdk";
 import { PolicyStatement } from "@aws-cdk/aws-iam"
-import {PermissionsBoundary} from "./permission-boundary";
 
 
 export class LandingPageStage extends Stage {

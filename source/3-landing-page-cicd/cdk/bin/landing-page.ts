@@ -2,7 +2,7 @@
 import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
 import { LandingPageStage, LandingPagePipelineStack } from '../lib/cicd-stack';
-import {PermissionsBoundary} from "../lib/permission-boundary";
+import {AddPermissionsBoundaryToRoles} from "../lib/permission-boundary";
 
 const app = new cdk.App();
 
@@ -13,5 +13,4 @@ const pipelineStack = new LandingPagePipelineStack(app, 'LandingPageStackPipelin
 
 const permissionBoundaryArn = cdk.Fn.importValue('CICDPipelinePermissionsBoundaryArn')
 
-//TODO fix applyAspect deprecated
-pipelineStack.node.applyAspect(new PermissionsBoundary(permissionBoundaryArn))
+cdk.Aspects.of(pipelineStack).add(new AddPermissionsBoundaryToRoles(permissionBoundaryArn))
