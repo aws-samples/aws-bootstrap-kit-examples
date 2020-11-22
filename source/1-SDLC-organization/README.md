@@ -130,6 +130,7 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
                 "github_repo_name": "aws-bootstrap-kit-examples",
                 "github_repo_branch": "main",
                 "email": "admin@yourdomain.com",
+                "force_email_verification": true,
                 "pipeline_deployable_regions": [
                     eu-west-1,
                     eu-west-2
@@ -184,6 +185,10 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
 1. When all green, unlock deployment to prod by approving the change to be deployed by clicking the "review" button in prod section of the pipeline.
 
     PS: You can inspect what is going to be deployed by clicking "Details" link of "orgStack.Prepare" action.
+
+1. A Validation Email is sent to your inbox, please click on the confirmation link for the deployment to complete.
+
+   > This was step was enabled by the `force_email_verification` boolean set in your `cdk.json`. to ensure that the email provided satisfies the rules we previously mentioned (the email doesn't contain `+` and the email providor supports subaddressing)
 
 1. When all green, you should be able to 
     1. check your organization structure in AWS Organizations console
