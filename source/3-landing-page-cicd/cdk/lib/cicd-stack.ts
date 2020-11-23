@@ -52,7 +52,7 @@ export class LandingPagePipelineStack extends Stack{
             });
 
 
-        const AWS_PROFILE = 'ptbskcicd';
+        const AWS_PROFILE = 'cicd';
         if(!process.env.CODEBUILD_BUILD_ID) {
             config.credentials = new SharedIniFileCredentials({profile: AWS_PROFILE});
         }
