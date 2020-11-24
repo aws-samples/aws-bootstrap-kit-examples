@@ -570,26 +570,6 @@ aws sso login --profile dev
 
 **Now you can interact with your different AWS Accounts using AWS CLI**
 
-#### CDK and SSO
-
-CDK and AWS SSO are not yet friends (see github issue [5455](https://github.com/aws/aws-cdk/issues/5455)). So since in the future we will have to deploy infrastructure as code apps into multiple environment, we  will need to make it work.
-
-There is several workaround and here is one using a quick utility written in nodejs called "cdk-sso-sync":
-
-```
-npm install -g cdk-sso-sync
-```
-
-Then simply run
-```
-aws sso login --profile dev
-cdk-sso-sync dev
-```
-
-This will simply extract the credentials you got from the `aws sso login` command and sync them with the CDK credentials source (`~/.aws/credentials`).
-
-**Now you can deploy CDK apps in your different AWS Accounts using CDK CLI**
-
 
 ### Leverage AWS IDE Toolkits
 

@@ -127,12 +127,6 @@ Right now, the *Developer* user that you are using has no access to the CICD acc
 
     ![A shell interface with the aws configure sso --profile cicd command running](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-17.png)
 
-1. Execute `npm install -g cdk-sso-sync`
-
-    > Right now the cdk cli is not SSO friendly so we use a small command line tool to synchronize SSO credential with standard aws cli credential so that cdk can use a SSO profile
-
-1. Execute `cdk-sso-sync cicd`
-
 </details>
 
 ### Step 2 - Customize the input parameters
