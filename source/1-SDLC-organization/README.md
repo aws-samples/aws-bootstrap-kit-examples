@@ -109,6 +109,7 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
     1. Set in `source/1-SDLC-organization/cdk.json` the following variables:
 
         * `email` corresponding to the administrator email that will be used to create additional AWS account (without "+" character)
+            > You will receive an email with a verification link to validate it
         * `github_alias` coresponding to your github username (`your_alias` in `https://github.com/your_alias/your_repo`)
         * `github_repo_name` corresponding to the name when you created the repository (`your_repo` in this example)
         * `gihub_repo_branch` corresponding to the main branch of your repo. (should be called `main`)
@@ -186,7 +187,7 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
 
     PS: You can inspect what is going to be deployed by clicking "Details" link of "orgStack.Prepare" action.
 
-1. A Validation Email is sent to your inbox, please click on the confirmation link for the deployment to complete.
+1. A Validation Email is sent to your inbox, please click on the confirmation link for the deployment to complete. **THIS WILL BLOCK YOUR DEPLOYMENT, IF YOU DO NOT CLICK ON VERIFICATION LINK RECEIVED IN YOUR EMAIL**
 
    > This was step was enabled by the `force_email_verification` boolean set in your `cdk.json`. to ensure that the email provided satisfies the rules we previously mentioned (the email doesn't contain `+` and the email providor supports subaddressing)
 
