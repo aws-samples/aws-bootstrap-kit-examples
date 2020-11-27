@@ -10,6 +10,7 @@
     "github_repo_branch": "main",
     "email": "<YOUR ROOT EMAIL>",
     "domain_name": "<YOUR DOMAIN NAME>",
+    "force_email_verification": true,
     "pipeline_deployable_regions": [
       "us-east-1",
       "eu-west-1"
