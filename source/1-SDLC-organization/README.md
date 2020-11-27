@@ -8,6 +8,18 @@ As described in root [README](../../README.md), this [CDK](https://docs.aws.amaz
 
 * Since everything is code in a repository, access and permission of to this repository needs to be carefully managed.
 
+Step # | Feature | Description
+-- | -- | --
+ | [Under the hood](#under-the-hood) | Details about what we are doing
+-- | -- | --
+0 | [Configure your local credentials](#configure-your-local-credentials) | `aws configure --profile main-admin`
+1 | [Clone and init the repo](#clone-and-init-the-repo) | Get the code
+2 | [Deploy the pipeline](#install-dependencies-and-deploy-the-pipeline) | Deploy your organization through a CI/CD pipeline
+3 | [Setup your SSO domain](#setup-your-sso-domain) | Prepare you user permissions and groups
+4 | [Setup your dev environment](#setup-your-dev-environment) | Prepare your local environment to be ready to develop
+5 | [Start coding](#next-step) | Jump to next section about developing and deploying your first web site
+
+
 ## Under the hood
 
 This CDK app will instanciate the following resources:
@@ -25,16 +37,11 @@ The deployment of this organization is automated through a CI/CD pipeline that i
 ![A diagram describing the SDLC Organizations pipeline](../../doc/AWSBootstrapKit-Overview-Page-2.png)
 
 
-## Deployments
+DNS hierarchy:
 
-Step # | Feature | Description
--- | -- | --
-0 | [Configure your local credentials](#configure-your-local-credentials) | `aws configure --profile main-admin`
-1 | [Clone and init the repo](#clone-and-init-the-repo) | Get the code
-2 | [Deploy the pipeline](#install-dependencies-and-deploy-the-pipeline) | Deploy your organization through a CI/CD pipeline
-3 | [Setup your SSO domain](#setup-your-sso-domain) | Prepare you user permissions and groups
-4 | [Setup your dev environment](#setup-your-dev-environment) | Prepare your local environment to be ready to develop
-5 | [Start coding](#next-step) | Jump to next section about developing and deploying your first web site
+![A diagram describing the automated DNS setup](../../doc/AWSBootstrapKit-Overview-DNS-setup-process.png)
+
+## Deployments
 
 ### Prerequisites
 
