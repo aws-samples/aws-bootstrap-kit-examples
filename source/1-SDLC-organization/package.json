@@ -11,6 +11,7 @@
     "test": "echo no tests",
     "cdk": "cdk",
     "bootstrap": "cdk --profile main-admin bootstrap --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess",
+    "synth": "cdk --profile main-admin synth",
     "deploy": "cdk --profile main-admin deploy"
   },
   "devDependencies": {
@@ -28,7 +29,7 @@
     "@aws-cdk/aws-codepipeline-actions": "1.74.0",
     "@aws-cdk/core": "1.74.0",
     "@aws-cdk/pipelines": "1.74.0",
-    "aws-bootstrap-kit": "0.2.7",
+    "aws-bootstrap-kit": "0.2.8",
     "source-map-support": "^0.5.16"
   }
 }

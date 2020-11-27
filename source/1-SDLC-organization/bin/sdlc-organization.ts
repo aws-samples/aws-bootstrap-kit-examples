@@ -24,6 +24,8 @@ import {
 const app = new cdk.App();
 
 const email = app.node.tryGetContext("email");
+const rootHostedZoneDNSName = app.node.tryGetContext("domain_name");
+const thirdPartyProviderDNSUsed = app.node.tryGetContext("third_party_provider_dns_used");
 const pipelineDeployableRegions = app.node.tryGetContext("pipeline_deployable_regions");
 const nestedOU = [
     {
@@ -56,13 +58,17 @@ const nestedOU = [
 ];
 
 
-new AWSBootstrapKitLandingZoneStage(app, 'AWSBootstrapKit-LandingZone-Dev',{
-    email,
-    nestedOU,
+new AWSBootstrapKitLandingZoneStage(app, 'Prod',{
+  email,
+  nestedOU,
+  rootHostedZoneDNSName,
+  thirdPartyProviderDNSUsed
 });
 
 new AWSBootstrapKitLandingZonePipelineStack(app, 'AWSBootstrapKit-LandingZone-PipelineStack', {
-    email,
-    pipelineDeployableRegions,
-    nestedOU
+  email,
+  pipelineDeployableRegions,
+  nestedOU,
+  rootHostedZoneDNSName,
+  thirdPartyProviderDNSUsed
 });

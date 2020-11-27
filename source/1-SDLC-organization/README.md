@@ -8,6 +8,17 @@ As described in root [README](../../README.md), this [CDK](https://docs.aws.amaz
 
 * Since everything is code in a repository, access and permission of to this repository needs to be carefully managed.
 
+Step # | Feature | Description
+-- | -- | --
+0 | [Under the hood](#under-the-hood) | Details about what we are doing
+1 | [Configure your local credentials](#configure-your-local-credentials) | `aws configure --profile main-admin`
+2 | [Fork and init the repo](#clone-and-init-the-repo) | Get the code
+3 | [Deploy the pipeline](#install-dependencies-and-deploy-the-pipeline) | Deploy your organization through a CI/CD pipeline
+4 | [Setup your SSO domain](#setup-your-sso-domain) | Prepare you user permissions and groups
+5 | [Setup your dev environment](#setup-your-dev-environment) | Prepare your local environment to be ready to develop
+6 | [Start coding](#next-step) | Jump to next section about developing and deploying your first web site
+
+
 ## Under the hood
 
 This CDK app will instanciate the following resources:
@@ -16,6 +27,7 @@ This CDK app will instanciate the following resources:
 * Multiple [AWS Accounts](https://aws.amazon.com/organizations/faqs/#Organizing_AWS_accounts) under different [Organizational Unit](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_ous.html)
 * A central [AWS CloudTrail for organizations](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/creating-trail-organization.html)
 * Few basics security guard rails using [AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html)
+* A DNS Zone (if a domain is provided) using [Route53 HostedZone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/AboutHZWorkingWith.html)
 
 Those are exposed through the **AwsOrganizationsStack**.
 
@@ -24,16 +36,11 @@ The deployment of this organization is automated through a CI/CD pipeline that i
 ![A diagram describing the SDLC Organizations pipeline](../../doc/AWSBootstrapKit-Overview-Page-2.png)
 
 
-## Deployments
+DNS hierarchy:
 
-Step # | Feature | Description
--- | -- | --
-0 | [Configure your local credentials](#configure-your-local-credentials) | `aws configure --profile main-admin`
-1 | [Clone and init the repo](#clone-and-init-the-repo) | Get the code
-2 | [Deploy the pipeline](#install-dependencies-and-deploy-the-pipeline) | Deploy your organization through a CI/CD pipeline
-3 | [Setup your SSO domain](#setup-your-sso-domain) | Prepare you user permissions and groups
-4 | [Setup your dev environment](#setup-your-dev-environment) | Prepare your local environment to be ready to develop
-5 | [Start coding](#next-step) | Jump to next section about developing and deploying your first web site
+![A diagram describing the automated DNS setup](../../doc/AWSBootstrapKit-Overview-DNS-setup-process.png)
+
+## Deployments
 
 ### Prerequisites
 
@@ -106,7 +113,9 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
         * `github_repo_name` corresponding to the name when you created the repository (`your_repo` in this example)
         * `gihub_repo_branch` corresponding to the main branch of your repo. (should be called `main`)
         * `pipeline_deployable_regions` corresponding to the lists of [AWS regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-regions) you plan to deploy your future applications to.
-            it should look like:
+        * (optional) `domain_name` a DNS domain name to use to expose your services publicly (it needs to be already registered in a registrar such [Amazon route53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html))
+
+        it should look like:
             ```
             cd <YOUR REPO>
             cat 1-SDLC-organization/cdk.json
@@ -124,7 +133,8 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
                 "pipeline_deployable_regions": [
                     eu-west-1,
                     eu-west-2
-                ]
+                ],
+                "domain_name": "yourdomain.com"
                 }
             }
             ```
@@ -187,6 +197,25 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
 
 ## Going further
 
+
+If you added `domain_name` in your config file (`cdk.json`) earlier, a last step is need to delegate your registered domain to the new hosted zone created by the previous delployment. Otherwise you can skip this section.
+
+### Finalize DNS setup
+
+<details>
+<summary>Click to go through this step</summary>
+
+1. First let's get the NS servers registered in the new hosted zone by
+    1. Got to [AWS Route53 Hosted Zone page](https://console.aws.amazon.com/route53/v2/hostedzones#)
+    1. click on the hosted zone with 5 Record count and with the Domain name coresponding to your root domain name specified in `domain_name` earlier
+    1. Copy the Value of the `NS` Type Record row of your domain name
+1. Go to your registrar configuration console and replace NS servers by the one copied earlier.
+
+**Your Done! Now you can manage your domain through AWS Route53**
+</details>
+
+### Enable SSO
+
 In order to facilitate the management of permissions on the access to this different accounts we suggest to setup an SSO portal following the steps described bellow. That's going to give you the capability to centrally manage and access your different AWS account with a single identity (login and password) or even delegate this to a third party provider such as Google Workspace (GSuite).
 
 Staying with IAM users and groups would means not getting a central portal with a single identity and would force you to remember the different account ID and role to login into:
@@ -209,7 +238,6 @@ Staying with IAM users and groups would means not getting a central portal with 
 
 Sorry we can't automate those step yet :cry:
 
-#### Enable SSO
 
 1. Go to the <a href="https://console.aws.amazon.com/singlesignon/home" target="_blank">AWS SSO Home page</a> and  Click *Enable AWS SSO*
 

@@ -9,6 +9,7 @@
     "github_repo_name": "aws-bootstrap-kit-examples",
     "github_repo_branch": "main",
     "email": "<YOUR ROOT EMAIL>",
+    "domain_name": "<YOUR DOMAIN NAME>",
     "pipeline_deployable_regions": [
       "us-east-1",
       "eu-west-1"

@@ -11,7 +11,8 @@ export class LandingPageStage extends Stage {
     constructor(scope: Construct, id: string, props: StageProps) {
         super(scope, id, props);
 
-        new LandingPageStack(this, 'LandingPageStack', props);
+    
+        new LandingPageStack(this, 'LandingPageStack', {...props, stage: id.toLowerCase()});
     }
 }
 

@@ -8,6 +8,6 @@
     "github_alias": "<YOUR GITHUB ALIAS>",
     "github_repo_name": "aws-bootstrap-kit-examples",
     "github_repo_branch": "main",
-    "service_name": "Landing-Page"
+    "service_name": "landingpage"
   }
 }

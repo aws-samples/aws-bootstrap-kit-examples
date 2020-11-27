@@ -49,6 +49,31 @@ The **LandingPageStack** assumes that the content of your static web site is sto
 
 You can deploy the **LandingPageStack** to test the static web site into your developer environment (the Dev account).
 
+If you setup a dns domain as part of your [SDLC Organization](../1-SDLC-organization/README.md) you can use it to expose your dev landing page.
+
+
+<details>
+<summary>DNS setup: Click to go through this step</summary>
+
+1. Set in `source/2-landing-page/cdk/cdk.json` the `domain_name` variable with the same value as in `source/1-SDLC-organization/cdk.json` one. Your `cdk.json` should look like:
+
+        ```
+        {
+            "app": "npx ts-node bin/landing-page.ts",
+            "context": {
+                "@aws-cdk/core:newStyleStackSynthesis": "true",
+                "@aws-cdk/core:enableStackNameDuplicates": "true",
+                "aws-cdk:enableDiffNoFail": "true",
+                "@aws-cdk/core:stackRelativeExports": "true",
+                "service_name": "landingpage",
+                "domain_name": "yourdomain.com"
+            }
+        }
+        ```
+As you can see in the [code](../lib/landing-page-stack.ts#L44), the public url will be the concatenation of the `service_name`, the stage (`dev` here) and the `domain_name`: `landingpage.dev.yourdomain.com`.
+
+</details>
+
 1. Build the CDK application
     ```
     npm run build
