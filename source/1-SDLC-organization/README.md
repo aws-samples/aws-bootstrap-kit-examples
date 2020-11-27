@@ -108,7 +108,8 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
         * `gihub_repo_branch` corresponding to the main branch of your repo. (should be called `main`)
         * `pipeline_deployable_regions` corresponding to the lists of [AWS regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-regions) you plan to deploy your future applications to.
         * (optional) `domain_name` a DNS domain name to use to expose your services publicly (it needs to be already registered in a registrar such [Amazon route53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html))
-            it should look like:
+
+        it should look like:
             ```
             cd <YOUR REPO>
             cat 1-SDLC-organization/cdk.json
@@ -190,9 +191,10 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
 
 ## Going further
 
-### Finalize DNS setup
 
 If you added `domain_name` in your config file (`cdk.json`) earlier, a last step is need to delegate your registered domain to the new hosted zone created by the previous delployment. Otherwise you can skip this section.
+
+### Finalize DNS setup
 
 <details>
 <summary>Click to go through this step</summary>
@@ -206,7 +208,7 @@ If you added `domain_name` in your config file (`cdk.json`) earlier, a last step
 **Your Done! Now you can manage your domain through AWS Route53**
 </details>
 
-#### Enable SSO
+### Enable SSO
 
 In order to facilitate the management of permissions on the access to this different accounts we suggest to setup an SSO portal following the steps described bellow. That's going to give you the capability to centrally manage and access your different AWS account with a single identity (login and password) or even delegate this to a third party provider such as Google Workspace (GSuite).
 
