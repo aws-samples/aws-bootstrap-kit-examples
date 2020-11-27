@@ -10,14 +10,13 @@ As described in root [README](../../README.md), this [CDK](https://docs.aws.amaz
 
 Step # | Feature | Description
 -- | -- | --
- | [Under the hood](#under-the-hood) | Details about what we are doing
--- | -- | --
-0 | [Configure your local credentials](#configure-your-local-credentials) | `aws configure --profile main-admin`
-1 | [Clone and init the repo](#clone-and-init-the-repo) | Get the code
-2 | [Deploy the pipeline](#install-dependencies-and-deploy-the-pipeline) | Deploy your organization through a CI/CD pipeline
-3 | [Setup your SSO domain](#setup-your-sso-domain) | Prepare you user permissions and groups
-4 | [Setup your dev environment](#setup-your-dev-environment) | Prepare your local environment to be ready to develop
-5 | [Start coding](#next-step) | Jump to next section about developing and deploying your first web site
+0 | [Under the hood](#under-the-hood) | Details about what we are doing
+1 | [Configure your local credentials](#configure-your-local-credentials) | `aws configure --profile main-admin`
+2 | [Clone and init the repo](#clone-and-init-the-repo) | Get the code
+3 | [Deploy the pipeline](#install-dependencies-and-deploy-the-pipeline) | Deploy your organization through a CI/CD pipeline
+4 | [Setup your SSO domain](#setup-your-sso-domain) | Prepare you user permissions and groups
+5 | [Setup your dev environment](#setup-your-dev-environment) | Prepare your local environment to be ready to develop
+6 | [Start coding](#next-step) | Jump to next section about developing and deploying your first web site
 
 
 ## Under the hood
