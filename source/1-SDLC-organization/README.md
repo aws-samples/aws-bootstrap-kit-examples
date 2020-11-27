@@ -12,7 +12,7 @@ Step # | Feature | Description
 -- | -- | --
 0 | [Under the hood](#under-the-hood) | Details about what we are doing
 1 | [Configure your local credentials](#configure-your-local-credentials) | `aws configure --profile main-admin`
-2 | [Clone and init the repo](#clone-and-init-the-repo) | Get the code
+2 | [Fork and init the repo](#clone-and-init-the-repo) | Get the code
 3 | [Deploy the pipeline](#install-dependencies-and-deploy-the-pipeline) | Deploy your organization through a CI/CD pipeline
 4 | [Setup your SSO domain](#setup-your-sso-domain) | Prepare you user permissions and groups
 5 | [Setup your dev environment](#setup-your-dev-environment) | Prepare your local environment to be ready to develop
