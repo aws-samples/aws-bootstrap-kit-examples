@@ -49,9 +49,11 @@ The **LandingPageStack** assumes that the content of your static web site is sto
 
 You can deploy the **LandingPageStack** to test the static web site into your developer environment (the Dev account).
 
-If you setup a dns domain as part of your [SDLC Organization](../1-SDLC-organization/README.md) you can use it to expose your dev landing page:
+If you setup a dns domain as part of your [SDLC Organization](../1-SDLC-organization/README.md) you can use it to expose your dev landing page.
+
+
 <details>
-<summary>Click to go through this step</summary>
+<summary>DNS setup: Click to go through this step</summary>
 
 1. Set in `source/2-landing-page/cdk/cdk.json` the `domain_name` variable with the same value as in `source/1-SDLC-organization/cdk.json` one. Your `cdk.json` should look like:
 

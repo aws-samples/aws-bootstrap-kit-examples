@@ -204,7 +204,7 @@ If you added `domain_name` in your config file (`cdk.json`) earlier, a last step
 1. Go to your registrar configuration console and replace NS servers by the one copied earlier.
 
 **Your Done! Now you can manage your domain through AWS Route53**
-</detail.>
+</details>
 
 #### Enable SSO
 
