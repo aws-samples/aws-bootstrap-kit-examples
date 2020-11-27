@@ -149,7 +149,8 @@ aws --profile cicd secretsmanager create-secret --name GITHUB_TOKEN --secret-str
 
     * "github_alias": <YOUR_GITHUB_ALIAS>
     * "github_repo_name": <YOUR_GITHUB_REPOSITORY>,
-    * "github_repo_branch": <YOUR_GITHUB_BRANCH>
+    * "github_repo_branch": <YOUR_GITHUB_BRANCH>,
+    * (optional) "domain_name": <YOUR DOMAIN NAME> (If you setup a dns domain as part of your [SDLC Organization](../1-SDLC-organization/README.md) you can use it to expose your landing page. The `domain_name` variable with the same value as in `source/1-SDLC-organization/cdk.json` one.
 
 1. Push new changes to your repo
 ```

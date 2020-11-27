@@ -8,7 +8,7 @@ test('Stack is Tagged', () => {
       service_name: 'Landing-Page'
     }
   });
-  const stack = new LandingPage.LandingPageStack(app, 'MyTestStack');
+  const stack = new LandingPage.LandingPageStack(app, 'MyTestStack', {stage: 'test'});
   expectCDK(stack).to(
     haveResource('AWS::S3::Bucket', {
       Tags: [

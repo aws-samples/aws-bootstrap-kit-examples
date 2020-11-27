@@ -16,6 +16,7 @@
     + [Infrastructure as Code](#infrastructure-as-code)
     + [CI/CD](#cicd)
     + [Multi accounts strategy](#multi-accounts-strategy)
+    + [DNS hierarchy](#dns-hierarchy)
   * [Security](#security)
     + [Control deployment](#control-deployment)
     + [Control access to AWS](#control-access-to-aws)
@@ -47,16 +48,20 @@ A structured set of environments to develop and operate your software on AWS for
 * A central billing system enabling you to control your spend accross your environments
 * A central activity view enabling to control what is done across your environments
 * A central users and permissions management service enabling you to control what your team members can do or not in your different environments
+* An isolated DNS management zone to securely control your main DNS domains
 
 Most of it as Infrastructure as Code artifact.
 
 ![A diagram describing what as been listed above](doc/AWSBootstrapKit-Overview-Operator.png)
+
+![A diagram describing the chain of DNS delegation](doc/AWSBootstrapKit-Overview-DNS-delegation.png)
 
 ### As a developer
 
 * An environment with wide permissions to experiment, test and develop
 * A Web Portal enabling to log in to your different environment (dev, staging, prod, CI/CD ...)
 * A simple way to add multi stages CI/CD pipeline to deploy securely your code to production
+* A simple way to add public DNS records to expose your app or service
 
 ![A diagram describing what as been listed above](doc/AWSBootstrapKit-Overview-Developer.png)
 
@@ -76,6 +81,7 @@ Basically the same as above but:
 * CI/CD Pipeline = [AWS CodePipeline](https://aws.amazon.com/codepipeline)
 * Infrastructure as code Artifact = [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/home.html) construct/App
 * Security monitoring rule = [AWS Config rule](https://aws.amazon.com/config/faq/)
+* DNS Zone = [Route53 Public HostedZone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/AboutHZWorkingWith.html)
 
 Here is a diagram showing the different services involved and how they are interconnected.
 
@@ -146,6 +152,10 @@ See how amazon code deployment [automation](https://aws.amazon.com/builders-libr
 Isolating the different environments involved in software development brings many advantages around least priviledge principle (it will be easy to segregate access to prod environment for instance) or reliability by reducing the blast radius of an issue.
 
 See [official best practices documentation](https://aws.amazon.com/organizations/getting-started/best-practices/) and our [official prescriptive guidance](https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-aws-environment/welcome.html) for more details.
+
+### DNS Hierarchy
+
+Your DNS root domain (`yourdomain.com` for instance) is a resource to particularly protect, however the use of it to expose service to the internet should not be blocked. That is the reason why this solution propose to set it up in an environment only accessible by administrators and set a chain of subzones enabling developers to stay agile.
 
 ## Security
 
