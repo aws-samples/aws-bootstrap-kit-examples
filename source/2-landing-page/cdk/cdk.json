@@ -5,6 +5,7 @@
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true",
     "@aws-cdk/core:stackRelativeExports": "true",
-    "service_name": "Landing-Page"
+    "service_name": "landingpage",
+    "domain_name": "<YOUR DOMAIN NAME>"
   }
 }

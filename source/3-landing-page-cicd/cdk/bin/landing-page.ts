@@ -7,7 +7,7 @@ import {AddPermissionsBoundaryToRoles} from "../lib/permission-boundary";
 const app = new cdk.App();
 
 // Use for direct deploy to an environment without pipeline
-new LandingPageStage(app, 'LandingPageStage', {});
+new LandingPageStage(app, 'Test', {});
 // Use to deploy the pipeline stack
 const pipelineStack = new LandingPagePipelineStack(app, 'LandingPageStackPipeline');
 
