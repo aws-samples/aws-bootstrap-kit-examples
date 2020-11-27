@@ -54,6 +54,10 @@ Most of it as Infrastructure as Code artifact.
 
 ![A diagram describing what as been listed above](doc/AWSBootstrapKit-Overview-Operator.png)
 
+
+
+DNS hierarchy:
+
 ![A diagram describing the chain of DNS delegation](doc/AWSBootstrapKit-Overview-DNS-delegation.png)
 
 ### As a developer
