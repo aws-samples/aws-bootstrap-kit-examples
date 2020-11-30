@@ -73,14 +73,14 @@ export class LandingPagePipelineStack extends Stack{
                                 });
                                 break;
                             }
-                            case 'Prod': {
-                                stagesDetails.push({
-                                    name: account.Name,
-                                    accountId: account.Id,
-                                    order: 2
-                                });
-                                break;
-                            }
+                            // case 'Prod': {
+                            //     stagesDetails.push({
+                            //         name: account.Name,
+                            //         accountId: account.Id,
+                            //         order: 2
+                            //     });
+                            //     break;
+                            // }
                             default: {
                                 console.log(`Ignoring stage ${account.Name}`);
                                 break;
