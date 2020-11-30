@@ -412,7 +412,7 @@ Resources:
               - s3:GetEncryptionConfiguration
               - s3:PutEncryptionConfiguration
             Resource:
-              - "*"
+              - !Sub "arn:aws:s3:::*"
           - Effect: Allow
             Action:
               - codepipeline:CreateCustomActionType
@@ -510,17 +510,6 @@ Resources:
               - sts:AssumeRole
             Resource: "*"
 
-            # AlloBoundaryDeletionForCICDSelfMutate
-          - Effect: Allow
-            Action:
-              - iam:DeleteRolePermissionsBoundary
-            Resource:
-              - !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
-            Condition:
-              "StringEquals":
-                "iam:PermissionsBoundary":
-                  - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
-
           ##################################################################
           # Deny dangerous actions that could escalate privilege or cause security incident
           ##################################################################
@@ -553,7 +542,7 @@ Resources:
               "ForAnyValue:StringEquals":
                 "iam:PermissionsBoundary":
                   - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cfn-exec-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
-                  # Pipeline is self-mutate and it uses this role to delete/update CICD permissions boundary
+                  - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
 
             # DenyBoundaryUpdateIfNotAddingBoundary
           - Effect: Deny
