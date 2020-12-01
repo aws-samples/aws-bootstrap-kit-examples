@@ -1,14 +1,10 @@
 # This template is modified from original to add PermissionsBoundary for CFN Execution Role
-# The CFN Excution Role usually has AdministratorAccess attached. This exposes the CICD account to risk as
-# anyone who can execute `cdk deploy` can create role with any access (IAM privilege escalation)
+# The CFN Execution Role usually has AdministratorAccess attached. This exposes the CICD account to risk as
+# anyone who can execute `cdk deploy` can create role with AdministratorAccess (IAM privilege escalation)
 #
-# We create two PermissionsBoundaries to avoid privilege escalation.
-# 1. CloudFormationExecutionPermissionsBoundary
-# 2. CICDPipelinePermissionsBoundary
-#
-# We need two separated permissions boundaries because pipelines created by cdk-pipeline package can SelfMutate.
-# Thus, it must be able to delete the boundary. We allows it to delete CICDPipelinePermissionsBoundary, but not
-# CloudFormationExecutionPermissionsBoundary to prevent privilege escalation.
+# We create two PermissionsBoundaries to with least privilege policy.
+# 1. CloudFormationExecutionPermissionsBoundary - for CICD pipeline deployment
+# 2. CICDPipelinePermissionsBoundary - for any roles used in CICD pipeline (e.g. CodeBuild/CodePipeline)
 #
 # See the following links for more details:
 # 1. https://aws.amazon.com/premiumsupport/knowledge-center/iam-permission-boundaries/
@@ -18,8 +14,6 @@
 # Original Bootstrap template (used when you run `cdk bootstrap`):
 # https://github.com/aws/aws-cdk/blob/master/packages/aws-cdk/lib/api/bootstrap/bootstrap-template.yaml
 #
-# The created policy for PermissionsBoundary contains least privilege policy for creating
-# a pipeline with CDK Pipelines Module (https://docs.aws.amazon.com/cdk/api/latest/docs/pipelines-readme.html)
 Description: This stack includes resources needed to deploy AWS CDK apps into this
   environment
 Parameters:
@@ -424,7 +418,7 @@ Resources:
               - s3:GetEncryptionConfiguration
               - s3:PutEncryptionConfiguration
             Resource:
-              - "*"
+              - !Sub "arn:aws:s3:::*"
           - Effect: Allow
             Action:
               - codepipeline:CreateCustomActionType
@@ -451,7 +445,7 @@ Resources:
           - Effect: Allow
             Action:
               - secretsmanager:GetSecretValue
-            Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*"
+            Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:GITHUB_TOKEN*"
 
             # KMS
           - Effect: Allow
@@ -489,6 +483,12 @@ Resources:
               - codebuild:BatchGetProjects
             Resource: !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/*"
 
+          # Self-Mutate requires permission to start PipelineExecution
+          - Effect: Allow
+            Action:
+              - codepipeline:StartPipelineExecution
+            Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:*"
+
             # IamReadPolicyForKMSKeyCreation
           - Effect: Allow
             Action:
@@ -522,17 +522,6 @@ Resources:
               - sts:AssumeRole
             Resource: "*"
 
-            # AlloBoundaryDeletionForCICDSelfMutate
-          - Effect: Allow
-            Action:
-              - iam:DeleteRolePermissionsBoundary
-            Resource:
-              - !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
-            Condition:
-              "StringEquals":
-                "iam:PermissionsBoundary":
-                  - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
-
           ##################################################################
           # Deny dangerous actions that could escalate privilege or cause security incident
           ##################################################################
@@ -565,7 +554,7 @@ Resources:
               "ForAnyValue:StringEquals":
                 "iam:PermissionsBoundary":
                   - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cfn-exec-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
-                  # Pipeline is self-mutate and it uses this role to delete/update CICD permissions boundary
+                  - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
 
             # DenyBoundaryUpdateIfNotAddingBoundary
           - Effect: Deny
