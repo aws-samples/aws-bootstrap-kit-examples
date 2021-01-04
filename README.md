@@ -22,6 +22,7 @@
     + [Control access to AWS](#control-access-to-aws)
     + [Minimal security best practices](#minimal-security-best-practices)
   * [Costs](#costs)
+  * [Cleaning up accounts](#cleaning-up-accounts)
   * [Known limitations](#known-limitations)
     + [SDLC Organization](#sdlc-organization)
 
@@ -183,6 +184,19 @@ In this solution, we included what we think are a minimal set of security best p
 ## Costs
 
 By default, this solution occurs less than 1$ / month bill (price may slightly vary by region) by focusing more on structure of your accounts and using serverless technology.
+
+## Cleaning up accounts
+
+AWS Bootstrap Kit creates accounts (e.g CICD, Staging, etc.) through AWS Organization. Behind the scene, it uses CloudFormation Custom Resource and AWS Lambda to call [CreateAccount API](https://docs.aws.amazon.com/organizations/latest/APIReference/API_CreateAccount.html). 
+
+However, there is no API to delete or remove accounts. Thus, the created accounts (aka. member accounts) cannot be cleaned up automatically via Custom Resources. You need to delete these accounts manually. The steps below explain how to clean up those accounts. You have to repeat these steps for each account one by one.
+
+1. **Ensure that you have access to the email address of the member account** Without access to email address, you cannot recover root user to close the account. If that is the case, you have to manually delete all created resources. After that, you should create [a Service Control Policy (SCP)](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) with deny * on all resources and apply it to all accounts to disable all future access.
+2. **Recover root user access in the member account** Follow section "Accessing a member account as the root user" in [this documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_access-as-root).
+3. **Remove the member account from AWS Organization** Follow the instruction on this [documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html). In essence, you need to fill required information (e.g. billing) to detach the member account from an existing Organization.    
+4. **Delete each account** Sign-in with root credential and go to [Account Setting page](https://console.aws.amazon.com/billing/home?#/account). Scroll down to "Close Account" section. Read and ensure that you understand the information on check box before closing the account. 
+
+If you want to delete the master account (aka. management account). You need to manually delete AWS Organization in the account after you have removed all member accounts. You can find the details on [this documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_delete.html). 
 
 ## Known limitations
 
