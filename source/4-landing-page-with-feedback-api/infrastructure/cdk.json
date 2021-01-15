@@ -5,9 +5,6 @@
     "aws-cdk:enableDiffNoFail": "true",
     "@aws-cdk/core:stackRelativeExports": "true",
     "@aws-cdk/core:newStyleStackSynthesis": "true",
-    "@aws-cdk/aws-ecr-assets:dockerIgnoreSupport": true,
-    "github_alias": "flochaz",
-    "github_repo_name": "MyLandingPage",
-    "github_repo_branch": "master"
+    "@aws-cdk/aws-ecr-assets:dockerIgnoreSupport": true
   }
 }

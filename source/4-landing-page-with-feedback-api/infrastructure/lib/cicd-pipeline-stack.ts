@@ -61,7 +61,7 @@ export class LandingPagePipelineStack extends Stack {
             value: `https://${Stack.of(this).region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipeline.codePipeline.pipelineName}/view?region=${Stack.of(this).region}`,
         });
 
-        const AWS_PROFILE = "mvpv3-cicd";
+        const AWS_PROFILE = "cicd";
         if (!process.env.CODEBUILD_BUILD_ID) {
             config.credentials = new SharedIniFileCredentials({
                 profile: AWS_PROFILE,
@@ -115,14 +115,14 @@ export class LandingPagePipelineStack extends Stack {
                     case "CredentialsError": {
                         console.error(
                             "\x1b[31m",
-                            `Failed to get credentials for "${AWS_PROFILE}" profile. Make sure to run "aws configure sso --profile ${AWS_PROFILE} && aws sso login --profile ${AWS_PROFILE}"\n\n`
+                            `Failed to get credentials for "${AWS_PROFILE}" profile. Make sure to run "aws configure sso --profile ${AWS_PROFILE} && aws sso login --profile ${AWS_PROFILE} && npx cdk-sso-sync ${AWS_PROFILE}"\n\n`
                         );
                         break;
                     }
                     case "ExpiredTokenException": {
                         console.error(
                             "\x1b[31m",
-                            `Token expired, run "aws sso login --profile ${AWS_PROFILE}"\n\n`
+                            `Token expired, run "aws sso login --profile ${AWS_PROFILE} && npx cdk-sso-sync ${AWS_PROFILE}"\n\n`
                         );
                         break;
                     }

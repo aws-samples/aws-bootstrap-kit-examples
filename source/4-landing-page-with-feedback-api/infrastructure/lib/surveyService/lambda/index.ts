@@ -11,8 +11,8 @@ import * as AWS from 'aws-sdk';
         'Access-Control-Allow-Origin': undefined
       };
 
-      if (allowedOrigins.includes(event['headers']['origin'])) {
-        headers['Access-Control-Allow-Origin'] = event['headers']['origin']
+      if (allowedOrigins.includes(event['headers']['Origin'])) {
+        headers['Access-Control-Allow-Origin'] = event['headers']['Origin']
       };
 
       const body = event['body'];

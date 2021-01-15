@@ -18,7 +18,7 @@ export class InfrastructureStack extends Stack {
     });
 
     // Deploy Website config linking surveyService to your Website
-    new FrontendConfig(this, 'FrontendConfig', {
+    const frontendConfig = new FrontendConfig(this, 'FrontendConfig', {
         siteBucket: frontend.siteBucket,
         api: surveyService.api
     });
@@ -26,6 +26,10 @@ export class InfrastructureStack extends Stack {
     // Display Website exposed URL
     new CfnOutput(this, 'DistributionDomainName', {
         value: frontend.distribution.distributionDomainName,
+    });
+    // Display API URL
+    new CfnOutput(this, 'configJSON', {
+      value: frontendConfig.config,
     });
     
   }

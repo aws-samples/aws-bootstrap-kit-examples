@@ -50,10 +50,5 @@ export class SurveyServiceStack extends cdk.NestedStack {
     const feedback = this.api.root.addResource("feedback");
 
     feedback.addMethod("POST", lambdaIntegration);
-
-    new CfnOutput(this, "FrontendJSONConfig", {
-        value: `{ "apiUrl": "${this.api.url}" }`,
-        description: "Config file (in json format) for frontend",
-    });
   }
 }

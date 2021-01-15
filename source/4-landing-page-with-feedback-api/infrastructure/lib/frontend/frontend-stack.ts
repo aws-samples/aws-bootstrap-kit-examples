@@ -18,7 +18,6 @@ export class FrontendStack extends core.NestedStack {
 
         // Content bucket
         this.siteBucket = new s3.Bucket(this, 'SiteBucket');
-        new core.CfnOutput(this, 'Bucket', { value: this.siteBucket.bucketName });
 
         // CloudFront distribution
         this.distribution = new cloudfront.Distribution(

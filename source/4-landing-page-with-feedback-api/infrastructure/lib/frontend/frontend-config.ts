@@ -2,6 +2,7 @@ import * as core from '@aws-cdk/core';
 import * as s3 from "@aws-cdk/aws-s3";
 import * as cr from "@aws-cdk/custom-resources";
 import * as apiGateway from "@aws-cdk/aws-apigateway";
+import fs = require("fs");
 
 export interface FrontendConfigProps extends core.NestedStackProps {
     siteBucket: s3.Bucket;
@@ -9,17 +10,21 @@ export interface FrontendConfigProps extends core.NestedStackProps {
 }
 
 export class FrontendConfig extends core.NestedStack {
+  public readonly config: string;
+
   constructor(scope: core.Construct, id: string, props: FrontendConfigProps) {
     super(scope, id);
 
-    new cr.AwsCustomResource(this, "WriteS3ConfigFile", {
+    this.config = JSON.stringify({
+        API_URL: props.api.url,
+    });
+
+    const configt = new cr.AwsCustomResource(this, "WriteS3ConfigFile", {
         onUpdate: {
             service: "S3",
             action: "putObject",
             parameters: {
-                Body: JSON.stringify({
-                    API_URL: props.api.url,
-                }),
+                Body: this.config,
                 Bucket: props.siteBucket.bucketName,
                 Key: "config.json",
             },
