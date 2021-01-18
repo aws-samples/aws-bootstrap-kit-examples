@@ -11,7 +11,6 @@ import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
 import { Artifact } from "@aws-cdk/aws-codepipeline";
 import {
     GitHubSourceAction,
-    BitBucketSourceAction,
 } from "@aws-cdk/aws-codepipeline-actions";
 import { config, SharedIniFileCredentials, Organizations } from "aws-sdk";
 import { PolicyStatement } from "@aws-cdk/aws-iam";

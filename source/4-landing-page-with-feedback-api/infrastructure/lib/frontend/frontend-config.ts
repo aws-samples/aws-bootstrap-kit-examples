@@ -19,7 +19,7 @@ export class FrontendConfig extends core.NestedStack {
         API_URL: props.api.url,
     });
 
-    const configt = new cr.AwsCustomResource(this, "WriteS3ConfigFile", {
+    new cr.AwsCustomResource(this, "WriteS3ConfigFile", {
         onUpdate: {
             service: "S3",
             action: "putObject",

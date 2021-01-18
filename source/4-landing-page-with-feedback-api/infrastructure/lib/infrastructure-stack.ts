@@ -27,6 +27,7 @@ export class InfrastructureStack extends Stack {
     new CfnOutput(this, 'DistributionDomainName', {
         value: frontend.distribution.distributionDomainName,
     });
+    
     // Display API URL
     new CfnOutput(this, 'configJSON', {
       value: frontendConfig.config,
