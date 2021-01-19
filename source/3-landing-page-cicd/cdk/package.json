@@ -1,6 +1,6 @@
 {
   "name": "landing-page",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "bin": {
     "landing-page": "bin/landing-page.js"
   },
@@ -11,29 +11,29 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.74.0",
+    "@aws-cdk/assert": "1.85.0",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
     "jest": "^26.4.2",
     "ts-jest": "^26.2.0",
-    "aws-cdk": "1.74.0",
+    "aws-cdk": "1.85.0",
     "ts-node": "^8.1.0",
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "@aws-cdk/aws-certificatemanager": "1.74.0",
-    "@aws-cdk/aws-route53": "1.74.0",
-    "@aws-cdk/aws-route53-targets": "1.74.0",
-    "@aws-cdk/aws-cloudfront": "1.74.0",
-    "@aws-cdk/aws-codepipeline": "1.74.0",
-    "@aws-cdk/aws-codepipeline-actions": "1.74.0",
-    "@aws-cdk/aws-iam": "1.74.0",
-    "@aws-cdk/aws-s3": "1.74.0",
-    "@aws-cdk/aws-s3-deployment": "1.74.0",
-    "@aws-cdk/core": "1.74.0",
-    "@aws-cdk/pipelines": "1.74.0",
+    "@aws-cdk/aws-certificatemanager": "1.85.0",
+    "@aws-cdk/aws-route53": "1.85.0",
+    "@aws-cdk/aws-route53-targets": "1.85.0",
+    "@aws-cdk/aws-cloudfront": "1.85.0",
+    "@aws-cdk/aws-codepipeline": "1.85.0",
+    "@aws-cdk/aws-codepipeline-actions": "1.85.0",
+    "@aws-cdk/aws-iam": "1.85.0",
+    "@aws-cdk/aws-s3": "1.85.0",
+    "@aws-cdk/aws-s3-deployment": "1.85.0",
+    "@aws-cdk/core": "1.85.0",
+    "@aws-cdk/pipelines": "1.85.0",
     "aws-sdk": "^2.783.0",
-    "aws-bootstrap-kit": "0.2.8",
+    "aws-bootstrap-kit": "0.2.9",
     "source-map-support": "^0.5.16"
   }
 }
