@@ -19,7 +19,7 @@ import { InfrastructureStack } from "./infrastructure-stack";
 export class LandingPageStage extends Stage {
     constructor(scope: Construct, id: string, props: StageProps) {
         super(scope, id, props);
-        new InfrastructureStack(this, "LandingPageStack", props);
+        new InfrastructureStack(this, "LandingPageStack", {...props, stage: id.toLowerCase()});
     }
 }
 
@@ -69,27 +69,25 @@ export class LandingPagePipelineStack extends Stack {
         }
 
         const orgClient = new Organizations({ region: "us-east-1" });
-        orgClient
-            .listAccounts()
-            .promise()
-            .then((results) => {
+        orgClient.listAccounts().promise().then(
+            results => {
                 let stagesDetails = [];
-                if (results.Accounts) {
+                if(results.Accounts) {
                     for (const account of results.Accounts) {
-                        switch (account.Name) {
-                            case "Staging": {
+                        switch(account.Name) {
+                            case 'Staging': {
                                 stagesDetails.push({
                                     name: account.Name,
                                     accountId: account.Id,
-                                    order: 1,
+                                    order: 1
                                 });
                                 break;
                             }
-                            case "Prod": {
+                            case 'Prod': {
                                 stagesDetails.push({
                                     name: account.Name,
                                     accountId: account.Id,
-                                    order: 2,
+                                    order: 2
                                 });
                                 break;
                             }
@@ -100,17 +98,13 @@ export class LandingPagePipelineStack extends Stack {
                         }
                     }
                 }
-                stagesDetails.sort((a, b) => (a.order > b.order ? 1 : -1));
+                stagesDetails.sort((a,b) => (a.order > b.order)?1:-1);
                 for (let stageDetailsIndex in stagesDetails) {
                     let stageDetails = stagesDetails[stageDetailsIndex];
-                    pipeline.addApplicationStage(
-                        new LandingPageStage(this, stageDetails.name, {
-                            env: { account: stageDetails.accountId },
-                        })
-                    );
+                    pipeline.addApplicationStage(new LandingPageStage(this, stageDetails.name, {env: {account: stageDetails.accountId}}));
                 }
-            })
-            .catch((error) => {
+            }
+        ).catch((error) => {
                 switch (error.code) {
                     case "CredentialsError": {
                         console.error(
