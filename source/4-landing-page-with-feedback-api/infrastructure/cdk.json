@@ -6,10 +6,10 @@
     "@aws-cdk/core:stackRelativeExports": "true",
     "@aws-cdk/core:newStyleStackSynthesis": "true",
     "@aws-cdk/aws-ecr-assets:dockerIgnoreSupport": true,
+    "service_name": "mylandingpage",
+    "domain_name": "<YOUR ROOT DOMAIN NAME (if any specified in SDLC setup otherwise remove this key)>",
     "github_alias": "<YOUR GITHUB ALIAS>",
     "github_repo_name": "<YOUR REPO NAME>",
-    "github_repo_branch": "main",
-    "domain_name": "<YOUR ROOT DOMAIN NAME (if any specified in SDLC setup otherwise remove this key)>",
-    "service_name": "mylandingpage"
+    "github_repo_branch": "main"
   }
 }
