@@ -55,12 +55,10 @@ import { submitForm } from "../services";
     return (
       <div>
         <Header />
-        {failed 
-          ? <SubmissionResult variant="error" open={failed} onClose={()=>setFailed(false)} />
-          : <SubmissionResult variant="success" open={submitted} onClose={()=>setSubmitted(false)} />
-        }
+        {failed ? <SubmissionResult variant="error" open={failed} onClose={()=>setFailed(false)} /> : null}
+        {submitted ? <SubmissionResult variant="success" open={submitted} onClose={()=>setSubmitted(false)} /> : null}
         <div className={classes.form}>
-          <div className={classes.field}><FormLabel>Any feedbacks or comments ?</FormLabel></div>
+          <div className={classes.field}><FormLabel>Any feedback or comments ?</FormLabel></div>
           <Input className={classes.field} label="Name" onChange={setName} />
           <Input className={classes.field} label="Email" onChange={setEmail} />
           <Input className={classes.field} label="Subject" onChange={setSubject} />
