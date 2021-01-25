@@ -15,6 +15,11 @@ import * as AWS from 'aws-sdk';
         headers['Access-Control-Allow-Origin'] = event['headers']['origin']
       };
 
+      // For SAM local start-api
+      if (allowedOrigins.includes(event['headers']['Origin'])) {
+        headers['Access-Control-Allow-Origin'] = event['headers']['Origin']
+      };
+
       const body = event['body'];
 
       const { name, email, subject, details } = JSON.parse(body);
