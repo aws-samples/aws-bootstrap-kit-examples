@@ -48,16 +48,16 @@ for ACCOUNT in $ACCOUNTS; do
     case $ACCOUNT_TYPE in
         CICD)
             # A custom template will apply PermissionsBoundary to CDK Execution role.
-            echo "npm run cdk bootstrap -- --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess --template ./lib/cdk-bootstrap-template.yml --profile ${ACCOUNT_NAME}"
+            npm run cdk bootstrap -- --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess --template ./lib/cdk-bootstrap-template.yml --profile ${ACCOUNT_NAME}
             ;;
         PLAYGROUND)
             for REGION in $REGIONS_TO_BOOTSTRAP; do
-                echo "npm run cdk bootstrap -- --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess aws://${ACCOUNT_ID}/${REGION} --profile ${ACCOUNT_NAME}"
+                npm run cdk bootstrap -- --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess aws://${ACCOUNT_ID}/${REGION} --profile ${ACCOUNT_NAME}
             done
             ;;
         STAGE)
             for REGION in $REGIONS_TO_BOOTSTRAP; do
-                echo "npm run cdk bootstrap -- --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess --trust ${CICD_ACCOUNT_ID} aws://${ACCOUNT_ID}/${REGION} --profile ${ACCOUNT_NAME}"
+                npm run cdk bootstrap -- --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess --trust ${CICD_ACCOUNT_ID} aws://${ACCOUNT_ID}/${REGION} --profile ${ACCOUNT_NAME}
             done
             ;;
         *)
