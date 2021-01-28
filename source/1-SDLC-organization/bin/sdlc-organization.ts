@@ -44,13 +44,12 @@ const nestedOU = [
         accounts: [
             {
                 name: 'Dev',
-                type: AccountType.PLAYGROUND,
-                stageName: 'None'
+                type: AccountType.PLAYGROUND
             },
             {
                 name: 'Staging',
                 type: AccountType.STAGE,
-                stageName: 'beta',
+                stageName: 'staging',
                 stageOrder: 1,
                 hostedServices: ['ALL']
             }
@@ -62,7 +61,7 @@ const nestedOU = [
             {
                 name: 'Prod',
                 type: AccountType.STAGE,
-                stageName: 'production',
+                stageName: 'prod',
                 stageOrder: 2,
                 hostedServices: ['ALL']
             }
