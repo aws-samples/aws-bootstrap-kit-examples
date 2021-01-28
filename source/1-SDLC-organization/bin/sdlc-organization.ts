@@ -20,6 +20,7 @@ import {
     AWSBootstrapKitLandingZonePipelineStack,
     AWSBootstrapKitLandingZoneStage
 } from '../lib/cicd-stack';
+import {AccountType} from 'aws-bootstrap-kit/lib/index.js';
 
 const app = new cdk.App();
 
@@ -33,7 +34,8 @@ const nestedOU = [
         name: 'SharedServices',
         accounts: [
             {
-                name: 'CICD'
+                name: 'CICD',
+                type: AccountType.CICD
             }
         ]
     },
@@ -41,10 +43,16 @@ const nestedOU = [
         name: 'SDLC',
         accounts: [
             {
-                name: 'Dev'
+                name: 'Dev',
+                type: AccountType.PLAYGROUND,
+                stageName: 'None'
             },
             {
-                name: 'Staging'
+                name: 'Staging',
+                type: AccountType.STAGE,
+                stageName: 'beta',
+                stageOrder: 1,
+                hostedServices: ['ALL']
             }
         ]
     },
@@ -52,7 +60,11 @@ const nestedOU = [
         name: 'Prod',
         accounts: [
             {
-                name: 'Prod'
+                name: 'Prod',
+                type: AccountType.STAGE,
+                stageName: 'production',
+                stageOrder: 2,
+                hostedServices: ['ALL']
             }
         ]
     }
