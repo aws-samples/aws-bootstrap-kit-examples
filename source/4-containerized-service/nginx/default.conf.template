@@ -1,0 +1,13 @@
+server {
+  listen       80;
+  server_name  localhost;
+  root         /var/www/html;
+  index        index.php;
+  location / {
+    fastcgi_pass   ${PHP_HOST}:9000;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    fastcgi_param  SCRIPT_NAME      $fastcgi_script_name;
+    include        fastcgi_params;
+  }
+}

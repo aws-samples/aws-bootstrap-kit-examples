@@ -1,0 +1,6 @@
+{
+    "require": {
+        "jfcherng/php-mb-string": "^1.4",
+        "stripe/stripe-php": "^7.57"
+    }
+}

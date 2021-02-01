@@ -43,7 +43,10 @@ export class LandingPagePipelineStack extends Stack{
                         installCommand: 'npm install',
                         rolePolicyStatements: [
                             new PolicyStatement({
-                                actions: ['organizations:ListAccounts'],
+                                actions: [
+                                    'organizations:ListAccounts',
+                                    "organizations:ListTagsForResource"
+                                ],
                                 resources: ['*'],
                             }),
                         ],
@@ -61,30 +64,21 @@ export class LandingPagePipelineStack extends Stack{
 
         const orgClient = new Organizations({region: 'us-east-1'});
         orgClient.listAccounts().promise().then(
-            results => {
+            async results => {
                 let stagesDetails = [];
                 if(results.Accounts) {
                     for (const account of results.Accounts) {
-                        switch(account.Name) {
-                            case 'Staging': {
+                        const tags = (await orgClient.listTagsForResource({ResourceId: account.Id!}).promise()).Tags;
+                        if(tags && tags.length > 0){
+                            const accountType = tags.find(tag => tag.Key === 'AccountType')!.Value;
+                            if ( accountType === 'STAGE' ) {
+                                const stageName = tags.find(tag => tag.Key === 'StageName')!.Value;
+                                const stageOrder = tags.find(tag => tag.Key === 'StageOrder')!.Value;
                                 stagesDetails.push({
-                                    name: account.Name,
+                                    name: stageName,
                                     accountId: account.Id,
-                                    order: 1
+                                    order: parseInt(stageOrder)
                                 });
-                                break;
-                            }
-                            case 'Prod': {
-                                stagesDetails.push({
-                                    name: account.Name,
-                                    accountId: account.Id,
-                                    order: 2
-                                });
-                                break;
-                            }
-                            default: {
-                                console.log(`Ignoring stage ${account.Name}`);
-                                break;
                             }
                         }
                     }
