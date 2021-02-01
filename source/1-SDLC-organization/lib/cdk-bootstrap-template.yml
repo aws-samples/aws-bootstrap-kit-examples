@@ -620,6 +620,7 @@ Resources:
           - Effect: Allow
             Action:
               - organizations:ListAccounts
+              - organizations:ListTagsForResource
             Resource: "*"
           - Effect: Allow
             Action:
