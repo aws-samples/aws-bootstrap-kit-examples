@@ -3,6 +3,9 @@ import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
 import { LandingPageStage, LandingPagePipelineStack } from '../lib/cicd-stack';
 import {AddPermissionsBoundaryToRoles} from "../lib/permission-boundary";
+import {ensure_correct_node_version} from "../../../utils/versions";
+
+ensure_correct_node_version();
 
 const app = new cdk.App();
 

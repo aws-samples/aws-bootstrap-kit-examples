@@ -20,6 +20,9 @@ import {
     AWSBootstrapKitLandingZonePipelineStack,
     AWSBootstrapKitLandingZoneStage
 } from '../lib/cicd-stack';
+import {ensure_correct_node_version} from "../../utils/versions";
+
+ensure_correct_node_version();
 
 const app = new cdk.App();
 
