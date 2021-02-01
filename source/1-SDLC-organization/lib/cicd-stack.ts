@@ -80,6 +80,10 @@ export class AWSBootstrapKitLandingZonePipelineStack extends Stack {
       }),
   });
 
+  new core.CfnOutput(this, "PipelineConsoleUrl", {
+    value: `https://${Stack.of(this).region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipeline.codePipeline.pipelineName}/view?region=${Stack.of(this).region}`,
+  });
+
   const prodStage = pipeline.addApplicationStage(new AWSBootstrapKitLandingZoneStage(this, 'Prod', props));
   const INDEX_START_DEPLOY_STAGE =  prodStage.nextSequentialRunOrder() - 2; // 2 = Prepare (changeSet creation) + Deploy (cfn deploy)
   prodStage.addManualApprovalAction({actionName: 'Validate', runOrder: INDEX_START_DEPLOY_STAGE});

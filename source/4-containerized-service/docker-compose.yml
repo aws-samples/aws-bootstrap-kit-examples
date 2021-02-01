@@ -1,0 +1,31 @@
+services:
+  web:
+    build: ./nginx/
+    ports:
+      - '8080:80'
+    environment:
+      PHP_HOST: 'php'
+    links:
+      - php
+  php:
+    build: ./php-fpm/
+    ports:
+      - '9000:9000'
+    environment:
+      DOMAIN: 'localhost'
+      SECRETS: '{"host": "db", "username": "admin", "password":"random_password", "dbname": "ecommerce" }'
+    links:
+      - db
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: random_password
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: random_password
