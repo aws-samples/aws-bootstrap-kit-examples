@@ -1,6 +1,6 @@
 {
   "name": "landing-page",
-  "version": "0.3.1",
+  "version": "0.3.3",
   "bin": {
     "landing-page": "bin/landing-page.js"
   },
@@ -33,7 +33,7 @@
     "@aws-cdk/core": "1.85.0",
     "@aws-cdk/pipelines": "1.85.0",
     "aws-sdk": "^2.783.0",
-    "aws-bootstrap-kit": "0.3.1",
+    "aws-bootstrap-kit": "0.3.3",
     "source-map-support": "^0.5.16"
   }
 }

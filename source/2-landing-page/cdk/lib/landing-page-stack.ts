@@ -8,7 +8,7 @@ import {
 import { Construct, Stack, StackProps, CfnOutput, Tags } from "@aws-cdk/core";
 import * as route53 from "@aws-cdk/aws-route53";
 import { CloudFrontTarget } from "@aws-cdk/aws-route53-targets";
-import * as bootstrapKit from "aws-bootstrap-kit/lib/index.js";
+import * as bootstrapKit from "aws-bootstrap-kit";
 import {
     DnsValidatedCertificate,
     CertificateValidation,

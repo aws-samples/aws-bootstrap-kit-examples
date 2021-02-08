@@ -20,7 +20,7 @@ import {
     AWSBootstrapKitLandingZonePipelineStack,
     AWSBootstrapKitLandingZoneStage
 } from '../lib/cicd-stack';
-import {AccountType} from 'aws-bootstrap-kit/lib/index.js';
+import {AccountType} from 'aws-bootstrap-kit';
 
 const app = new cdk.App();
 

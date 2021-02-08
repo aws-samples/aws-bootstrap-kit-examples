@@ -4,7 +4,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import * as core from '@aws-cdk/core';
 import * as targets from "@aws-cdk/aws-route53-targets";
-import * as bootstrapKit from "aws-bootstrap-kit/lib/index.js";
+import * as bootstrapKit from "aws-bootstrap-kit";
 import {
     DnsValidatedCertificate,
     CertificateValidation,

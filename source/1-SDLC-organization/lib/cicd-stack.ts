@@ -20,7 +20,7 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from "@aws-cdk/aws-codepipeline-actions";
 import * as core from "@aws-cdk/core";
 import * as iam from '@aws-cdk/aws-iam';
-import * as bootstrapKit from 'aws-bootstrap-kit/lib/index.js';
+import * as bootstrapKit from 'aws-bootstrap-kit';
 
 /**
  * Properties for create Landing Zone pipeline stack
