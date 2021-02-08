@@ -1,0 +1,18 @@
+*.js
+!jest.config.js
+!standard-version-updater.js
+*.d.ts
+node_modules
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+# Parcel default cache directory
+.parcel-cache
+
+/coverage
+
+# ingore jsii
+.jsii
+dist
