@@ -2,7 +2,7 @@
 
 ## How to build and deploy it
 
-Check our workshop [link to be define](https://workshops.aws/)
+Check our workshop [Activate workshop](https://activate.workshop.aws/030_landingpage.html)
 
 ## How was it built
 

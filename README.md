@@ -96,6 +96,8 @@ Here is a diagram showing the different services involved and how they are inter
 
 Let's deploy your [Software Development Life Cycle Organization](./source/1-SDLC-organization/README.md).
 
+For a full learning path check the [Activate workshop](https://activate.workshop.aws) leveraging the **aws-bootstrap-kit**.
+
 ## Tenets
 
 What this setup fight for:
