@@ -1,6 +1,6 @@
 {
   "name": "sdlc-organization",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "bin": {
     "workload_landing_zone": "bin/sdlc-organization.js"
   },
@@ -29,7 +29,7 @@
     "@aws-cdk/aws-codepipeline-actions": "1.85.0",
     "@aws-cdk/core": "1.85.0",
     "@aws-cdk/pipelines": "1.85.0",
-    "aws-bootstrap-kit": "0.3.5",
+    "aws-bootstrap-kit": "0.3.6",
     "source-map-support": "^0.5.16"
   }
 }
