@@ -77,7 +77,7 @@ DNS hierarchy:
 ## What you will get with it? (the AWS infrastructure)
 
 Basically the same as above but:
-* Environments = [AWS Accounts](https://aws.amazon.com/organizations/faqs/#Organizing_AWS_accounts) (not a *user* account but actually a isolated environment tight to an email (& password) and unique id)
+* Environments = [AWS Accounts](https://aws.amazon.com/organizations/faqs/#Organizing_AWS_accounts) (not a *user* account but actually a isolated environment tied to an email (& password) and unique id)
 * Set of Environments = Set of AWS Accounts under a main one = [AWS Organizations](https://aws.amazon.com/organizations/faqs/)
 * Users and Permissions management solution = [AWS SSO](https://aws.amazon.com/single-sign-on/faqs)
 * Login Web Portal = AWS SSO endpoint
@@ -104,11 +104,11 @@ What this setup fight for:
 
 * **Bootstrapping an organization on AWS should be easy**: whatever the size of an organization, bootstrapping it on AWS should be as simple as running a command line
 
-* **AWS best practices is for everyone**: whatever the size of an organization, their end customers deserve a secured, reliable and cost efficient solution so we don't compromise on AWS best practices for simplicity
+* **AWS best practices is for everyone**: whatever the size of an organization, their end customers deserve a secure, reliable and cost efficient solution so we don't compromise on AWS best practices for simplicity
 
 * **Everything is code** (when possible): infrastructure management is a lot easier and more reliable when everything is managed by code.
 
-* **CI/CD everywhere**: Human is flawed, let's automate any deployment on any stage
+* **CI/CD everywhere**: Human is flawed, let's automate any deployment at any stage
 
 * **Think of the future**: what's created by the resources available here aims to limit future tech debt and ease future growth by being easily migratable to large enterprise solutions such as AWS Control Tower.
 
