@@ -80,7 +80,7 @@ This example is a simple CDK app enabling to create the public hosted zones in e
 
 1. Build and Deploy the pipeline
     ```
-    npm run cdk deploy DNSInfrastructurePipelineStack --  --profile mvpv3-cicd
+    npm run cdk deploy DNSInfrastructurePipelineStack --  --profile cicd
     ```
 1. Delegate this dev domain to route53
     Go to your DNS provider and copy the NS records you got from 
@@ -137,3 +137,4 @@ This example is a simple CDK app enabling to create the public hosted zones in e
             }
         );
     ...
+    ```
