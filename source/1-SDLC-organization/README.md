@@ -11,12 +11,13 @@ As described in root [README](../../README.md), this [CDK](https://docs.aws.amaz
 Step # | Feature | Description
 -- | -- | --
 0 | [Under the hood](#under-the-hood) | Details about what we are doing
-1 | [Configure your local credentials](#configure-your-local-credentials) | `aws configure --profile main-admin`
-2 | [Fork and init the repo](#clone-and-init-the-repo) | Get the code
-3 | [Deploy the pipeline](#install-dependencies-and-deploy-the-pipeline) | Deploy your organization through a CI/CD pipeline
-4 | [Setup your SSO domain](#setup-your-sso-domain) | Prepare you user permissions and groups
-5 | [Setup your dev environment](#setup-your-dev-environment) | Prepare your local environment to be ready to develop
-6 | [Start coding](#next-step) | Jump to next section about developing and deploying your first web site
+1 | [Enable Access to Billing data for IAM Users](#Enable-Access-to-Billing-data-for-IAM-Users) | Enable billing access for IAM Users
+2 | [Configure your local credentials](#configure-your-local-credentials) | `aws configure --profile main-admin`
+3 | [Fork and init the repo](#clone-and-init-the-repo) | Get the code
+4 | [Deploy the pipeline](#install-dependencies-and-deploy-the-pipeline) | Deploy your organization through a CI/CD pipeline
+5 | [Setup your SSO domain](#setup-your-sso-domain) | Prepare you user permissions and groups
+6 | [Setup your dev environment](#setup-your-dev-environment) | Prepare your local environment to be ready to develop
+7 | [Start coding](#next-step) | Jump to next section about developing and deploying your first web site
 
 
 ## Under the hood
@@ -50,6 +51,24 @@ DNS hierarchy:
   * without "+" in it
   * provided by a provider supporting [subaddressing](https://en.wikipedia.org/wiki/Plus_address) which means supporting '+' email extension (Most providers such as gmail/google, outlook etc. support it. If you're not sure check [this page](https://en.wikipedia.org/wiki/Comparison_of_webmail_providers#Features) "Address modifiers" column or send an email to yourself adding a plus extension such as `myname+test@myemaildomain.com` . if you receive it, you're good).   
 * An AWS account with an IAM user with Administrator permission
+
+### Enable Access to Billing data for IAM Users
+<details>
+<summary>Click to go through this step</summary>
+Let's enable access to Billing data for IAM users, so that administrators are able to see and analyze the AWS usage and cost without having to login as the root user. This is an important step since it is a best practice to perform day-to-day activities through IAM users, and not the root user. To enable this setting, make sure you login to your AWS account as the <strong>root user</strong> (i.e. using the email and password that were used for creating the AWS account).
+
+1) While logged in as the root user: in the AWS Management Console's navigation bar, choose your account name and then choose <strong>My Account</strong>.
+
+2) Next to <strong>IAM User and Role Access to Billing Information</strong>, choose <strong>Edit</strong>.
+
+3) Select the <strong>Activate IAM Access</strong> check box.
+
+4) Choose <strong>Update</strong>.
+
+Now that this setting is enabled, IAM users with appropriate privileges will be able to access the Billing and Cost Management console on AWS accounts within the organization. This is especially useful for administrators or operations staff in order to monitor cost.
+
+<strong>Note:</strong> if you don't see the setting, you are probably logged in as an IAM user. Please log out and log back in as the <strong>root user</strong> of the account, using email and password.
+</details>
 
 ### Configure your local credentials
 <details>
