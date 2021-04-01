@@ -6,7 +6,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "build:all": "cd ../ui && npm ci && npm run build && cd - && npm run build",
+    "build:all": "cd ../ui && npm ci && npm run build && cd ../infrastructure && npm run build",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk"
