@@ -38,7 +38,6 @@
     "aws-bootstrap-kit": "0.3.9",
     "aws-sdk": "^2.877.0",
     "npm": "^7.7.6",
-    "react-scripts": "^4.0.3",
     "source-map-support": "^0.5.19"
   }
 }
