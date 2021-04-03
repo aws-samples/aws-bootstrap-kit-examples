@@ -29,7 +29,7 @@ export class DNSInfrastructurePipelineStack extends Stack {
 
         const sourceArtifact = new Artifact();
         const cloudAssemblyArtifact = new Artifact();
-        const oauth = SecretValue.secretsManager("GITHUB_TOKEN");
+        const oauth = SecretValue.secretsManager("GITHUB_TOKEN_2");
 
         const pipeline = new CdkPipeline(this, "DNSInfrastructurePipeline", {
             sourceAction: new GitHubSourceAction({

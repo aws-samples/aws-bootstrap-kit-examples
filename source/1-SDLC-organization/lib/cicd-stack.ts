@@ -67,7 +67,7 @@ export class AWSBootstrapKitLandingZonePipelineStack extends Stack {
         actionName: 'GitHub',
         output: sourceArtifact,
         branch:  this.node.tryGetContext('github_repo_branch'),
-        oauthToken: core.SecretValue.secretsManager('GITHUB_TOKEN'),
+        oauthToken: core.SecretValue.secretsManager('GITHUB_TOKEN_2'),
         owner: this.node.tryGetContext('github_alias'),
         repo: this.node.tryGetContext('github_repo_name'),
       }),

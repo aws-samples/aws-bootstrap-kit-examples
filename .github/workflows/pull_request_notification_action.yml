@@ -14,9 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - name: Slack notification
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_CUSTOM_PAYLOAD: '{"Content": "*{{ EVENT_PAYLOAD.pull_request.title}}*\n @{{ GITHUB_ACTOR }} published a new pull request: {{ EVENT_PAYLOAD.pull_request.html_url }}"}'
-        uses: Ilshidur/action-slack@2.0.2
+   # commenté ca  et à le remplacer par teams 
+   # steps:
+     # - name: Slack notification
+    #    env:
+       #   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+       #   SLACK_CUSTOM_PAYLOAD: '{"Content": "*{{ EVENT_PAYLOAD.pull_request.title}}*\n @{{ GITHUB_ACTOR }} published a new pull request: {{ EVENT_PAYLOAD.pull_request.html_url }}"}'
+     #   uses: Ilshidur/action-slack@2.0.2
