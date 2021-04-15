@@ -1,0 +1,6 @@
+{
+  "name": "ActivateAcademyMobileApp",
+  "displayName": "ActivateAcademyMobileApp",
+  "cognitoUserPoolID": "tbd", 
+  "apiURL": "https://3pw1p59768.execute-api.us-east-1.amazonaws.com/prod" 
+}

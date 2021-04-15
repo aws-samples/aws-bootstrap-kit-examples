@@ -1,0 +1,30 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# This file needs to be regenerated based on the backend stack with the generate-aws-exports.sh $stackname
+# This is required to prevent from linking the repo to a env
+# Script has to be run when you clone the repo before running or building 
+aws-exports.js
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+!public

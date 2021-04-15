@@ -1,0 +1,16 @@
+{
+  "Auth": {
+    "region": "eu-west-1",
+    "userPoolId": "eu-west-1_TOBEREPLACED",
+    "userPoolWebClientId": "TOBEREPLACED"
+  },
+  "API": {
+    "endpoints": [
+      {
+        "name": "Posts Service",
+        "endpoint": "https://TOBEREPLACED.execute-api.eu-west-1.amazonaws.com/prod/"
+      }
+    ]
+  },
+  "Analytics": { "disabled": false }
+}
