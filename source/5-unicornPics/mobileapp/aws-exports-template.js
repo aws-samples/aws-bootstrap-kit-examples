@@ -16,14 +16,14 @@ import { Auth } from "aws-amplify";
 const awsconfig =  {
     "Auth": {
         "region": "$AWS_REGION", 
-        "userPoolId": $COGNITO_USER_POOL_ID, 
-        "userPoolWebClientId": $COGNITO_USER_POOL_CLIENT_ID,
+        "userPoolId": "$COGNITO_USER_POOL_ID", 
+        "userPoolWebClientId": "$COGNITO_USER_POOL_CLIENT_ID",
     },
     "API": {
         "endpoints": [
             {
                 name: "MyAPIGatewayAPI",
-                endpoint: $API_ENDPOINT,
+                endpoint: "$API_ENDPOINT",
                 custom_header: async () => { 
                     return { Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}` }
                 }
