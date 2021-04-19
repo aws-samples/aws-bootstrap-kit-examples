@@ -8,6 +8,7 @@ import * as path from 'path';
 export class Frontend extends cdk.Construct {
   public readonly activateBucket: s3.Bucket;
   public readonly activateDistribution: cloudfront.Distribution;
+  public readonly siteDeployment: s3deploy.BucketDeployment;
 
   constructor(scope: cdk.Construct, id: string) {
     super(scope, id);
@@ -44,7 +45,7 @@ export class Frontend extends cdk.Construct {
       ]
     }); 
 
-    new s3deploy.BucketDeployment(this, 'DeployWithInvalidation', {
+    this.siteDeployment = new s3deploy.BucketDeployment(this, 'DeployWithInvalidation', {
       sources: [
         s3deploy.Source.asset(path.resolve(__dirname, '../../../webapp/build')),
       ],
