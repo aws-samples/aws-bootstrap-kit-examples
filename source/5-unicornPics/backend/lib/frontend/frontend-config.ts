@@ -35,7 +35,7 @@ export class FrontendConfig extends cdk.Construct {
       },
     });
 
-    new cr.AwsCustomResource(this, 'WriteS3ConfigFile', {
+    const configDeployment = new cr.AwsCustomResource(this, 'WriteS3ConfigFile', {
       onUpdate: {
         service: 'S3',
         action: 'putObject',
@@ -50,6 +50,8 @@ export class FrontendConfig extends cdk.Construct {
         resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE,
       }),
     });
+
+    configDeployment.node.addDependency(props.frontend.siteDeployment);
 
     new cdk.CfnOutput(this, 'frontendConfig', {
         value: this.config
