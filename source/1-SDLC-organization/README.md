@@ -1,4 +1,4 @@
-# Welcome to the Software Development Life Cycle (SDLC) Orgnaization CDK app
+# Welcome to the Software Development Life Cycle (SDLC) Organization CDK app
 
 As described in root [README](../../README.md), this [CDK](https://docs.aws.amazon.com/cdk/latest/guide/apps.html) app strive to give you a clean and easy to use set of environments (AWS Accounts) to develop and operate sofware on AWS following best practices.
 
