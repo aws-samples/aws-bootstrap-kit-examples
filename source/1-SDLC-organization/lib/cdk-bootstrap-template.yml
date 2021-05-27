@@ -162,6 +162,8 @@ Resources:
           - Fn::Sub: "${FileAssetsBucketName}"
           - Fn::Sub: cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}
       AccessControl: Private
+      VersioningConfiguration:
+        Status: Enabled
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
