@@ -10,9 +10,9 @@
     "watch": "tsc -w",
     "test": "echo no tests",
     "cdk": "cdk",
-    "bootstrap": "cdk --profile bk-demo-main bootstrap --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess",
-    "synth": "cdk --profile bk-demo-main synth",
-    "deploy": "cdk --profile bk-demo-main deploy"
+    "bootstrap": "cdk --profile main-admin bootstrap --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess",
+    "synth": "cdk --profile main-admin synth",
+    "deploy": "cdk --profile main-admin deploy"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.114.0",
@@ -29,7 +29,7 @@
     "@aws-cdk/aws-codepipeline-actions": "1.114.0",
     "@aws-cdk/core": "1.114.0",
     "@aws-cdk/pipelines": "1.114.0",
-    "aws-bootstrap-kit": "file://../../aws-bootstrap-kit@0.3.13.jsii.tgz",
+    "aws-bootstrap-kit": "0.3.13",
     "source-map-support": "^0.5.16"
   }
 }
