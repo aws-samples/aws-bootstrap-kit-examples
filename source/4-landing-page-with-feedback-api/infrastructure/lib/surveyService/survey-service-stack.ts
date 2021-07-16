@@ -34,7 +34,7 @@ export class SurveyServiceStack extends cdk.NestedStack {
     const handler = new lambda.Function(this, "LandingPageForm", {
         runtime: Runtime.NODEJS_12_X,
         code: Code.fromAsset(`${__dirname}/lambda`),
-        handler: "index.handler",
+        handler: "src/index.handler",
         environment: {
             TABLE_NAME: tableName,
             Access_Control_Allow_Origin: `https://${props.siteDistributionDomainName}`,
