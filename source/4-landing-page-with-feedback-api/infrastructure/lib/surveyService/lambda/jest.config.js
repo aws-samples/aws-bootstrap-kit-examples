@@ -1,5 +1,5 @@
 module.exports = {
-  roots: ['<rootDir>/test', '<rootDir>/lib/surveyService/lambda/'],
+  roots: ['<rootDir>/test'],
   testMatch: ['**/*.test.ts'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest'
