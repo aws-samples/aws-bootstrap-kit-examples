@@ -131,7 +131,7 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
             > You will receive an email with a verification link to validate it
         * `github_alias` coresponding to your github username (`your_alias` in `https://github.com/your_alias/your_repo`)
         * `github_repo_name` corresponding to the name when you created the repository (`your_repo` in this example)
-        * `gihub_repo_branch` corresponding to the main branch of your repo. (should be called `main`)
+        * `github_repo_branch` corresponding to the main branch of your repo. (should be called `main`)
         * `pipeline_deployable_regions` corresponding to the lists of [AWS regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-regions) you plan to deploy your future applications to.
         * (optional) `domain_name` a DNS domain name to use to expose your services publicly (it needs to be already registered in a registrar such [Amazon route53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html))
 
