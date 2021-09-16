@@ -28,6 +28,7 @@ export class Frontend extends cdk.Construct {
         defaultRootObject: 'index.html',
         errorResponses: [
           { httpStatus: 404, responsePagePath: '/index.html', responseHttpStatus: 200 },
+          { httpStatus: 403, responsePagePath: '/index.html', responseHttpStatus: 200 },
         ],
       }
     );
