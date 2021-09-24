@@ -3,6 +3,7 @@ import { Frontend } from './frontend/frontend';
 import { Auth } from './common/auth';
 import { FrontendConfig } from './frontend/frontend-config';
 import { PostsService } from './postsService/posts-service';
+import { Monitoring } from './common/monitoring';
 
 export class MainStack extends cdk.Stack {
 
@@ -20,6 +21,12 @@ export class MainStack extends cdk.Stack {
       userAuth,
       activateBucket: frontend.activateBucket,
       activateDistribution: frontend.activateDistribution
+    });
+
+    // create Monitoring dashboards
+    new Monitoring(this, "monitoring", {
+      auth: userAuth,
+      postService: postService,
     });
 
     new FrontendConfig(this, 'frontendConfig', {
