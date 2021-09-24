@@ -28,8 +28,10 @@
     "@aws-cdk/aws-apigateway": "1.95.2",
     "@aws-cdk/aws-cloudfront": "1.95.2",
     "@aws-cdk/aws-cloudfront-origins": "1.95.2",
+    "@aws-cdk/aws-cloudwatch": "1.95.2",
     "@aws-cdk/aws-cognito": "1.95.2",
     "@aws-cdk/aws-dynamodb": "1.95.2",
+    "@aws-cdk/aws-iam": "1.95.2",
     "@aws-cdk/aws-lambda": "1.95.2",
     "@aws-cdk/aws-lambda-event-sources": "1.95.2",
     "@aws-cdk/aws-lambda-nodejs": "1.95.2",
@@ -37,6 +39,7 @@
     "@aws-cdk/aws-s3-deployment": "1.95.2",
     "@aws-cdk/core": "1.95.2",
     "@types/uuid": "^8.3.0",
+    "aws-embedded-metrics": "2.0.4",
     "source-map-support": "^0.5.16"
   }
 }

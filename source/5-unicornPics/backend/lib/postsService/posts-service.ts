@@ -5,7 +5,6 @@ import * as dynamodb from "@aws-cdk/aws-dynamodb";
 import * as eventSources from "@aws-cdk/aws-lambda-event-sources";
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as lambda from '@aws-cdk/aws-lambda-nodejs';
-import * as path from 'path';
 import { Auth } from '../common/auth';
 
 interface PostsServiceProps {
@@ -16,20 +15,25 @@ interface PostsServiceProps {
 
 export class PostsService extends cdk.Construct {
   public readonly postsApi: apigateway.RestApi;
+  public readonly table: dynamodb.Table;
 
   constructor(scope: cdk.Construct, id: string, props: PostsServiceProps) {
     super(scope, id);
 
     // create dynamodb table
 
-    const table = new dynamodb.Table(this, 'posts', {
+    this.table = new dynamodb.Table(this, 'posts', {
       partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
       sortKey: { name: 'postId', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     });
 
     // Create rest API
     this.postsApi = new apigateway.RestApi(this, "posts-api", {
       restApiName: "Posts Service",
+      deployOptions: {
+        metricsEnabled: true
+      },
       description: "This service manages posts.",
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
@@ -49,7 +53,7 @@ export class PostsService extends cdk.Construct {
     const newPost = new lambda.NodejsFunction(this, 'newPost',
     {
       environment: {
-        POSTS_TABLE_NAME: table.tableName,
+        POSTS_TABLE_NAME: this.table.tableName,
         CLOUDFRONT_DIST: props.activateDistribution.distributionDomainName
       }
     });
@@ -62,7 +66,7 @@ export class PostsService extends cdk.Construct {
     const getPosts = new lambda.NodejsFunction(this, 'getPosts',
     {
       environment: {
-        POSTS_TABLE_NAME: table.tableName,
+        POSTS_TABLE_NAME: this.table.tableName,
       }
     });
 
@@ -79,7 +83,7 @@ export class PostsService extends cdk.Construct {
     const getPostsById = new lambda.NodejsFunction(this, 'getPostsById',
     {
       environment: {
-        POSTS_TABLE_NAME: table.tableName,
+        POSTS_TABLE_NAME: this.table.tableName,
       }
     });
 
@@ -98,7 +102,7 @@ export class PostsService extends cdk.Construct {
     const likePost = new lambda.NodejsFunction(this, 'likePost',
     {
       environment: {
-        POSTS_TABLE_NAME: table.tableName,
+        POSTS_TABLE_NAME: this.table.tableName,
       }
     });
 
@@ -116,7 +120,7 @@ export class PostsService extends cdk.Construct {
     const dislikePost = new lambda.NodejsFunction(this, 'dislikePost',
     {
       environment: {
-        POSTS_TABLE_NAME: table.tableName,
+        POSTS_TABLE_NAME: this.table.tableName,
       }
     });
 
@@ -151,13 +155,13 @@ export class PostsService extends cdk.Construct {
     });
 
     // Grant read/write permissions to lambda
-    table.grantWriteData(getPosts);
-    table.grantReadData(getPosts);
-    table.grantWriteData(getPostsById);
-    table.grantReadData(getPostsById);
-    table.grantWriteData(likePost);
-    table.grantWriteData(dislikePost);
-    table.grantWriteData(newPost);
+    this.table.grantWriteData(getPosts);
+    this.table.grantReadData(getPosts);
+    this.table.grantWriteData(getPostsById);
+    this.table.grantReadData(getPostsById);
+    this.table.grantWriteData(likePost);
+    this.table.grantWriteData(dislikePost);
+    this.table.grantWriteData(newPost);
 
     // Grant read permission to lambda
     props.activateBucket.grantRead(newPost);
