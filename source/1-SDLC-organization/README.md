@@ -425,7 +425,7 @@ Now we are going to create the **Administrators**, **Developers**, **DevOpsEngin
 
 1. Click *Create group*
 
-1. Type **Adminstrators** as group name and click *Create*
+1. Type **Administrators** as group name and click *Create*
 
 1. Repeat steps 1 to 3 for **Developers**, **DevOpsEngineers**, **Approvers**
 
@@ -439,9 +439,9 @@ Now we are going to assign the **Administrators** group to all the accounts with
 
 1. Select all your accounts and click *Assign users*
 
-1. Go to *Groups* tab, select *Admninistrators* group and click *Next: Permissions set*
+1. Go to *Groups* tab, select *Administrators* group and click *Next: Permissions set*
 
-1. Select *AdminstriatorAccess* permissions set and click *Finish* 
+1. Select *AdministratorAccess* permissions set and click *Finish* 
 
 1. It will take a few seconds to configure all your accounts
 
@@ -452,7 +452,7 @@ Now we are going to assign the **Administrators** group to all the accounts with
 | Groups  | PermissionSets  | Accounts  |
 |---|---|---|
 | Developers  | DeveloperAccess  | Dev  |
-| Developers  | ReadOnlyAccess  | Staging, Prod  |
+| Developers  | ViewOnlyAccess  | Staging, Prod  |
 | DevOpsEngineers  | DevOpsAccess  | CICD  |
 | Approvers  | ApproverAccess  | CICD  |
 
