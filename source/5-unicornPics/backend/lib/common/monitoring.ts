@@ -62,7 +62,7 @@ export class Monitoring extends cdk.Construct {
         showUnits: true
       },
       height:12,
-      width:12,
+      width:6,
     });
 
     /* Business dashboard */
@@ -70,11 +70,12 @@ export class Monitoring extends cdk.Construct {
     businessDashboard.addWidgets(
       createWidget("Uploaded Pics", [createMetric("UnicornPics", "UploadedPics", "Uploads count", "SampleCount", {})]),
       createWidget("Likes", [createMetric("UnicornPics", "Likes", "Likes count", "SampleCount", {})]),
+      createWidget("Dislikes", [createMetric("UnicornPics", "Dislikes", "Dislikes count", "SampleCount", {})]),
       apigwWidget
     );
     businessDashboard.addWidgets(
-      createWidget("Dislikes", [createMetric("UnicornPics", "Dislikes", "Dislikes count", "SampleCount", {})]),
-      createWidget("SignUps", [createMetric("AWS/Cognito", "SignUpSuccesses", "SignUps count", "SampleCount", {UserPool: props.auth.userPool.userPoolId, UserPoolClient: props.auth.userPoolClient.userPoolClientId})]),
+      createWidget("SignUp", [createMetric("AWS/Cognito", "SignUpSuccesses", "SignUp count", "SampleCount", {UserPool: props.auth.userPool.userPoolId, UserPoolClient: props.auth.userPoolClient.userPoolClientId})]),
+      createWidget("SignIn", [createMetric("AWS/Cognito", "SignInSuccesses", "SignIn count", "SampleCount", {UserPool: props.auth.userPool.userPoolId, UserPoolClient: props.auth.userPoolClient.userPoolClientId})]),
     );
 
     /* Technical dashboard */
