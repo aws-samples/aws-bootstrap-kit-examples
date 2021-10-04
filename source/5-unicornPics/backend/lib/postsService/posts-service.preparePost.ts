@@ -1,4 +1,6 @@
-import * as AWS from 'aws-sdk';
+let AWSXRay = require('aws-xray-sdk-core');
+let AWS = AWSXRay.captureAWS(require('aws-sdk'));
+
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import { v4 as uuidv4 } from 'uuid';
 
