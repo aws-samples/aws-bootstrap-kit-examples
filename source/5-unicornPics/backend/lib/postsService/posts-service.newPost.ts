@@ -1,6 +1,9 @@
-import * as AWS from 'aws-sdk';
+let AWSXRay = require('aws-xray-sdk-core');
+let AWS = AWSXRay.captureAWS(require('aws-sdk'));
+
 import { Handler, S3Event } from 'aws-lambda';
 import { metricScope, Unit } from "aws-embedded-metrics";
+
 const documentClient = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 const s3 = new AWS.S3();
 const cloudfrontDistribution = process.env.CLOUDFRONT_DIST;

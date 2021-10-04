@@ -1,5 +1,8 @@
-import * as AWS from 'aws-sdk';
+let AWSXRay = require('aws-xray-sdk-core');
+let AWS = AWSXRay.captureAWS(require('aws-sdk'));
+
 import { APIGatewayProxyHandler } from 'aws-lambda';
+
 const documentClient = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 const postsTableName = process.env.POSTS_TABLE_NAME!;
 
