@@ -68,6 +68,19 @@ export class LoadtestingStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(15),
     });
 
+    //Clean up load testing resources
+    const cleanUpUsers = new lambda.NodejsFunction(this, 'cleanUpUsers', {
+      environment: {
+        USER_POOL_ID: userPoolId,
+      },
+      role: lambdaCognitoPowerUserRole,
+      timeout: cdk.Duration.minutes(5),
+    });
+    const cleanUpTask = new tasks.LambdaInvoke(this, 'Clean Up', {
+      lambdaFunction: cleanUpUsers,
+      retryOnServiceExceptions: true,
+    });
+
     //StepFunction to coordination load testing steps
     const inputValidationFailed = new sfn.Fail(this, 'Input Validation Failed', {
       cause: 'Input Validation Failed. Please ensure parameters do not exceed limits.',
@@ -86,6 +99,7 @@ export class LoadtestingStack extends cdk.Stack {
     const triggerLoadTask = new tasks.LambdaInvoke(this, 'Trigger Load', {
       lambdaFunction: triggerLoadTest,
       retryOnServiceExceptions: true,
+      resultPath: sfn.JsonPath.DISCARD,
     });
     const triggerAllLoadTask = new sfn.Map(this, 'Trigger All Load', {
       maxConcurrency: 0,
@@ -99,28 +113,12 @@ export class LoadtestingStack extends cdk.Stack {
         createTestUserIdsTask
           .next(createTestUsersTask)
           .next(triggerAllLoadTask)
+          .next(cleanUpTask)
           .next(testComplete)
       );
     new sfn.StateMachine(this, 'Load Test StateMachine', {
       definition: loadtestDefinition,
       stateMachineName:"LoadTest",
-    });
-
-    //StepFunction to clean up load testing resources
-    const cleanUpUsers = new lambda.NodejsFunction(this, 'cleanUpUsers', {
-      environment: {
-        USER_POOL_ID: userPoolId,
-      },
-      role: lambdaCognitoPowerUserRole,
-      timeout: cdk.Duration.minutes(5),
-    });
-    const cleanUpTask = new tasks.LambdaInvoke(this, 'Clean Up', {
-      lambdaFunction: cleanUpUsers,
-      retryOnServiceExceptions: true,
-    });
-    new sfn.StateMachine(this, 'Clean Up LoadTest StateMachine', {
-      definition: cleanUpTask,
-      stateMachineName:"LoadTestCleanUp",
     });
   }
 }
