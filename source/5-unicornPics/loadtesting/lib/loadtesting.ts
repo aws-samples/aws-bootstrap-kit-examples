@@ -112,7 +112,10 @@ export class LoadtestingStack extends cdk.Stack {
       .otherwise(
         createTestUserIdsTask
           .next(createTestUsersTask)
-          .next(triggerAllLoadTask)
+          .next(triggerAllLoadTask
+            .addCatch(cleanUpTask, {
+              resultPath: sfn.JsonPath.DISCARD,
+            }))
           .next(cleanUpTask)
           .next(testComplete)
       );
