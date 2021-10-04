@@ -62,7 +62,7 @@ export class Monitoring extends cdk.Construct {
         showUnits: true
       },
       height:12,
-      width:6,
+      width:12,
     });
 
     /* Business dashboard */
@@ -70,11 +70,11 @@ export class Monitoring extends cdk.Construct {
     businessDashboard.addWidgets(
       createWidget("Uploaded Pics", [createMetric("UnicornPics", "UploadedPics", "Uploads count", "SampleCount", {})]),
       createWidget("Likes", [createMetric("UnicornPics", "Likes", "Likes count", "SampleCount", {})]),
+      apigwWidget,
       createWidget("Dislikes", [createMetric("UnicornPics", "Dislikes", "Dislikes count", "SampleCount", {})]),
-      apigwWidget
+      createWidget("SignUp", [createMetric("AWS/Cognito", "SignUpSuccesses", "SignUp count", "SampleCount", {UserPool: props.auth.userPool.userPoolId, UserPoolClient: props.auth.userPoolClient.userPoolClientId})]),
     );
     businessDashboard.addWidgets(
-      createWidget("SignUp", [createMetric("AWS/Cognito", "SignUpSuccesses", "SignUp count", "SampleCount", {UserPool: props.auth.userPool.userPoolId, UserPoolClient: props.auth.userPoolClient.userPoolClientId})]),
       createWidget("SignIn", [createMetric("AWS/Cognito", "SignInSuccesses", "SignIn count", "SampleCount", {UserPool: props.auth.userPool.userPoolId, UserPoolClient: props.auth.userPoolClient.userPoolClientId})]),
     );
 
