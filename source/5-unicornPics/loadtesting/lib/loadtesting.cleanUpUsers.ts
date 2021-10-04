@@ -4,12 +4,12 @@ import { Handler } from 'aws-lambda';
 const USER_POOL_ID = process.env.USER_POOL_ID!;
 
 export const handler: Handler = async (event) => {
-    const numberOfUsers = event['NumberOfUsers'];
-    console.log('Cleaning Up '+numberOfUsers+' users');
+    const cognitoIsp = new AWS.CognitoIdentityServiceProvider();
+    
+    for (let userDescription of event) {
+        console.log('Deleting user for ', userDescription);
 
-    for (let i=0; i<numberOfUsers; i++) {
-        const username = "loadtestuser"+i;
-        const cognitoIsp = new AWS.CognitoIdentityServiceProvider();
+        const username = userDescription['UserName'];
         try {
             await cognitoIsp.adminDeleteUser({
                 Username: username,
