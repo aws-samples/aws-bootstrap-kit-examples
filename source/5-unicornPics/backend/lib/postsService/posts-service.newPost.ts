@@ -26,6 +26,13 @@ export const handler: Handler = metricScope(metrics =>
                 console.error(error);
                 throw new Error(error)
             }
+            let message = {
+                "ContentLength": postDetails.ContentLength,
+                "ContentType": postDetails.ContentType,
+                "userid": postDetails.Metadata.userid,
+                "postId": postDetails.Metadata.postid,
+            };
+            console.log(JSON.stringify(message));
 
             if (postDetails.Metadata) {
                 let dynamoParams = {
