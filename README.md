@@ -82,7 +82,7 @@ Basically the same as above but:
 * Users and Permissions management solution = [AWS SSO](https://aws.amazon.com/single-sign-on/faqs)
 * Login Web Portal = AWS SSO endpoint
 * Central Activity logs = Centralized [AWS Cloudtrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html)
-* Central Bills = [AWS Consolidated Billing](https://docs.aws.amazon.com/fr_fr/awsaccountbilling/latest/aboutv2/consolidated-billing.html)
+* Central Bills = [AWS Consolidated Billing](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html)
 * CI/CD Pipeline = [AWS CodePipeline](https://aws.amazon.com/codepipeline)
 * Infrastructure as code Artifact = [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/home.html) construct/App
 * Security monitoring rule = [AWS Config rule](https://aws.amazon.com/config/faq/)
