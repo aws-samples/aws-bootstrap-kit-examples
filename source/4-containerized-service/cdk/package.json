@@ -34,7 +34,7 @@
     "@aws-cdk/custom-resources": "1.69.0",
     "@aws-cdk/pipelines": "1.69.0",
     "@aws-solutions-constructs/aws-cloudfront-s3": "1.69.0",
-    "aws-sdk": "^2.786.0",
+    "aws-sdk": "^2.814.0",
     "source-map-support": "^0.5.16"
   }
 }
