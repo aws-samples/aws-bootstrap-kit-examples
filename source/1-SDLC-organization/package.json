@@ -1,6 +1,6 @@
 {
   "name": "sdlc-organization",
-  "version": "0.3.14",
+  "version": "0.4.0",
   "bin": {
     "workload_landing_zone": "bin/sdlc-organization.js"
   },
@@ -15,21 +15,19 @@
     "deploy": "cdk --profile main-admin deploy"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.114.0",
+    "@aws-cdk/assert": "2.0.0",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
     "jest": "^26.4.2",
     "ts-jest": "^26.2.0",
-    "aws-cdk": "1.114.0",
-    "ts-node": "^8.1.0",
+    "aws-cdk": "2.0.0",
+    "ts-node": "^9.0.0",
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "@aws-cdk/aws-codepipeline": "1.114.0",
-    "@aws-cdk/aws-codepipeline-actions": "1.114.0",
-    "@aws-cdk/core": "1.114.0",
-    "@aws-cdk/pipelines": "1.114.0",
-    "aws-bootstrap-kit": "0.3.14",
+    "aws-cdk-lib": "2.0.0",
+    "constructs": "^10.0.0",
+    "aws-bootstrap-kit": "file:../aws-bootstrap-kit@0.4.0.jsii.tgz",
     "source-map-support": "^0.5.16"
   }
 }
