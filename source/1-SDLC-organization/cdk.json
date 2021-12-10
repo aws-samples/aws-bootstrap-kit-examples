@@ -5,7 +5,7 @@
     "github_alias": "jeromevdl",
     "github_repo_name": "aws-bootstrap-kit-examples",
     "github_repo_branch": "cdk_v2_migration",
-    "email": "jeromevdl@gmail.com",
+    "email": "jvdl@amazon.com",
     "domain_name": "",
     "force_email_verification": true,
     "pipeline_deployable_regions": [
