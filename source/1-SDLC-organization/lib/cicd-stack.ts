@@ -92,7 +92,10 @@ export class AWSBootstrapKitLandingZonePipelineStack extends Stack {
     const regionsInShellScriptArrayFormat = deployableRegions.join(' ');
 
     prodStage.addPre(
-      new pipelines.ManualApprovalStep('Approval'),
+      new pipelines.ManualApprovalStep('Approval')
+    );
+
+    prodStage.addPost(
       new pipelines.CodeBuildStep('CDKBootstrapAccounts', {
         commands: [
           'set -eu',
@@ -117,7 +120,6 @@ export class AWSBootstrapKitLandingZonePipelineStack extends Stack {
             resources: ['*'],
           }),
         ],
-      }),
-    );
+    }))
   }
 }
