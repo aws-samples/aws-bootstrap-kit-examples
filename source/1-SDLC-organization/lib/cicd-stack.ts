@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import { Construct } from 'constructs';
-import { Stage, Stack } from 'aws-cdk-lib/core';
+import { CfnOutput, SecretValue, Stage, Stack } from 'aws-cdk-lib';
 import * as pipelines from 'aws-cdk-lib/pipelines';
-import * as core from "aws-cdk-lib/core";
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as bootstrapKit from 'aws-bootstrap-kit';
 
@@ -59,7 +58,7 @@ export class AWSBootstrapKitLandingZonePipelineStack extends Stack {
       `${this.node.tryGetContext('github_alias')}/${this.node.tryGetContext('github_repo_name')}`,
       this.node.tryGetContext('github_repo_branch'),
       {
-        authentication: core.SecretValue.secretsManager('GITHUB_TOKEN')
+        authentication: SecretValue.secretsManager('GITHUB_TOKEN')
       }
     );
 
@@ -82,7 +81,7 @@ export class AWSBootstrapKitLandingZonePipelineStack extends Stack {
       }),
     });
 
-    new core.CfnOutput(this, "PipelineConsoleUrl", {
+    new CfnOutput(this, "PipelineConsoleUrl", {
       value: `https://${Stack.of(this).region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipelineName}/view?region=${Stack.of(this).region}`,
     });
 
