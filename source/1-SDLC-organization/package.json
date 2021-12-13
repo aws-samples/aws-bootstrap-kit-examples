@@ -27,7 +27,7 @@
   "dependencies": {
     "aws-cdk-lib": "2.1.0",
     "constructs": "10.0.12",
-    "aws-bootstrap-kit": "file:../aws-bootstrap-kit@0.4.0.jsii.tgz",
+    "aws-bootstrap-kit": "0.4.0",
     "source-map-support": "^0.5.16"
   }
 }

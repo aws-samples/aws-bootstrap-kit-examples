@@ -2,11 +2,11 @@
   "app": "npx ts-node bin/sdlc-organization.ts",
   "context": {
     "@aws-cdk/core:newStyleStackSynthesis": true,
-    "github_alias": "jeromevdl",
-    "github_repo_name": "aws-bootstrap-kit-examples",
-    "github_repo_branch": "cdk_v2_migration",
-    "email": "jvdl@amazon.ch",
-    "domain_name": "",
+    "github_alias": "<YOUR GITHUB ALIAS>",
+    "github_repo_name": "<YOUR REPO NAME>",
+    "github_repo_branch": "main",
+    "email": "<YOUR EMAIL>",
+    "domain_name": "<YOUR ROOT DOMAIN NAME (if any specified in SDLC setup otherwise remove this key)>",
     "force_email_verification": true,
     "pipeline_deployable_regions": [
       "eu-west-1"
