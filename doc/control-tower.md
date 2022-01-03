@@ -1,13 +1,13 @@
 # Path to AWS Control Tower
 
-[AWS Control Tower](https://aws.amazon.com/controltower/) provides an easy way to setup a Landing Zone in AWS: it will create a multi-account structure with proper set of permissions (using [AWS SSO](https://aws.amazon.com/single-sign-on/)) and guardrails (using [Service Control Policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) (SCPs) and [AWS Config](https://aws.amazon.com/config/)).
+[AWS Control Tower](https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html) provides an easy way to setup a Landing Zone in AWS: it will create a multi-account structure with proper set of permissions (using [AWS SSO](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html)) and guardrails (using [Service Control Policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) (SCPs) and [AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html)).
 
-Control Tower creates multiples AWS resources for you:
+Control Tower focuses on providing a secured multi-accounts environment. It creates multiples AWS resources for you:
 - One Organization
 - One or two Organizational Units (OUs): Security (mandatory) and Sandbox (optional)
 - Two AWS Accounts in the Security OU: Log Archive and Audit
 - A directory in AWS SSO
-- A set of SCPs
+- A set of guardrails: proactive with SCPs and reactive with AWS Config.
 - ...
 You can get more details on Control Tower [here](https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html).
 
@@ -17,6 +17,14 @@ If you already bootstraped your landing zone using the bootstrap kit, this docum
 
 At the end of this guide, you will have what bootstrap kit created: the Organization, OUs (Shared, SDLC, Prod), accounts (CICD, Dev, Staging, Prod, ...) plus what Control Tower will create (see above).
 
+## Why?
+
+The Bootstrap Kit already set up an organization, multiple accounts and centralized logging and you may wonder why moving to Control Tower. You should consider using Control Tower (and this guide) for the following reasons (not exhaustive):
+- Bootstrap Kit aims to be simple and to provide a basic Organization structure, mainly focused on software development lifecycle (stages, CI/CD). Control Tower focuses more on security, compliance and governance. If your AWS environment is growing (more projects, more teams) and you need a stronger governance, Control Tower comes with a number of pre-configured guardrails (SCPs and Config rules). And you can [extend it with conformance packs](https://aws.amazon.com/blogs/mt/extend-aws-control-tower-governance-using-aws-config-conformance-packs/).
+- If you wish to use the Control Tower [Account Factory](https://docs.aws.amazon.com/controltower/latest/userguide/account-factory.html) to create accounts. Account Factory is based on [AWS Service Catalog](https://docs.aws.amazon.com/servicecatalog/latest/adminguide/introduction.html) and provides advanced features like [VPC configuration](https://docs.aws.amazon.com/controltower/latest/userguide/configuring-account-factory-with-VPC-settings.html), [automatic deployment of resources](https://aws.amazon.com/blogs/architecture/field-notes-customizing-the-aws-control-tower-account-factory-with-aws-service-catalog/), ...
+- If you wish to use the [Account Factory for Terraform](https://docs.aws.amazon.com/controltower/latest/userguide/taf-account-provisioning.html) (AFT) and thus Terraform templates instead of CDK code.
+- If you prefer managing your organization using the Control Tower Console rather than infrastucture as code (CDK).
+
 ## Prerequisites
 
 **Disclaimer**: This page is only needed when you already have used bootstrap kit to setup your environment. If you start from a blank page or an existing Organization not created by bootstrap kit, refer to the Control Tower documentation.
@@ -25,7 +33,7 @@ When you setup a landing zone with Control Tower, it performs some pre-check (se
 
 ### CloudTrail integration
 
-One of them is about AWS CloudTrail. CloudTrail must not be enabled for your organization. Otherwise you will get the fllowing warning:
+One of them is about AWS CloudTrail which is enabled by the Bootstrap Kit. CloudTrail must not be enabled for your organization. Otherwise you will get the following warning:
 
 ![You must unsubscribe your organization from AWS CloudTrail](migration-ct-error-cloudtrail.png)
 
@@ -53,9 +61,12 @@ If you prefer not to delete these resources, skip these 2 steps and follow the d
 #### Configuration Recorder
 
 To remove the Configuration recorder, you can use the following commands:
-
+ 1. First retrieve the name of the recorder:
 ```shell
 $ aws configservice describe-configuration-recorders
+```
+You will get the following result (roleARN will be different in your case):
+```shell
 {
     "ConfigurationRecorders": [
         {
@@ -71,7 +82,9 @@ $ aws configservice describe-configuration-recorders
         }
     ]
 }
-
+```
+ 2. Then delete it:
+```shell
 $ aws configservice delete-configuration-recorder —configuration-recorder-name BlueprintConfigRecorder
 ```
 
@@ -79,8 +92,12 @@ $ aws configservice delete-configuration-recorder —configuration-recorder-name
 
 To remove the Delivery Channel, you can use the following commands:
 
+ 1. First retrieve the channel name:
 ```shell
 $ aws configservice describe-delivery-channels
+```
+You will get the following result:
+```shell
 {
     "DeliveryChannels": [
         {
@@ -89,7 +106,9 @@ $ aws configservice describe-delivery-channels
         }
     ]
 }
-
+```
+ 2. Then delete it:
+```shell
 $ aws configservice delete-delivery-channel —delivery-channel-name ConfigDeliveryChannel
 ```
 
