@@ -63,7 +63,9 @@ const nestedOU = [
                 type: AccountType.STAGE,
                 stageName: 'prod',
                 stageOrder: 2,
-                hostedServices: ['ALL']
+                hostedServices: ['ALL'],
+                // when using bootstrap kit on existing organisation, you can import existing accounts in the OU hierarchy:
+                // existingAccountId: '123456789012'
             }
         ]
     }
