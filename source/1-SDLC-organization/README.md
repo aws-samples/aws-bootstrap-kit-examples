@@ -24,8 +24,8 @@ Step # | Feature | Description
 
 This CDK app will instanciate the following resources:
 
-* An [AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html)
-* Multiple [AWS Accounts](https://aws.amazon.com/organizations/faqs/#Organizing_AWS_accounts) under different [Organizational Unit](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_ous.html)
+* An [AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html) (unless an organization already exists).
+* Multiple [AWS Accounts](https://aws.amazon.com/organizations/faqs/#Organizing_AWS_accounts) under different [Organizational Units](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_ous.html) (OUs). When deploying bootstrap kit on an existing organization, OUs with the same name and parent are reused. You can also choose to import existing accounts in the bootstrap kit OU hierarchy.
 * A central [AWS CloudTrail for organizations](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/creating-trail-organization.html)
 * Few basics security guard rails using [AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html)
 * A DNS Zone (if a domain is provided) using [Route53 HostedZone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/AboutHZWorkingWith.html)
@@ -47,9 +47,9 @@ DNS hierarchy:
 
 * A [GitHub](https://github.com) account
 * [npm](https://npmjs.org) and [awscli](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) installed
-* A valid email (can be your root account one) 
+* A valid email (can be your root account one)
   * without "+" in it
-  * provided by a provider supporting [subaddressing](https://en.wikipedia.org/wiki/Plus_address) which means supporting '+' email extension (Most providers such as gmail/google, outlook etc. support it. If you're not sure check [this page](https://en.wikipedia.org/wiki/Comparison_of_webmail_providers#Features) "Address modifiers" column or send an email to yourself adding a plus extension such as `myname+test@myemaildomain.com` . if you receive it, you're good).   
+  * provided by a provider supporting [subaddressing](https://en.wikipedia.org/wiki/Plus_address) which means supporting '+' email extension (Most providers such as gmail/google, outlook etc. support it. If you're not sure check [this page](https://en.wikipedia.org/wiki/Comparison_of_webmail_providers#Features) "Address modifiers" column or send an email to yourself adding a plus extension such as `myname+test@myemaildomain.com` . if you receive it, you're good).
 * An AWS account with an IAM user with Administrator permission
 
 ### Enable Access to Billing data for IAM Users
@@ -120,7 +120,7 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
     git clone https://github.com/<YOUR_GITHUB_ALIAS>/aws-bootstrap-kit-examples
     ```
 
-1. Link your GitHub repository to AWS by 
+1. Link your GitHub repository to AWS by
     1. Pushing your github personal secret token (follow [this instruction](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) if you don't have one with **admin:repo_hook** full control and **repo** full control) in AWS Secrets Manager, a service that stores your secret securely
         ```sh
         aws --profile main-admin secretsmanager create-secret --name GITHUB_TOKEN --secret-string <YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
@@ -142,20 +142,17 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
             {
                 "app": "npx ts-node bin/sdlc-organization.ts",
                 "context": {
-                "@aws-cdk/core:enableStackNameDuplicates": "true",
-                "aws-cdk:enableDiffNoFail": "true",
-                "@aws-cdk/core:stackRelativeExports": "true",
-                "@aws-cdk/core:newStyleStackSynthesis": true,
-                "github_alias": "your_alias",
-                "github_repo_name": "aws-bootstrap-kit-examples",
-                "github_repo_branch": "main",
-                "email": "admin@yourdomain.com",
-                "force_email_verification": true,
-                "pipeline_deployable_regions": [
-                    eu-west-1,
-                    eu-west-2
-                ],
-                "domain_name": "yourdomain.com"
+                    "@aws-cdk/core:newStyleStackSynthesis": true,
+                    "github_alias": "your_alias",
+                    "github_repo_name": "aws-bootstrap-kit-examples",
+                    "github_repo_branch": "main",
+                    "email": "admin@yourdomain.com",
+                    "force_email_verification": true,
+                    "pipeline_deployable_regions": [
+                        eu-west-1,
+                        eu-west-2
+                    ],
+                    "domain_name": "yourdomain.com"
                 }
             }
             ```
@@ -210,7 +207,7 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
 
    > This was step was enabled by the `force_email_verification` boolean set in your `cdk.json`. to ensure that the email provided satisfies the rules we previously mentioned (the email doesn't contain `+` and the email providor supports subaddressing)
 
-1. When all green, you should be able to 
+1. When all green, you should be able to
     1. check your organization structure in AWS Organizations console
     1. Get into any of those sub accounts by getting the Account ID from AWS Organizations console and using the switch role button on top left drop down of the screen and the `OrganizationAccountAccessRole` Role name.
 
@@ -219,6 +216,53 @@ To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/u
 </details>
 
 **Your Operator Environment is ready! Now let's open it to the team!**
+
+### Deploying bootstrap-kit on an existing organization
+
+<details>
+<summary>Click if you want to reuse an existing organization with bootstrap-kit</summary>
+While the aim of bootstrap-kit is to help you create an AWS environment from scratch (Organization, OU structure and accounts), you may already have an existing organization and some accounts you would like to reuse. bootstrap-kit is able to deploy on an existing Organization and to reuse it. If you already defined Organizational Units (OUs), they are also reused if they are at the same place in the hierarchy (see below example). As for the accounts, you can specify if you want to reuse some of the existing ones and put them in the account structure. Existing accounts will be automatically moved to the specified OU.
+
+In the following example, we want to create the structure on the right, starting from the one on the left, and reuse all existing accounts:
+
+```
+Root                                                             Root
+ |- OU Dev                                                        |- OU SDLC (new)
+ |     |- Account ProjectA                                        |   |- OU Dev (new, because new parent)
+ |     |- Account ProjectB                                        |       |- Account ProjectA (moved)
+ |- OU Shared                                                     |       |- Account ProjectB (moved)
+ |     |- Account CICD           ==> (reuse all accounts) ==>     |- OU Shared (reuse)
+ |- OU Prod                                                       |   |- Account CICD (don't move)
+      |- Account ProjectA                                         |- OU Prod (reuse)
+      |- Account ProjectB                                         |   |- Account ProjectA (don't move)
+                                                                  |   |- Account ProjectB (don't move)
+                                                                  |- OU Dev (remains from source, with no account, up to you to remove it)
+```
+
+bootstrap-kit takes care of:
+ * reusing the existing Organization and Root OU,
+ * creating new OUs: SDLC, SDLC/Dev (as Dev OU is under Root and cannot be moved under SDLC),
+ * creating new accounts (nothing in that example),
+ * reusing existing accounts and moving them to the appropriate OU. To do so you need to specify the account id to reuse in the OU configuration with the field `existingAccountId`:
+
+ ```typescript
+    const nestedOU = [
+    {
+        name: 'Shared',
+        accounts: [
+            {
+                name: 'CICD',
+                type: AccountType.CICD,
+                existingAccountId: '123456789012'
+            }
+        ]
+    }
+    // ...
+    ];
+ ```
+Note that accounts and OUs cannot be removed automatically. You have to remove them manually (ex: the Dev OU in previous example).
+
+</details>
 
 ## Going further
 
@@ -247,7 +291,7 @@ Staying with IAM users and groups would means not getting a central portal with 
 
 
 
-![A diagram showing IAM sign in page versus SSO one](../../doc/sign-in-iam-vs-sso.png) 
+![A diagram showing IAM sign in page versus SSO one](../../doc/sign-in-iam-vs-sso.png)
 
 
 *Whatch this quick presentation video to learn more:*
@@ -292,15 +336,15 @@ To set up these accesses, we first need to create a permission set which corresp
 1. Type in the info
     1. Name: *AdministratorAccess*
     1. Session duaration: *X hours*
-    1. Check the *Attach AWS managed policies* and *Create a custom permissions policy* boxes. 
+    1. Check the *Attach AWS managed policies* and *Create a custom permissions policy* boxes.
     1. Select the *AdministratorAccess* managed policy
     1. Enter the following custom permissions policy:
-    
+
     ```{}```
 
-1. click *Next: Tags* 
+1. click *Next: Tags*
 
-1. Skip *tags* by click *Next: Review* 
+1. Skip *tags* by click *Next: Review*
 
 1. Click *Create* to finalize the creation of the permissions set
 
@@ -309,7 +353,7 @@ To set up these accesses, we first need to create a permission set which corresp
 
 1. Repeat previous steps with
     1. Name: *DeveloperAccess*
-    1. Manage policies: 
+    1. Manage policies:
         * *PowerUserAccess*
     1. Custom policy:
         ```
@@ -339,7 +383,7 @@ To set up these accesses, we first need to create a permission set which corresp
 
 1. Repeat previous steps with
     1. Name: *DevOpsAccess*
-    1. Manage policies: 
+    1. Manage policies:
         * *AWSCloudFormationFullAccess*
         * *AWSCodeBuildAdminAccess*
         * *AWSCodePipelineFullAccess*
@@ -388,9 +432,9 @@ To set up these accesses, we first need to create a permission set which corresp
 
 1. Repeat previous steps with
     1. Name: *ApproverAccess*
-    1. Manage policies: 
+    1. Manage policies:
         * *AWSCodePipelineApproverAccess*
-        
+
     1. Custom policy:
         ```
         {}
@@ -400,9 +444,9 @@ To set up these accesses, we first need to create a permission set which corresp
 
 1. Repeat previous steps with
     1. Name: *ViewOnlyAccess*
-    1. Manage policies: 
+    1. Manage policies:
         * *ViewOnlyAccess*
-        
+
     1. Custom policy:
         ```
         {}
@@ -441,7 +485,7 @@ Now we are going to assign the **Administrators** group to all the accounts with
 
 1. Go to *Groups* tab, select *Administrators* group and click *Next: Permissions set*
 
-1. Select *AdministratorAccess* permissions set and click *Finish* 
+1. Select *AdministratorAccess* permissions set and click *Finish*
 
 1. It will take a few seconds to configure all your accounts
 
@@ -458,7 +502,7 @@ Now we are going to assign the **Administrators** group to all the accounts with
 
 
 
-**Now let's create your Administrator user !** 
+**Now let's create your Administrator user !**
 
 #### Create your administrator SSO user
 
@@ -547,9 +591,9 @@ Just run
  aws configure sso --profile dev
 ```
 
-and choose 
+and choose
 * The previously customized URL as **SSO Start URL** with the **/start/** at the end
-* your dev account in the list. 
+* your dev account in the list.
 
 
 And login with
@@ -562,22 +606,22 @@ aws sso login --profile dev
 
 In order to interact with your different environment through the [awscli](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) or any AWS SDKs locally, you will need to get your credentials.
 
-To authenticate requests made using the CLI, we need to give the credentials generated by AWS SSO and link them to what we call `profile`. So for each environment you want to have access to through AWS CLI v2 and CDK you will have to configure a specific profile for it running the command below. 
+To authenticate requests made using the CLI, we need to give the credentials generated by AWS SSO and link them to what we call `profile`. So for each environment you want to have access to through AWS CLI v2 and CDK you will have to configure a specific profile for it running the command below.
 
 Here we setup your first profile that will be used to replace your IAM user administrator one (`--profile dev`):
 
-  
+
  ```sh
  aws configure sso --profile dev
  SSO start URL [None]: https://yourdomain.awsapps.com/start
  SSO Region [None]: eu-west-1
  Attempting to automatically open the SSO authorization page in your default browser.
  If the browser does not open or you wish to use a different device to authorize this request, open the following URL:
- 
+
  https://device.sso.eu-west-1.amazonaws.com/
- 
+
  Then enter the code:
- 
+
  ABCD-ABCD
  There are 5 AWS accounts available to you.
  Using the account ID 111122223333
@@ -585,31 +629,31 @@ Here we setup your first profile that will be used to replace your IAM user admi
  Using the role name "DeveloperAccess"
  CLI default client Region [None]: eu-west-1
  CLI default output format [None]: json
- 
+
  To use this profile, specify the profile name using --profile, as shown:
- 
+
  aws s3 ls --profile dev
  ```
-  
+
  Here we use the `--profile` parameter with `dev` in order to, in the future be able to swtich between accounts.
-  
-  
+
+
  You can now test our set up:
-  
+
  ```sh
  aws --profile=dev  sts get-caller-identity
-  
+
  {
          "UserId": "A1B2C3D4E5F6G7EXAMPLE:admin",
      "Account": "111122223333",
         "Arn": "arn:aws:sts::111122223333:assumed-role/AWSReservedSSO_AdministratorAccess_1234a12345a12aa1/admin"
  }
  ```
-  
+
  This command show you basically what your current crendentials are attached to :
  * `Account` tell you which Account Id you are talking to
  * `Arn` tell you which Role you are using
-  
+
    To learn more, check the [official doc](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html).
 
 This procedure should be repeted for all the AWS Account you want to interact with.
