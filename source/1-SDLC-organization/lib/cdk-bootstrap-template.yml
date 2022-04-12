@@ -745,6 +745,10 @@ Resources:
               - logs:CreateLogStream
               - logs:PutLogEvents
             Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*"
+          - Effect: Allow
+            Action:
+              - cloudformation:DescribeStacks
+            Resource: "*"
 
           ##################################################################
           # Deny dangerous actions that could escalate privilege or cause security incident
