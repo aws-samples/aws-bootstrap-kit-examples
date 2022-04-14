@@ -9,7 +9,11 @@ const app = new cdk.App();
 // Use for direct deploy to an environment without pipeline
 new LandingPageStage(app, 'Test', {});
 // Use to deploy the pipeline stack
-const pipelineStack = new LandingPagePipelineStack(app, 'LandingPageStackPipeline');
+const pipelineStack = new LandingPagePipelineStack(app, 'LandingPageStackPipeline', {
+    env: {
+        region: process.env.CDK_DEFAULT_REGION,
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+    } });
 
 const permissionBoundaryArn = cdk.Fn.importValue('CICDPipelinePermissionsBoundaryArn')
 
