@@ -129,7 +129,7 @@ export class LandingPagePipelineStack extends Stack{
         for (const account of accounts) {
             console.log(`Checking whether the target environment aws://${account}/${region} is deployable...`);
             if (!await this.checkTargetEnvironment(stsClient, account, region, qualifier)) {
-                var message = `Account ${account} is not bootstrapped in ${region}. Make sure you deploy the pipeline in a deployable region.`;
+                const message = `Account ${account} is not bootstrapped in ${region}. Make sure you deploy the pipeline in a deployable region.`;
                 throw new Error(message);
             }
         }
