@@ -124,7 +124,7 @@ export class LandingPagePipelineStack extends Stack{
     }
 
     private async CheckTargetEnvironments(accounts: Iterable<string>, region: string, qualifier: string) : Promise<void> {
-        var stsClient = new STS();
+        const stsClient = new STS();
 
         for (const account of accounts) {
             console.log(`Checking whether the target environment aws://${account}/${region} is deployable...`);
