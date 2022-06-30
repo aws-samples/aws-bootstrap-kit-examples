@@ -20,6 +20,10 @@
     "web-vitals": "^1.1.1",
     "immer": ">=9.0.6"
   },
+  "overrides": {
+    "shell-quote": "^1.7.3",
+    "ejs": "^3.1.7"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
