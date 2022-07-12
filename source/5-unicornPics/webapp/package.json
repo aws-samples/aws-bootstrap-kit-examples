@@ -47,5 +47,12 @@
     "@types/node": "^14.14.41",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3"
+  },
+
+  "overrides": {
+    "shell-quote": "^1.7.3",
+    "ejs": "^3.1.7",
+    "axios": "^0.21.2",
+    "@aws-sdk/shared-ini-file-loader": "3.0.0"
   }
 }
