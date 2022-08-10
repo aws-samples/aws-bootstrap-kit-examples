@@ -423,7 +423,7 @@ In the same directory as the stack we created the code for the Lambda function.
     ```
 Deployed the CDK app into our dev account.
 
-1. Went to the directory with your CDK stack, login using SSO and deploy the stack.
+1. Went to the directory with your CDK stack, login using IAM Identity Center and deploy the stack.
 
     ```bash
     $ aws sso login --profile dev
