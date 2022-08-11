@@ -15,7 +15,7 @@ Step # | Feature | Description
 2 | [Configure your local credentials](#configure-your-local-credentials) | `aws configure --profile main-admin`
 3 | [Fork and init the repo](#clone-and-init-the-repo) | Get the code
 4 | [Deploy the pipeline](#install-dependencies-and-deploy-the-pipeline) | Deploy your organization through a CI/CD pipeline
-5 | [Setup your SSO domain](#setup-your-sso-domain) | Prepare you user permissions and groups
+5 | [Setup your IAM Identity Center domain](#setup-your-sso-domain) | Prepare you user permissions and groups
 6 | [Setup your dev environment](#setup-your-dev-environment) | Prepare your local environment to be ready to develop
 7 | [Start coding](#next-step) | Jump to next section about developing and deploying your first web site
 
@@ -283,15 +283,15 @@ If you added `domain_name` in your config file (`cdk.json`) earlier, a last step
 **Your Done! Now you can manage your domain through AWS Route53**
 </details>
 
-### Enable SSO
+### Enable IAM Identity Center
 
-In order to facilitate the management of permissions on the access to this different accounts we suggest to setup an SSO portal following the steps described bellow. That's going to give you the capability to centrally manage and access your different AWS account with a single identity (login and password) or even delegate this to a third party provider such as Google Workspace (GSuite).
+In order to facilitate the management of permissions on the access to this different accounts we suggest to setup an AWs access portal following the steps described bellow. That's going to give you the capability to centrally manage and access your different AWS account with a single identity (login and password) or even delegate this to a third party provider such as Google Workspace (GSuite).
 
 Staying with IAM users and groups would means not getting a central portal with a single identity and would force you to remember the different account ID and role to login into:
 
 
 
-![A diagram showing IAM sign in page versus SSO one](../../doc/sign-in-iam-vs-sso.png)
+![A diagram showing IAM sign in page versus AWS access portal one](../../doc/sign-in-iam-vs-sso.png)
 
 
 *Whatch this quick presentation video to learn more:*
@@ -300,7 +300,7 @@ Staying with IAM users and groups would means not getting a central portal with 
     <img src="https://img.youtube.com/vi/_qNkFxp1Z_k/hqdefault.jpg"  alt="AWS Single Sign On video"/>
 </a>
 
-### Setup your SSO domain
+### Setup your IAM Identity Center domain
 
 <details>
 <summary>Click to go through this step</summary>
@@ -308,7 +308,7 @@ Staying with IAM users and groups would means not getting a central portal with 
 Sorry we can't automate those step yet :cry:
 
 
-1. Go to the <a href="https://console.aws.amazon.com/singlesignon/home" target="_blank">AWS SSO Home page</a> and  Click *Enable AWS SSO*
+1. Go to the <a href="https://console.aws.amazon.com/singlesignon/home" target="_blank">AWS IAM Identity Center Home page</a> and  Click *Enable*
 
 #### Create permission sets
 
@@ -504,7 +504,7 @@ Now we are going to assign the **Administrators** group to all the accounts with
 
 **Now let's create your Administrator user !**
 
-#### Create your administrator SSO user
+#### Create your administrator user
 
 
 
@@ -526,27 +526,27 @@ Now we are going to create an Administrator user, we basically will follow the s
 
 1. Well done your account has been successfully activated! Click *Continue*
 
-1. You have now access to your SSO app list. Click on *AWS Account* card to expand the list of accounts
+1. You have now access to your app list. Click on *AWS Account* card to expand the list of accounts
 
 1. Click on your main account to expand the list of your access to this account
 
 1. Click on *Management console* to access to the console of your main account
 
-1. Your are now connected with your new SSO Administrator user
+1. Your are now connected with your new Administrator user
 
-**Let's assign the Developers group to Dev, Staging and Prod accounts with this new SSO Administrator user**
+**Let's assign the Developers group to Dev, Staging and Prod accounts with this new Administrator user**
 
-#### Customize your SSO endpoint
+#### Customize your AWS access portal URL
 
-From now on, you or any of your developers won't have to login anymore directly to AWS console but directly through AWS SSO portal. In the previous step you might have noticed that your SSO console is accessible through a unique URL such as `https://d-123456789a.awsapps.com/start ` which is not that easy to remember, let's customize it to match your company domain:
+From now on, you or any of your developers won't have to login anymore directly to AWS console but directly through AWS access portal. In the previous step you might have noticed that your AWS user portal is accessible through a unique URL such as `https://d-123456789a.awsapps.com/start ` which is not that easy to remember, let's customize it to match your company domain:
 
-1. Search for *SSO* on the console home page and go to the service
+1. Search for *Identity Center* on the console home page and go to the service
 
 1. At the bottom of the page, click the *Customize* link located in *User portal* section
 
 1. Type your domain name and click *Save*
 
-**Tada !! You can now login to AWS Console through your SSO portal using your customized url !**
+**Tada !! You can now login to AWS Console through your AWS access portal using your customized url !**
 
 </details>
 
@@ -555,7 +555,7 @@ From now on, you or any of your developers won't have to login anymore directly 
 <details>
 <summary>Click to go through this step</summary>
 
-#### Create a developer SSO user
+#### Create a developer user
 
 (This section is optional but will be one to use each time you want to onboard a new dev in your team)
 
@@ -577,7 +577,7 @@ Now we are going to create a Developer user with enough rate to develop and publ
 
 1. Well done your account has been successfully activated! Click *Continue*
 
-1. You have now access to your SSO app list with your Developer user
+1. You have now access to your app list with your Developer user
 
 
 #### AWS CLI V2
@@ -606,7 +606,7 @@ aws sso login --profile dev
 
 In order to interact with your different environment through the [awscli](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) or any AWS SDKs locally, you will need to get your credentials.
 
-To authenticate requests made using the CLI, we need to give the credentials generated by AWS SSO and link them to what we call `profile`. So for each environment you want to have access to through AWS CLI v2 and CDK you will have to configure a specific profile for it running the command below.
+To authenticate requests made using the CLI, we need to give the credentials generated by AWS IAM Identity Center and link them to what we call `profile`. So for each environment you want to have access to through AWS CLI v2 and CDK you will have to configure a specific profile for it running the command below.
 
 Here we setup your first profile that will be used to replace your IAM user administrator one (`--profile dev`):
 
@@ -667,9 +667,9 @@ aws sso login --profile dev
 
 **Now you can interact with your different AWS Accounts using AWS CLI**
 
-#### CDK and SSO
+#### CDK and IAM Identity Center
 
-CDK and AWS SSO are not yet friends (see github issue [5455](https://github.com/aws/aws-cdk/issues/5455)). So since in the future we will have to deploy infrastructure as code apps into multiple environment, we  will need to make it work.
+CDK and AWS IAM Identity Center are not yet friends (see github issue [5455](https://github.com/aws/aws-cdk/issues/5455)). So since in the future we will have to deploy infrastructure as code apps into multiple environment, we  will need to make it work.
 
 There is several workaround and here is one using a quick utility written in nodejs called "cdk-sso-sync":
 

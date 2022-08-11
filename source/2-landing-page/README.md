@@ -84,7 +84,7 @@ As you can see in the [code](../lib/landing-page-stack.ts#L44), the public url w
     cdk deploy --profile dev
     ```
 
-    > If you get the error message *Unable to resolve AWS account to use. It must be either configured when you define your CDK or through the environment*, you may need to refresh your SSO credentials by running the SSO login command described [here](../1-SDLC-organization/README.md#cdk-and-sso) to set up your dev profile with developer account credentials.
+    > If you get the error message *Unable to resolve AWS account to use. It must be either configured when you define your CDK or through the environment*, you may need to refresh your IAM Identity Center credentials by running the AWS access portal login command described [here](../1-SDLC-organization/README.md#cdk-and-sso) to set up your dev profile with developer account credentials.
 
 1. Retrieve the CloudFormation ouput called *LandingPageStack.LandingPageUrl* to navigate to your landing page
 

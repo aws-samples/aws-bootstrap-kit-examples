@@ -61,45 +61,45 @@ If you followed the whole [SDLC Organization CDK app](../1-SDLC-organization/REA
 
 Right now, the *Developer* user that you are using has no access to the CICD account as it is only member of the *Developers* group. Let's add it to the **DevOpsEngineers** group to give it access to the CICD account with the appropriate permissions.
 
-1. Navigate to your SSO portal Url and sign in with your *administrator* user
+1. Navigate to your AWS access portal Url and sign in with your *administrator* user
 
-    ![SSO portal sign in page with administrator filled in the username field and some masked characters in the password field](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-1.png)
+    ![AWS access portal sign in page with administrator filled in the username field and some masked characters in the password field](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-1.png)
 
 1. Click on the AWS Account card
 
-    ![The home page of the SSO portal with the AWS Account card](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-2.png)
+    ![The home page of the AWS access portal with the AWS Account card](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-2.png)
 
 1. Click on the *main* account row to expand it
 
-    ![The home page of the SSO portal with the AWS Account card and the list of account expanded](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-3.png)
+    ![The home page of the AWS access portal with the AWS Account card and the list of account expanded](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-3.png)
 
 1. Click on the *Management console* link for the **AdministratorAccess** permission set
 
-    ![The home page of the SSO portal with the AWS Account card and the list of account expanded and the list of permission set for the main account expanded](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-4.png)
+    ![The home page of the AWS access portal with the AWS Account card and the list of account expanded and the list of permission set for the main account expanded](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-4.png)
 
-1. Seach for the AWS SSO service thanks to the Find Services field
+1. Search for the Identity Center service thanks to the Find Services field
 
-    ![The AWS Console home page with SSO entered in the Find Services field](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-5.png)
+    ![The AWS Console home page with Identity Center entered in the Find Services field](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-5.png)
 
 1. Click on Users on the left side menu
 
-    ![The AWS SSO Console home page](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-6.png)
+    ![The AWS IAM Identity Center Console home page](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-6.png)
 
 1. Click on the Developer user
 
-    ![The AWS SSO Console Users page with the list of SSO users](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-7.png)
+    ![The AWS IAM Identity Center Console Users page with the list of users](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-7.png)
 
 1. Click on the Groups tab
 
-    ![The AWS SSO Console Users details page for the Developer user](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-8.png)
+    ![The AWS IAM Identity Center Console Users details page for the Developer user](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-8.png)
 
 1. Select the **DevOpsEngineers** group and click on the *Add to 1 group(s)* button
 
-    ![The AWS SSO Console Add user to groups page with the list of available groups](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-10.png)
+    ![The AWS IAM Identity Center Console Add user to groups page with the list of available groups](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-10.png)
 
-1. Go back to your SSO portal and click on *Sign out*
+1. Go back to your AWS access portal and click on *Sign out*
 
-    ![The home page of the SSO portal](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-11.png)
+    ![The home page of the AWS access portal](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-11.png)
 
 </details>
 
@@ -109,15 +109,15 @@ Right now, the *Developer* user that you are using has no access to the CICD acc
 
 1. When you are asked to sign in in a web browser, use your Developer credentials
 
-    ![SSO portal sign in page with Developer filled in the username field and some masked characters in the password field](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-13.png)
+    ![AWS access portal sign in page with Developer filled in the username field and some masked characters in the password field](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-13.png)
 
 1. Click on the *Sign in to AWS CLI* button
 
-    ![SSO portal sign in page for the AWS CLI sign in](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-14.png)
+    ![AWS access portal sign in page for the AWS CLI sign in](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-14.png)
 
 1. You can close your browser
 
-    ![SSO portal sign in page for the AWS CLI sign in with a confirmation message](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-15.png)
+    ![AWS access portal sign in page for the AWS CLI sign in with a confirmation message](../../doc/landing-page-with-cicd-add-to-devopsengineers-group-15.png)
 
 1. Go back to your shell and select the CICD account
 
@@ -129,7 +129,7 @@ Right now, the *Developer* user that you are using has no access to the CICD acc
 
 1. Execute `npm install -g cdk-sso-sync`
 
-    > Right now the cdk cli is not SSO friendly so we use a small command line tool to synchronize SSO credential with standard aws cli credential so that cdk can use a SSO profile
+    > Right now the cdk cli is not IAM Identity Center friendly so we use a small command line tool to synchronize IAM Identity Center credential with standard aws cli credential so that cdk can use a IAM Identity Center enabled profile
 
 1. Execute `cdk-sso-sync cicd`
 
@@ -203,21 +203,21 @@ git push
 
 <summary>Click to expand</summary>
 
-1. Navigate to your SSO portal Url and sign in with your *Developer* user
+1. Navigate to your AWS access portal Url and sign in with your *Developer* user
 
-    ![SSO portal sign in page with Devloper filled in the username field and some masked characters in the password field](../../doc/landing-page-with-cicd-check-deployment-1.png)
+    ![AWS access portal sign in page with Devloper filled in the username field and some masked characters in the password field](../../doc/landing-page-with-cicd-check-deployment-1.png)
 
 1. Click on the AWS Account card
 
-    ![The home page of the SSO portal with the AWS Account card](../../doc/landing-page-with-cicd-check-deployment-2.png)
+    ![The home page of the AWS access portal with the AWS Account card](../../doc/landing-page-with-cicd-check-deployment-2.png)
 
 1. Click on the *Dev* account row to expand it
 
-    ![The home page of the SSO portal with the AWS Account card and the list of account expanded](../../doc/landing-page-with-cicd-check-deployment-3.png)
+    ![The home page of the AWS access portal with the AWS Account card and the list of account expanded](../../doc/landing-page-with-cicd-check-deployment-3.png)
 
 1. Click on the *Management console* link for the **DevOpsAccess** permission set
 
-    ![The home page of the SSO portal with the AWS Account card and the list of account expanded and the list of permission set for the Dev account expanded](../../doc/landing-page-with-cicd-check-deployment-4.png)
+    ![The home page of the AWS access portal with the AWS Account card and the list of account expanded and the list of permission set for the Dev account expanded](../../doc/landing-page-with-cicd-check-deployment-4.png)
 
 1. Seach for the AWS CodePipeline service thanks to the Find Services field
 
@@ -231,9 +231,9 @@ git push
 
     ![The AWS CodePipeline Console pipeline details page](../../doc/landing-page-with-cicd-check-deployment-7.png)
 
-1. Navigate to your SSO portal and click on the *Staging* row to expand it, and click on the *Management console* link for the *ViewOnly* permission set
+1. Navigate to your AWS access portal and click on the *Staging* row to expand it, and click on the *Management console* link for the *ViewOnly* permission set
 
-    ![The home page of the SSO portal with the AWS Account card and the list of account expanded and the list of permission set for the Staging account expanded](../../doc/landing-page-with-cicd-check-deployment-8.png)
+    ![The home page of the AWS access portal with the AWS Account card and the list of account expanded and the list of permission set for the Staging account expanded](../../doc/landing-page-with-cicd-check-deployment-8.png)
 
 1. Seach for the AWS CloudFormation service thanks to the Find Services field
 

@@ -1,12 +1,12 @@
 # Path to AWS Control Tower
 
-[AWS Control Tower](https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html) provides an easy way to setup a Landing Zone in AWS: it will create a multi-account structure with proper set of permissions (using [AWS SSO](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html)) and guardrails (using [Service Control Policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) (SCPs) and [AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html)).
+[AWS Control Tower](https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html) provides an easy way to setup a Landing Zone in AWS: it will create a multi-account structure with proper set of permissions (using [AWS IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html)) and guardrails (using [Service Control Policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) (SCPs) and [AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html)).
 
 Control Tower focuses on providing a secured multi-accounts environment. It creates multiples AWS resources for you:
 - One Organization
 - One or two Organizational Units (OUs): Security (mandatory) and Sandbox (optional)
 - Two AWS Accounts in the Security OU: Log Archive and Audit
-- A directory in AWS SSO
+- A directory in AWS IAM Identity Center
 - A set of guardrails: proactive with SCPs and reactive with AWS Config.
 - ...
 You can get more details on Control Tower [here](https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html).
@@ -176,4 +176,4 @@ Control Tower is now set up and governs the Bootstrap Kit resources (Org, OUs, a
 
 Note that the Administrator user now has the following permissions: [AWSOrganizationsFullAccess](https://github.com/SummitRoute/aws_managed_policies/blob/master/policies/AWSOrganizationsFullAccess) on the bootstrap kit accounts (instead of AWSAdministratorAccess). See [docs](https://docs.aws.amazon.com/controltower/latest/userguide/sso.html):
 
-![Administrator permissions in SSO portal](migration-ct-admin-permissions.png)
+![Administrator permissions in AWS access portal](migration-ct-admin-permissions.png)

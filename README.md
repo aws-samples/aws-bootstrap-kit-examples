@@ -1,30 +1,32 @@
 # AWS Bootstrap Kit Examples Overview
 
 - [AWS Bootstrap Kit Examples Overview](#aws-bootstrap-kit-examples-overview)
-  * [Who is this for?](#who-is-this-for)
-  * [What you will get with it?](#what-you-will-get-with-it)
-    + [As an Operator](#as-an-operator)
-    + [As a developer](#as-a-developer)
-    + [As a developer oncall](#as-a-developer-oncall)
-  * [What you will get with it? (the AWS infrastructure)](#what-you-will-get-with-it-the-aws-infrastructure)
-  * [Getting started](#getting-started)
-  * [Tenets](#tenets)
-  * [What you will find in this repository](#what-you-will-find-in-this-repository)
-  * [What you won't find in this repository](#what-you-wont-find-in-this-repository)
-  * [Do I need to be familiar with the AWS Services used under the hood?](#do-i-need-to-be-familiar-with-the-aws-services-used-under-the-hood)
-  * [Concept](#concept)
-    + [Infrastructure as Code](#infrastructure-as-code)
-    + [CI/CD](#cicd)
-    + [Multi accounts strategy](#multi-accounts-strategy)
-    + [DNS hierarchy](#dns-hierarchy)
-  * [Security](#security)
-    + [Control deployment](#control-deployment)
-    + [Control access to AWS](#control-access-to-aws)
-    + [Minimal security best practices](#minimal-security-best-practices)
-  * [Costs](#costs)
-  * [Cleaning up accounts](#cleaning-up-accounts)
-  * [Known limitations](#known-limitations)
-    + [SDLC Organization](#sdlc-organization)
+  - [Who is this for?](#who-is-this-for)
+  - [What you will get with it?](#what-you-will-get-with-it)
+    - [As an Operator](#as-an-operator)
+    - [As a developer](#as-a-developer)
+    - [As a developer oncall](#as-a-developer-oncall)
+  - [What you will get with it? (the AWS infrastructure)](#what-you-will-get-with-it-the-aws-infrastructure)
+  - [Getting started](#getting-started)
+  - [Tenets](#tenets)
+  - [What you will find in this repository](#what-you-will-find-in-this-repository)
+  - [What you won't find in this repository](#what-you-wont-find-in-this-repository)
+  - [Do I need to be familiar with the AWS Services used under the hood?](#do-i-need-to-be-familiar-with-the-aws-services-used-under-the-hood)
+  - [Concept](#concept)
+    - [Infrastructure as Code](#infrastructure-as-code)
+    - [CI/CD](#cicd)
+    - [Multi accounts strategy](#multi-accounts-strategy)
+    - [DNS Hierarchy](#dns-hierarchy)
+  - [Security](#security)
+    - [Control deployment](#control-deployment)
+    - [Control access to AWS](#control-access-to-aws)
+    - [Minimal security best practices](#minimal-security-best-practices)
+  - [Costs](#costs)
+  - [Cleaning up accounts](#cleaning-up-accounts)
+  - [Known limitations](#known-limitations)
+    - [SDLC Organization](#sdlc-organization)
+  - [Getting Help](#getting-help)
+  - [Next](#next)
 
 This repository contains examples of using the AWS Bootstrap Kit to set your development and deployment environment on AWS. The AWS Bootstrap Kit is a strongly opinionated CDK set of constructs built for companies looking to follow AWS best practices on Day 1.
 
@@ -79,8 +81,8 @@ DNS hierarchy:
 Basically the same as above but:
 * Environments = [AWS Accounts](https://aws.amazon.com/organizations/faqs/#Organizing_AWS_accounts) (not a *user* account but actually a isolated environment tied to an email (& password) and unique id)
 * Set of Environments = Set of AWS Accounts under a main one = [AWS Organizations](https://aws.amazon.com/organizations/faqs/)
-* Users and Permissions management solution = [AWS SSO](https://aws.amazon.com/single-sign-on/faqs)
-* Login Web Portal = AWS SSO endpoint
+* Users and Permissions management solution = [AWS IAM Identity Center](https://aws.amazon.com/single-sign-on/faqs)
+* Login Web Portal = AWS access portal URL
 * Central Activity logs = Centralized [AWS Cloudtrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html)
 * Central Bills = [AWS Consolidated Billing](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html)
 * CI/CD Pipeline = [AWS CodePipeline](https://aws.amazon.com/codepipeline)
@@ -174,7 +176,7 @@ You will see that manual approvals are added by default in CI/CD pipelines givin
 
 ### Control access to AWS
 
-Going with AWS SSO will enforce temporary credentials usage while simplifying developers environment setup.
+Going with AWS IAM Identity Center will enforce temporary credentials usage while simplifying developers environment setup.
 
 ### Minimal security best practices
 
