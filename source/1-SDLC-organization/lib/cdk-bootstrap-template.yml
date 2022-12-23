@@ -14,93 +14,88 @@
 # Original Bootstrap template (used when you run `cdk bootstrap`):
 # https://github.com/aws/aws-cdk/blob/master/packages/aws-cdk/lib/api/bootstrap/bootstrap-template.yaml
 #
-Description: This stack includes resources needed to deploy AWS CDK apps into this
-  environment
+Description: This stack includes resources needed to deploy AWS CDK apps into this environment
 Parameters:
   TrustedAccounts:
-    Description: List of AWS accounts that are trusted to publish assets and deploy
-      stacks to this environment
-    Default: ''
+    Description: List of AWS accounts that are trusted to publish assets and deploy stacks to this environment
+    Default: ""
     Type: CommaDelimitedList
   TrustedAccountsForLookup:
-    Description: List of AWS accounts that are trusted to look up values in this
-      environment
-    Default: ''
+    Description: List of AWS accounts that are trusted to look up values in this environment
+    Default: ""
     Type: CommaDelimitedList
   CloudFormationExecutionPolicies:
-    Description: List of the ManagedPolicy ARN(s) to attach to the CloudFormation
-      deployment role
-    Default: ''
+    Description: List of the ManagedPolicy ARN(s) to attach to the CloudFormation deployment role
+    Default: ""
     Type: CommaDelimitedList
   FileAssetsBucketName:
     Description: The name of the S3 bucket used for file assets
-    Default: ''
+    Default: ""
     Type: String
   FileAssetsBucketKmsKeyId:
-    Description: Empty to create a new key (default), 'AWS_MANAGED_KEY' to use a managed
-      S3 key, or the ID/ARN of an existing key.
-    Default: ''
+    Description: Empty to create a new key (default), 'AWS_MANAGED_KEY' to use a managed S3 key, or the ID/ARN of an existing key.
+    Default: ""
     Type: String
   ContainerAssetsRepositoryName:
     Description: A user-provided custom name to use for the container assets ECR repository
-    Default: ''
+    Default: ""
     Type: String
   Qualifier:
     Description: An identifier to distinguish multiple bootstrap stacks in the same environment
     Default: hnb659fds
     Type: String
-    # "cdk-(qualifier)-image-publishing-role-(account)-(region)" needs to be <= 64 chars
-    # account = 12, region <= 14, 10 chars for qualifier and 28 for rest of role name
     AllowedPattern: "[A-Za-z0-9_-]{1,10}"
     ConstraintDescription: Qualifier must be an alphanumeric identifier of at most 10 characters
   PublicAccessBlockConfiguration:
     Description: Whether or not to enable S3 Staging Bucket Public Access Block Configuration
-    Default: 'true'
-    Type: 'String'
-    AllowedValues: ['true', 'false']
+    Default: "true"
+    Type: String
+    AllowedValues:
+      - "true"
+      - "false"
 Conditions:
   HasTrustedAccounts:
     Fn::Not:
       - Fn::Equals:
-          - ''
+          - ""
           - Fn::Join:
-              - ''
+              - ""
               - Ref: TrustedAccounts
   HasTrustedAccountsForLookup:
     Fn::Not:
       - Fn::Equals:
-          - ''
+          - ""
           - Fn::Join:
-              - ''
+              - ""
               - Ref: TrustedAccountsForLookup
   HasCloudFormationExecutionPolicies:
     Fn::Not:
       - Fn::Equals:
-          - ''
+          - ""
           - Fn::Join:
-              - ''
+              - ""
               - Ref: CloudFormationExecutionPolicies
   HasCustomFileAssetsBucketName:
     Fn::Not:
       - Fn::Equals:
-          - ''
+          - ""
           - Ref: FileAssetsBucketName
   CreateNewKey:
     Fn::Equals:
-      - ''
+      - ""
       - Ref: FileAssetsBucketKmsKeyId
   UseAwsManagedKey:
     Fn::Equals:
-      - 'AWS_MANAGED_KEY'
+      - AWS_MANAGED_KEY
       - Ref: FileAssetsBucketKmsKeyId
   HasCustomContainerAssetsRepositoryName:
     Fn::Not:
       - Fn::Equals:
-          - ''
+          - ""
           - Ref: ContainerAssetsRepositoryName
   UsePublicAccessBlockConfiguration:
     Fn::Equals:
-      - 'true'
+      - "true"
       - Ref: PublicAccessBlockConfiguration
 Resources:
   FileAssetsBucketEncryptionKey:
@@ -135,12 +130,10 @@ Resources:
               - kms:GenerateDataKey*
             Effect: Allow
             Principal:
-              # Not actually everyone -- see below for Conditions
               AWS: "*"
             Resource: "*"
             Condition:
               StringEquals:
-                # See https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html#conditions-kms-caller-account
                 kms:CallerAccount:
                   Ref: AWS::AccountId
                 kms:ViaService:
@@ -154,7 +147,7 @@ Resources:
             Effect: Allow
             Principal:
               AWS:
-                Fn::Sub: "${FilePublishingRole.Arn}"
+                Fn::Sub: ${FilePublishingRole.Arn}
             Resource: "*"
     Condition: CreateNewKey
   FileAssetsBucketEncryptionKeyAlias:
@@ -162,7 +155,7 @@ Resources:
     Type: AWS::KMS::Alias
     Properties:
       AliasName:
-        Fn::Sub: "alias/cdk-${Qualifier}-assets-key"
+        Fn::Sub: alias/cdk-${Qualifier}-assets-key
       TargetKeyId:
         Ref: FileAssetsBucketEncryptionKey
   StagingBucket:
@@ -171,7 +164,7 @@ Resources:
       BucketName:
         Fn::If:
           - HasCustomFileAssetsBucketName
-          - Fn::Sub: "${FileAssetsBucketName}"
+          - Fn::Sub: ${FileAssetsBucketName}
           - Fn::Sub: cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}
       AccessControl: Private
       BucketEncryption:
@@ -181,11 +174,11 @@ Resources:
               KMSMasterKeyID:
                 Fn::If:
                   - CreateNewKey
-                  - Fn::Sub: "${FileAssetsBucketEncryptionKey.Arn}"
+                  - Fn::Sub: ${FileAssetsBucketEncryptionKey.Arn}
                   - Fn::If:
-                    - UseAwsManagedKey
-                    - Ref: AWS::NoValue
-                    - Fn::Sub: "${FileAssetsBucketKmsKeyId}"
+                      - UseAwsManagedKey
+                      - Ref: AWS::NoValue
+                      - Fn::Sub: ${FileAssetsBucketKmsKeyId}
       PublicAccessBlockConfiguration:
         Fn::If:
           - UsePublicAccessBlockConfiguration
@@ -199,30 +192,47 @@ Resources:
     UpdateReplacePolicy: Retain
     DeletionPolicy: Retain
   StagingBucketPolicy:
-    Type: 'AWS::S3::BucketPolicy'
+    Type: AWS::S3::BucketPolicy
     Properties:
-      Bucket: { Ref: 'StagingBucket' }
+      Bucket:
+        Ref: StagingBucket
       PolicyDocument:
-        Id: 'AccessControl'
-        Version: '2012-10-17'
+        Id: AccessControl
+        Version: "2012-10-17"
         Statement:
-          - Sid: 'AllowSSLRequestsOnly'
-            Action: 's3:*'
-            Effect: 'Deny'
+          - Sid: AllowSSLRequestsOnly
+            Action: s3:*
+            Effect: Deny
             Resource:
-              - { 'Fn::Sub': '${StagingBucket.Arn}' }
-              - { 'Fn::Sub': '${StagingBucket.Arn}/*' }
+              - Fn::Sub: ${StagingBucket.Arn}
+              - Fn::Sub: ${StagingBucket.Arn}/*
             Condition:
-              Bool: { 'aws:SecureTransport': 'false' }
-            Principal: '*'
+              Bool:
+                aws:SecureTransport: "false"
+            Principal: "*"
   ContainerAssetsRepository:
     Type: AWS::ECR::Repository
     Properties:
+      ImageTagMutability: IMMUTABLE
       RepositoryName:
         Fn::If:
           - HasCustomContainerAssetsRepositoryName
-          - Fn::Sub: "${ContainerAssetsRepositoryName}"
+          - Fn::Sub: ${ContainerAssetsRepositoryName}
           - Fn::Sub: cdk-${Qualifier}-container-assets-${AWS::AccountId}-${AWS::Region}
+      RepositoryPolicyText:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: LambdaECRImageRetrievalPolicy
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action:
+              - ecr:BatchGetImage
+              - ecr:GetDownloadUrlForLayer
+            Condition:
+              StringLike:
+                aws:sourceArn:
+                  Fn::Sub: arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:*
   FilePublishingRole:
     Type: AWS::IAM::Role
     Properties:
@@ -298,7 +308,7 @@ Resources:
       RoleName:
         Fn::Sub: cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}
       ManagedPolicyArns:
-        - Fn::Sub: "arn:${AWS::Partition}:iam::aws:policy/ReadOnlyAccess"
+        - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/ReadOnlyAccess
       Policies:
         - PolicyDocument:
             Statement:
@@ -307,7 +317,7 @@ Resources:
                 Action:
                   - kms:Decrypt
                 Resource: "*"
-            Version: '2012-10-17'
+            Version: "2012-10-17"
           PolicyName: LookupRolePolicy
       Tags:
         - Key: aws-cdk:bootstrap-role
@@ -320,13 +330,14 @@ Resources:
           - Action:
               - s3:GetObject*
               - s3:GetBucket*
+              - s3:GetEncryptionConfiguration
               - s3:List*
               - s3:DeleteObject*
               - s3:PutObject*
               - s3:Abort*
             Resource:
-              - Fn::Sub: "${StagingBucket.Arn}"
-              - Fn::Sub: "${StagingBucket.Arn}/*"
+              - Fn::Sub: ${StagingBucket.Arn}
+              - Fn::Sub: ${StagingBucket.Arn}/*
             Effect: Allow
           - Action:
               - kms:Decrypt
@@ -338,9 +349,9 @@ Resources:
             Resource:
               Fn::If:
                 - CreateNewKey
-                - Fn::Sub: "${FileAssetsBucketEncryptionKey.Arn}"
+                - Fn::Sub: ${FileAssetsBucketEncryptionKey.Arn}
                 - Fn::Sub: arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/${FileAssetsBucketKmsKeyId}
-        Version: '2012-10-17'
+        Version: "2012-10-17"
       Roles:
         - Ref: FilePublishingRole
       PolicyName:
@@ -361,13 +372,13 @@ Resources:
               - ecr:BatchGetImage
               - ecr:GetDownloadUrlForLayer
             Resource:
-              Fn::Sub: "${ContainerAssetsRepository.Arn}"
+              Fn::Sub: ${ContainerAssetsRepository.Arn}
             Effect: Allow
           - Action:
               - ecr:GetAuthorizationToken
             Resource: "*"
             Effect: Allow
-        Version: '2012-10-17'
+        Version: "2012-10-17"
       Roles:
         - Ref: ImagePublishingRole
       PolicyName:
@@ -405,11 +416,6 @@ Resources:
                   - cloudformation:UpdateStack
                 Resource: "*"
               - Sid: PipelineCrossAccountArtifactsBucket
-                # Read/write buckets in different accounts. Permissions to buckets in
-                # same account are granted by bucket policies.
-                #
-                # Write permissions necessary to write outputs to the cross-region artifact replication bucket
-                # https://aws.amazon.com/premiumsupport/knowledge-center/codepipeline-deploy-cloudformation/.
                 Effect: Allow
                 Action:
                   - s3:GetObject*
@@ -420,11 +426,10 @@ Resources:
                   - s3:PutObject*
                 Resource: "*"
                 Condition:
-                    StringNotEquals:
-                        s3:ResourceAccount:
-                            Ref: 'AWS::AccountId'
+                  StringNotEquals:
+                    s3:ResourceAccount:
+                      Ref: AWS::AccountId
               - Sid: PipelineCrossAccountArtifactsKey
-                # Use keys only for the purposes of reading encrypted files from S3.
                 Effect: Allow
                 Action:
                   - kms:Decrypt
@@ -439,19 +444,16 @@ Resources:
                       Fn::Sub: s3.${AWS::Region}.amazonaws.com
               - Action: iam:PassRole
                 Resource:
-                  Fn::Sub: "${CloudFormationExecutionRole.Arn}"
+                  Fn::Sub: ${CloudFormationExecutionRole.Arn}
                 Effect: Allow
               - Sid: CliPermissions
                 Action:
-                  # Permissions needed by the CLI when doing `cdk deploy`.
-                  # Our CI/CD does not need DeleteStack,
-                  # but we also want to use this role from the CLI,
-                  # and there you can call `cdk destroy`
                   - cloudformation:DescribeStackEvents
                   - cloudformation:GetTemplate
                   - cloudformation:DeleteStack
                   - cloudformation:UpdateTerminationProtection
                   - sts:GetCallerIdentity
+                  - cloudformation:GetTemplateSummary
                 Resource: "*"
                 Effect: Allow
               - Sid: CliStagingBucket
@@ -468,8 +470,8 @@ Resources:
                 Action:
                   - ssm:GetParameter
                 Resource:
-                  - Fn::Sub: "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter${CdkBootstrapVersion}"
-            Version: '2012-10-17'
+                  - Fn::Sub: arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter${CdkBootstrapVersion}
+            Version: "2012-10-17"
           PolicyName: default
       RoleName:
         Fn::Sub: cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}
@@ -485,17 +487,15 @@ Resources:
             Effect: Allow
             Principal:
               Service: cloudformation.amazonaws.com
-        Version: '2012-10-17'
+        Version: "2012-10-17"
       ManagedPolicyArns:
         Fn::If:
           - HasCloudFormationExecutionPolicies
           - Ref: CloudFormationExecutionPolicies
           - Fn::If:
-            - HasTrustedAccounts
-            # The CLI will prevent this case from occurring
-            - Ref: AWS::NoValue
-            # The CLI will advertise that we picked this implicitly
-            - - Fn::Sub: "arn:${AWS::Partition}:iam::aws:policy/AdministratorAccess"
+              - HasTrustedAccounts
+              - Ref: AWS::NoValue
+              - - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/AdministratorAccess
       PermissionsBoundary:
         Ref: CloudFormationExecutionPermissionsBoundary
       RoleName:
@@ -539,19 +539,16 @@ Resources:
               - codepipeline:UntagResource
               - codepipeline:UpdatePipeline
             Resource: "*"
-
             # PipelineSelfMutate
           - Effect: Allow
             Action:
               - ssm:GetParameters
             Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/cdk-bootstrap/*"
-
             # SecretsManagerForGithub
           - Effect: Allow
             Action:
               - secretsmanager:GetSecretValue
             Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:GITHUB_TOKEN*"
-
             # KMS
           - Effect: Allow
             Action:
@@ -562,7 +559,6 @@ Resources:
               - kms:UntagResource
               - kms:DescribeKey
             Resource: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"
-
             # KMS Alias
           - Effect: Allow
             Action:
@@ -572,13 +568,11 @@ Resources:
             Resource:
               - !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"
               - !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/codepipeline-*"
-
             # KMSCreateKey
           - Effect: Allow
             Action:
               - kms:CreateKey
             Resource: "*"
-
             # CodeBuild
           - Effect: Allow
             Action:
@@ -587,19 +581,16 @@ Resources:
               - codebuild:UpdateProject
               - codebuild:BatchGetProjects
             Resource: !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/*"
-
           # Self-Mutate requires permission to start PipelineExecution
           - Effect: Allow
             Action:
               - codepipeline:StartPipelineExecution
             Resource: !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:*"
-
             # IamReadPolicyForKMSKeyCreation
           - Effect: Allow
             Action:
               - iam:GetRole
             Resource: "*"
-
             # IamModifyWithBoundary
           - Effect: Allow
             Action:
@@ -626,7 +617,6 @@ Resources:
               - iam:UpdateRoleDescription
               - sts:AssumeRole
             Resource: "*"
-
           ##################################################################
           # Deny dangerous actions that could escalate privilege or cause security incident
           ##################################################################
@@ -635,7 +625,6 @@ Resources:
             Action:
               - s3:PutAccountPublicAccessBlock
             Resource: "*"
-
             # DenyBoundaryPolicyEdit
           - Effect: Deny
             Action:
@@ -646,7 +635,6 @@ Resources:
             Resource:
               - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cfn-exec-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
               - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
-
             # DenyBoundaryDelete
           - Effect: Deny
             Action:
@@ -660,7 +648,6 @@ Resources:
                 "iam:PermissionsBoundary":
                   - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cfn-exec-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
                   - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
-
             # DenyBoundaryUpdateIfNotAddingBoundary
           - Effect: Deny
             Action:
@@ -674,10 +661,9 @@ Resources:
                 "iam:PermissionsBoundary":
                   - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cfn-exec-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
                   - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
-        Version: '2012-10-17'
+        Version: "2012-10-17"
       ManagedPolicyName:
         Fn::Sub: cdk-${Qualifier}-cfn-exec-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}
-
   # Limit scope of roles created for CICD pipeline (e.g. CodePipeline, CodeBuild)
   # The permissions in this policy is derived from when we run `cdk deploy` to generate the CICD pipeline stack
   # We cannot limit this boundary by resource name for some services (e.g. S3, CodeBuild, Role to assume) as their resource names
@@ -749,7 +735,6 @@ Resources:
             Action:
               - cloudformation:DescribeStacks
             Resource: "*"
-
           ##################################################################
           # Deny dangerous actions that could escalate privilege or cause security incident
           ##################################################################
@@ -758,7 +743,6 @@ Resources:
             Action:
               - s3:PutAccountPublicAccessBlock
             Resource: "*"
-
             # DenyBoundaryPolicyEdit
           - Effect: Deny
             Action:
@@ -769,7 +753,6 @@ Resources:
             Resource:
               - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cfn-exec-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
               - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
-
             # DenyBoundaryDelete
           - Effect: Deny
             Action:
@@ -783,7 +766,6 @@ Resources:
                 "iam:PermissionsBoundary":
                   - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cfn-exec-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
                   - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
-
             # DenyBoundaryUpdateIfNotAddingBoundary
           - Effect: Deny
             Action:
@@ -797,51 +779,45 @@ Resources:
                 "iam:PermissionsBoundary":
                   - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cfn-exec-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
                   - !Sub "arn:aws:iam::${AWS::AccountId}:policy/cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}"
-        Version: '2012-10-17'
+        Version: "2012-10-17"
       ManagedPolicyName:
         Fn::Sub: cdk-${Qualifier}-cicd-pipeline-permissions-boundary-policy-${AWS::AccountId}-${AWS::Region}
-
-  # The SSM parameter is used in pipeline-deployed templates to verify the version
-  # of the bootstrap resources.
   CdkBootstrapVersion:
     Type: AWS::SSM::Parameter
     Properties:
       Type: String
       Name:
-        Fn::Sub: '/cdk-bootstrap/${Qualifier}/version'
-      Value: '8'
+        Fn::Sub: /cdk-bootstrap/${Qualifier}/version
+      Value: "14"
 Outputs:
   BucketName:
     Description: The name of the S3 bucket owned by the CDK toolkit stack
     Value:
-      Fn::Sub: "${StagingBucket}"
+      Fn::Sub: ${StagingBucket}
   BucketDomainName:
     Description: The domain name of the S3 bucket owned by the CDK toolkit stack
     Value:
-      Fn::Sub: "${StagingBucket.RegionalDomainName}"
-  # @deprecated - This Export can be removed at some future point in time.
-  # We can't do it today because if there are stacks that use it, the bootstrap
-  # stack cannot be updated. Not used anymore by apps >= 1.60.0
+      Fn::Sub: ${StagingBucket.RegionalDomainName}
   FileAssetKeyArn:
     Description: The ARN of the KMS key used to encrypt the asset bucket (deprecated)
     Value:
       Fn::If:
         - CreateNewKey
-        - Fn::Sub: "${FileAssetsBucketEncryptionKey.Arn}"
-        - Fn::Sub: "${FileAssetsBucketKmsKeyId}"
+        - Fn::Sub: ${FileAssetsBucketEncryptionKey.Arn}
+        - Fn::Sub: ${FileAssetsBucketKmsKeyId}
     Export:
       Name:
         Fn::Sub: CdkBootstrap-${Qualifier}-FileAssetKeyArn
   ImageRepositoryName:
     Description: The name of the ECR repository which hosts docker image assets
     Value:
-      Fn::Sub: "${ContainerAssetsRepository}"
-  # The Output is used by the CLI to verify the version of the bootstrap resources.
+      Fn::Sub: ${ContainerAssetsRepository}
   BootstrapVersion:
-    Description: The version of the bootstrap resources that are currently mastered
-      in this stack
+    Description: The version of the bootstrap resources that are currently mastered in this stack
     Value:
-      Fn::GetAtt: [CdkBootstrapVersion, Value]
+      Fn::GetAtt:
+        - CdkBootstrapVersion
+        - Value
   CICDPipelinePermissionsBoundaryArn:
     Description: Policy for Permissions Boundary of CDK Pipeline. This will limit the privilege of roles created by the CICD Pipeline stack.
     Value:
