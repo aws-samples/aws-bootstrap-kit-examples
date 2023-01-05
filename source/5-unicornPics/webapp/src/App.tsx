@@ -14,8 +14,8 @@ limitations under the License.
 import './App.css';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Routes from './routes';
-import { withAuthenticator } from 'aws-amplify-react';
-import '@aws-amplify/ui/dist/style.css';
+import { withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 import { makeStyles } from '@material-ui/core/styles';
 import unicorn from './images/unicorn.png'
 
@@ -41,32 +41,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const signUpConfig = {
-  header: 'Sign up @ UnicornPics',
-  hideAllDefaults: true,
-  defaultCountryCode: '44',
-  signUpFields: [
-    {
+  formFields: { signUp: {
+    username: {
       label: 'Username',
       key: 'name',
       required: true,
       displayOrder: 1,
       type: 'string'
     },
-    {
+    email: {
       label: 'Email',
       key: 'email',
       required: true,
       displayOrder: 2,
       type: 'string'
     },
-    {
+    password: {
       label: 'Password',
       key: 'password',
       required: true,
       displayOrder: 3,
       type: 'password'
     }
-  ]
+  }}
 };
 
-export default withAuthenticator(App, false, undefined, undefined, undefined, signUpConfig);
+export default withAuthenticator(App, signUpConfig);

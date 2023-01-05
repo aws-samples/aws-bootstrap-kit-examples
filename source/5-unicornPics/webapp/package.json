@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-amplify/cache": "^5.0.8",
+    "@aws-amplify/ui-react": "^4.3.2",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^13.1.3",
-    "aws-amplify": "^3.3.26",
-    "aws-amplify-react": "^4.2.30",
+    "aws-amplify": "^5.0.8",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
@@ -48,7 +49,6 @@
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3"
   },
-
   "overrides": {
     "shell-quote": "^1.7.3",
     "ejs": "^3.1.7",
