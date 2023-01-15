@@ -1,7 +1,8 @@
-import { Construct, Stack, StackProps, CfnOutput, Tags } from '@aws-cdk/core';
+import { Stack, StackProps, CfnOutput, Tags } from 'aws-cdk-lib';
 import { SurveyServiceStack } from "./surveyService/survey-service-stack";
 import { FrontendStack } from "./frontend/frontend-stack";
 import { FrontendConfig } from "../lib/frontend/frontend-config";
+import { Construct } from 'constructs';
 
 export interface InfrastructureStackProps extends StackProps {
   stage?: string;

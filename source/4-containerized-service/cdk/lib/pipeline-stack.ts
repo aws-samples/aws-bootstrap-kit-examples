@@ -1,22 +1,22 @@
 import {
-  Construct,
   Stage,
   Stack,
   StackProps,
   StageProps,
   SecretValue,
   CfnOutput,
-} from "@aws-cdk/core";
+  DefaultStackSynthesizer,
+} from "aws-cdk-lib";
+import { Construct } from "constructs";
 import {
-  CdkPipeline,
-  SimpleSynthAction,
-  ShellScriptAction,
-} from "@aws-cdk/pipelines";
-import * as codepipeline from "@aws-cdk/aws-codepipeline";
-import * as codepipeline_actions from "@aws-cdk/aws-codepipeline-actions";
+  CodePipeline,
+  CodePipelineSource,
+  ManualApprovalStep,
+  ShellStep,
+} from "aws-cdk-lib/pipelines";
 import { InfrastructureStack } from "./infrastructure-stack";
-import { config, SharedIniFileCredentials, Organizations } from "aws-sdk";
-import { PolicyStatement } from "@aws-cdk/aws-iam";
+import { config, SharedIniFileCredentials, Organizations, AWSError } from "aws-sdk";
+import { PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 
 export class InfrastructureStage extends Stage {
   public readonly loadBalancerAddress: CfnOutput;
@@ -37,34 +37,45 @@ export class PipelineStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const sourceArtifact = new codepipeline.Artifact();
-    const cloudAssemblyArtifact = new codepipeline.Artifact();
+    const qualifier = DefaultStackSynthesizer.DEFAULT_QUALIFIER;
 
-    const pipeline = new CdkPipeline(this, "Pipeline", {
-      pipelineName: "MyAppPipeline",
-      selfMutating: false,
-      cloudAssemblyArtifact,
-      sourceAction: new codepipeline_actions.GitHubSourceAction({
-        actionName: "GitHub",
-        output: sourceArtifact,
-        owner: this.node.tryGetContext("github_alias"),
-        repo: this.node.tryGetContext("github_repo_name"),
-        branch: this.node.tryGetContext("github_repo_branch"),
-        oauthToken: SecretValue.secretsManager("GITHUB_TOKEN"),
-      }),
+    const source = CodePipelineSource.gitHub(
+      `${this.node.tryGetContext('github_alias')}/${this.node.tryGetContext('github_repo_name')}`,
+      this.node.tryGetContext('github_repo_branch'),
+      {
+        authentication: SecretValue.secretsManager('GITHUB_TOKEN'),
+      }
+    );
 
-      synthAction: SimpleSynthAction.standardNpmSynth({
-        sourceArtifact,
-        cloudAssemblyArtifact,
-        subdirectory: "source/3-landing-page-cicd/cdk",
-        installCommand: "npm install",
-        buildCommand: "npm run build",
-        rolePolicyStatements: [
-          new PolicyStatement({
-            actions: ["organizations:ListAccounts"],
-            resources: ["*"],
-          }),
-        ],
+    const pipelineName = 'AWSBootstrapKit-LandingZone';
+
+    const codePipelineRole = new Role(this, 'CodePipelineRole', {
+      assumedBy: new ServicePrincipal('codepipeline.amazonaws.com'),
+    });
+    codePipelineRole.addToPolicy(
+      new PolicyStatement({
+        actions: ['organizations:ListAccounts', 'organizations:ListTagsForResource', 'cloudformation:DescribeStacks'],
+        resources: ['*'],
+      })
+    );
+    codePipelineRole.addToPolicy(
+      new PolicyStatement({
+        actions: ['sts:AssumeRole'],
+        resources: [`arn:aws:iam::*:role/cdk-${qualifier}-deploy-role-*`],
+      })
+    );
+    const pipeline = new CodePipeline(this, 'LandingPagePipeline', {
+      pipelineName: pipelineName,
+      crossAccountKeys: true,
+      role: codePipelineRole,
+
+      synth: new ShellStep('Synth', {
+        input: source,
+        commands: [`cd source/4-containerized-service/cdk`, 'npm install', 'npx cdk synth'],
+        primaryOutputDirectory: 'source/4-containerized-service/cdk/cdk.out',
+        env: {
+          NPM_CONFIG_UNSAFE_PERM: 'true',
+        },
       }),
     });
 
@@ -81,26 +92,27 @@ export class PipelineStack extends Stack {
         const orgs = new Organizations({ region: "us-east-1" });
         const { Accounts = [] } = await orgs.listAccounts().promise();
 
-        Accounts.filter((account) => orders[account.Name!])
+        Accounts.filter((account: any) => orders[account.Name!])
           .sort((a, b) => orders[a.Name!] - orders[b.Name!])
-          .forEach((account) => {
+          .forEach((account: any) => {
             const infraStage = new InfrastructureStage(this, account.Name!, {
               env: { account: account.Id },
             });
-            const applicationStage = pipeline.addApplicationStage(infraStage, {
-              manualApprovals: account.Name === "Prod",
-            });
-            applicationStage.addActions(
-              new ShellScriptAction({
-                actionName: "IntegrationTesting",
+            const applicationStage = pipeline.addStage(infraStage);
+
+            account.Name === "Prod" ?? applicationStage.addPre(new ManualApprovalStep("Approve"));
+
+            applicationStage.addPost(
+              new ShellStep('IntegrationTesting', {
                 commands: ["curl -Ssf $URL/info.php"],
-                useOutputs: {
-                  URL: pipeline.stackOutput(infraStage.loadBalancerAddress),
+                envFromCfnOutputs: {
+                  URL: infraStage.loadBalancerAddress,
                 },
               })
             );
           });
-      } catch (error) {
+      } catch (err) {
+        const error = err as AWSError;
         const messages: any = {
           CredentialsError: `Failed to get credentials for "${AWS_PROFILE}" profile. Make sure to run "aws configure sso --profile ${AWS_PROFILE} && aws sso login --profile ${AWS_PROFILE}"\n\n`,
           ExpiredTokenException: `Token expired, run "aws sso login --profile ${AWS_PROFILE}"\n\n`,

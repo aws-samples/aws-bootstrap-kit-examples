@@ -1,12 +1,13 @@
-import * as cdk from '@aws-cdk/core';
-import * as cognito from "@aws-cdk/aws-cognito";
-import * as lambda from '@aws-cdk/aws-lambda-nodejs';
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as cognito from "aws-cdk-lib/aws-cognito";
+import * as lambda from 'aws-cdk-lib/aws-lambda-nodejs';
 
-export class Auth extends cdk.Construct {
+export class Auth extends Construct {
   public userPool: cognito.UserPool;
   public userPoolClient: cognito.UserPoolClient;
 
-  constructor(scope: cdk.Construct, id: string) {
+  constructor(scope: Construct, id: string) {
     super(scope, id);
 
     //preSignUp lambda to be added to Cognito User Pool to avoid email sending to virtual users

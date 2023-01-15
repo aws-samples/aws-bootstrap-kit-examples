@@ -33,7 +33,6 @@ export const handler: APIGatewayProxyHandler = metricScope(metrics =>
 
       metrics.setNamespace("UnicornPics");
       metrics.putMetric("Dislikes", 1, Unit.Count);
-      metrics.setDimensions();
 
       return {
         "statusCode": 200,
@@ -44,7 +43,7 @@ export const handler: APIGatewayProxyHandler = metricScope(metrics =>
       }
     } catch (error) {
       console.error(error)
-      throw new Error(error)
+      throw error;
     }
   }
 )

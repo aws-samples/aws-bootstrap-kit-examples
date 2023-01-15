@@ -1,16 +1,17 @@
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import * as s3deploy from '@aws-cdk/aws-s3-deployment';
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 import * as path from 'path';
 
-export class Frontend extends cdk.Construct {
+export class Frontend extends Construct {
   public readonly activateBucket: s3.Bucket;
   public readonly activateDistribution: cloudfront.Distribution;
   public readonly siteDeployment: s3deploy.BucketDeployment;
 
-  constructor(scope: cdk.Construct, id: string) {
+  constructor(scope: Construct, id: string) {
     super(scope, id);
 
     this.activateBucket = new s3.Bucket(this, 'activateBucket', {

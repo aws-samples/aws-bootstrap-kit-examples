@@ -24,7 +24,7 @@ export const handler: Handler = metricScope(metrics =>
                 postDetails = await s3.getObject(s3params).promise();
             } catch (error) {
                 console.error(error);
-                throw new Error(error)
+                throw error;
             }
             let message = {
                 "ContentLength": postDetails.ContentLength,
@@ -52,12 +52,11 @@ export const handler: Handler = metricScope(metrics =>
                     
                     metrics.setNamespace("UnicornPics");
                     metrics.putMetric("UploadedPics", 1, Unit.Count);
-                    metrics.setDimensions();
 
                     return true;
                 } catch (error) {
-                    console.error(error)
-                    throw new Error(error)
+                    console.error(error);
+                    throw error;
                 }
             }
 

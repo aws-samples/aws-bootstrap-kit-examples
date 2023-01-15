@@ -1,5 +1,5 @@
 import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import * as LandingPage from '../lib/landing-page-stack';
 
 test('Stack is Tagged', () => {

@@ -1,28 +1,29 @@
-import { Stack, StackProps, Construct, Tags } from '@aws-cdk/core';
-import { Vpc } from '@aws-cdk/aws-ec2';
+import { Stack, StackProps, Tags } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import { Vpc } from 'aws-cdk-lib/aws-ec2';
 import {
   Cluster,
   ContainerImage,
   AwsLogDriver,
   FargateTaskDefinition,
   Secret
-} from '@aws-cdk/aws-ecs';
-import { ApplicationLoadBalancedFargateService } from '@aws-cdk/aws-ecs-patterns';
+} from 'aws-cdk-lib/aws-ecs';
+import { ApplicationLoadBalancedFargateService } from 'aws-cdk-lib/aws-ecs-patterns';
 import {
   Dashboard,
   GraphWidget,
   TextWidget,
   LogQueryVisualizationType,
   LogQueryWidget
-} from '@aws-cdk/aws-cloudwatch';
-import { DatabaseClusterEngine, ServerlessCluster } from '@aws-cdk/aws-rds';
+} from 'aws-cdk-lib/aws-cloudwatch';
+import { DatabaseClusterEngine, ServerlessCluster } from 'aws-cdk-lib/aws-rds';
 import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
 import {
   AwsCustomResource,
   AwsCustomResourcePolicy,
   PhysicalResourceId
-} from '@aws-cdk/custom-resources';
-import { BucketDeployment, Source } from '@aws-cdk/aws-s3-deployment';
+} from 'aws-cdk-lib/custom-resources';
+import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 
 export class InfrastructureStack extends Stack {
   public readonly loadBalancer: any;
@@ -52,7 +53,7 @@ export class InfrastructureStack extends Stack {
     const db = new ServerlessCluster(this, 'MyDatabase', {
       engine: DatabaseClusterEngine.AURORA_MYSQL,
       defaultDatabaseName: 'ecommerce',
-      enableHttpEndpoint: true,
+      enableDataApi: true,
       vpc
     });
 

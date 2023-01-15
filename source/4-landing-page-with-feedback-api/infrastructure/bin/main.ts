@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import "source-map-support/register";
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { InfrastructureStack } from "../lib/infrastructure-stack";
 // import { LandingPagePipelineStack } from "../lib/cicd-pipeline-stack";
 // import { AddPermissionsBoundaryToRoles } from "../lib/permission-boundary";

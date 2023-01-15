@@ -1,16 +1,17 @@
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 import { Auth } from '../common/auth';
 import { PostsService } from '../postsService/posts-service';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 
 export interface MonitoringConfigProps {
   auth: Auth
   postService: PostsService
 }
 
-export class Monitoring extends cdk.Construct {
+export class Monitoring extends Construct {
 
-  constructor(scope: cdk.Construct, id: string, props: MonitoringConfigProps) {
+  constructor(scope: Construct, id: string, props: MonitoringConfigProps) {
     super(scope, id);
 
     /* Tools */
@@ -19,10 +20,11 @@ export class Monitoring extends cdk.Construct {
     function createMetric(namespace: string, metricName: string, label: string, statistic: string, dimensions: cloudwatch.DimensionHash) {
       const metric = new cloudwatch.Metric({
         metricName,
+        label,
         namespace,
         statistic: statistic,
         period: cdk.Duration.minutes(1),
-        dimensions
+        dimensionsMap: dimensions,
       });
 
       return metric;

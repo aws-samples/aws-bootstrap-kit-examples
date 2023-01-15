@@ -1,4 +1,5 @@
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 import { Frontend } from './frontend/frontend';
 import { Auth } from './common/auth';
 import { FrontendConfig } from './frontend/frontend-config';
@@ -7,7 +8,7 @@ import { Monitoring } from './common/monitoring';
 
 export class MainStack extends cdk.Stack {
 
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     // create frontend infrastructure

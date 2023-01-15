@@ -1,18 +1,19 @@
-import { BlockPublicAccess, Bucket } from "@aws-cdk/aws-s3";
-import { BucketDeployment, Source } from "@aws-cdk/aws-s3-deployment";
+import { BlockPublicAccess, Bucket } from "aws-cdk-lib/aws-s3";
+import { BucketDeployment, Source } from "aws-cdk-lib/aws-s3-deployment";
 import {
     CloudFrontWebDistribution,
     OriginAccessIdentity,
     ViewerCertificate,
-} from "@aws-cdk/aws-cloudfront";
-import { Construct, Stack, StackProps, CfnOutput, Tags } from "@aws-cdk/core";
-import * as route53 from "@aws-cdk/aws-route53";
-import { CloudFrontTarget } from "@aws-cdk/aws-route53-targets";
+} from "aws-cdk-lib/aws-cloudfront";
+import { Stack, StackProps, CfnOutput, Tags } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import * as route53 from "aws-cdk-lib/aws-route53";
+import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 import * as bootstrapKit from "aws-bootstrap-kit";
 import {
     DnsValidatedCertificate,
     CertificateValidation,
-} from "@aws-cdk/aws-certificatemanager";
+} from "aws-cdk-lib/aws-certificatemanager";
 
 export interface LandingPageStackProps extends StackProps {
     stage: string;

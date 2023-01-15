@@ -11,30 +11,20 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.69.0",
+    "@aws-cdk/assert": "2.60.0",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
-    "aws-cdk": "1.176.0",
+    "aws-cdk": "2.60.0",
     "jest": "^26.4.2",
     "ts-jest": "^26.2.0",
-    "ts-node": "^8.1.0",
-    "typescript": "~3.9.7"
+    "ts-node": "^10.0.0",
+    "typescript": "~4.9.4"
   },
   "dependencies": {
-    "@aws-cdk/aws-cloudwatch": "1.69.0",
-    "@aws-cdk/aws-codepipeline": "1.69.0",
-    "@aws-cdk/aws-codepipeline-actions": "1.69.0",
-    "@aws-cdk/aws-ec2": "1.69.0",
-    "@aws-cdk/aws-ecs": "1.69.0",
-    "@aws-cdk/aws-ecs-patterns": "1.69.0",
-    "@aws-cdk/aws-iam": "1.69.0",
-    "@aws-cdk/aws-rds": "1.69.0",
-    "@aws-cdk/aws-s3-deployment": "1.69.0",
-    "@aws-cdk/core": "1.69.0",
-    "@aws-cdk/custom-resources": "1.69.0",
-    "@aws-cdk/pipelines": "1.69.0",
-    "@aws-solutions-constructs/aws-cloudfront-s3": "1.69.0",
-    "aws-sdk": "^2.814.0",
-    "source-map-support": "^0.5.16"
+    "@aws-solutions-constructs/aws-cloudfront-s3": "2.30.0",
+    "aws-bootstrap-kit": "0.7.7",
+    "aws-cdk-lib": "2.60.0",
+    "aws-sdk": "^2.1295.0",
+    "constructs": "10.0.5"
   }
 }

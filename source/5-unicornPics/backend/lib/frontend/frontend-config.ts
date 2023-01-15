@@ -1,5 +1,6 @@
-import * as cdk from '@aws-cdk/core';
-import * as cr from '@aws-cdk/custom-resources';
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as cr from 'aws-cdk-lib/custom-resources';
 import { Auth } from '../common/auth';
 import { PostsService } from '../postsService/posts-service';
 import { Frontend } from './frontend';
@@ -10,10 +11,10 @@ export interface FrontendConfigProps {
   frontend: Frontend;
 }
 
-export class FrontendConfig extends cdk.Construct {
+export class FrontendConfig extends Construct {
   public readonly config: string;
 
-  constructor(scope: cdk.Construct, id: string, props: FrontendConfigProps) {
+  constructor(scope: Construct, id: string, props: FrontendConfigProps) {
     super(scope, id);
 
     this.config = JSON.stringify({

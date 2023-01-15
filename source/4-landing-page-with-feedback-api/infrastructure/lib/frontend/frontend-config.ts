@@ -1,8 +1,9 @@
-import * as core from '@aws-cdk/core';
-import * as s3 from "@aws-cdk/aws-s3";
-import * as cr from "@aws-cdk/custom-resources";
-import * as apiGateway from "@aws-cdk/aws-apigateway";
+import * as core from 'aws-cdk-lib';
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as cr from "aws-cdk-lib/custom-resources";
+import * as apiGateway from "aws-cdk-lib/aws-apigateway";
 import fs = require("fs");
+import { Construct } from 'constructs';
 
 export interface FrontendConfigProps extends core.NestedStackProps {
     siteBucket: s3.Bucket;
@@ -12,7 +13,7 @@ export interface FrontendConfigProps extends core.NestedStackProps {
 export class FrontendConfig extends core.NestedStack {
   public readonly config: string;
 
-  constructor(scope: core.Construct, id: string, props: FrontendConfigProps) {
+  constructor(scope: Construct, id: string, props: FrontendConfigProps) {
     super(scope, id);
 
     this.config = JSON.stringify({

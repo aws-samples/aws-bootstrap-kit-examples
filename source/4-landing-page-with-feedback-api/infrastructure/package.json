@@ -12,33 +12,21 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.114.0",
+    "@aws-cdk/assert": "2.60.0",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
-    "@types/npm": "^2.0.31",
-    "aws-cdk": "1.174.0",
+    "@types/aws-lambda": "8.10.109",
+    "aws-cdk": "2.60.0",
     "jest": "^26.4.2",
     "ts-jest": "^26.2.0",
-    "ts-node": "^8.1.0",
-    "typescript": "~3.9.7",
-    "@types/aws-lambda": "^8.10.72"
+    "ts-node": "^10.0.0",
+    "typescript": "~4.9.4"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "1.114.0",
-    "@aws-cdk/aws-cloudfront": "1.114.0",
-    "@aws-cdk/aws-cloudfront-origins": "1.114.0",
-    "@aws-cdk/aws-codepipeline": "1.114.0",
-    "@aws-cdk/aws-codepipeline-actions": "1.114.0",
-    "@aws-cdk/aws-dynamodb": "1.114.0",
-    "@aws-cdk/aws-iam": "1.114.0",
-    "@aws-cdk/aws-lambda": "1.114.0",
-    "@aws-cdk/aws-s3": "1.114.0",
-    "@aws-cdk/aws-s3-deployment": "1.114.0",
-    "@aws-cdk/core": "1.114.0",
-    "@aws-cdk/pipelines": "1.114.0",
-    "aws-bootstrap-kit": "0.3.13",
-    "aws-sdk": "^2.821.0",
-    "npm": "^8.11.0",
-    "source-map-support": "^0.5.16"
+    "@aws-solutions-constructs/aws-cloudfront-s3": "2.30.0",
+    "aws-bootstrap-kit": "0.7.7",
+    "aws-cdk-lib": "2.60.0",
+    "aws-sdk": "^2.1295.0",
+    "constructs": "10.0.5"
   }
 }

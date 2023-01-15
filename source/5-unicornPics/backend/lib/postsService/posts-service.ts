@@ -1,11 +1,12 @@
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as apigateway from "@aws-cdk/aws-apigateway";
-import * as dynamodb from "@aws-cdk/aws-dynamodb";
-import * as eventSources from "@aws-cdk/aws-lambda-event-sources";
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as lambdaNode from '@aws-cdk/aws-lambda-nodejs';
-import * as lambda from "@aws-cdk/aws-lambda";
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import * as eventSources from "aws-cdk-lib/aws-lambda-event-sources";
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as lambdaNode from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import { Auth } from '../common/auth';
 
 interface PostsServiceProps {
@@ -14,11 +15,11 @@ interface PostsServiceProps {
   activateBucket: s3.Bucket
 }
 
-export class PostsService extends cdk.Construct {
+export class PostsService extends Construct {
   public readonly postsApi: apigateway.RestApi;
   public readonly table: dynamodb.Table;
 
-  constructor(scope: cdk.Construct, id: string, props: PostsServiceProps) {
+  constructor(scope: Construct, id: string, props: PostsServiceProps) {
     super(scope, id);
 
     // create dynamodb table

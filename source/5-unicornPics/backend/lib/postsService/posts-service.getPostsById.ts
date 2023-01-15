@@ -29,7 +29,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     }
   } catch (error) {
     console.error(error)
-    throw new Error(error)
+    throw error;
   }
 
 };

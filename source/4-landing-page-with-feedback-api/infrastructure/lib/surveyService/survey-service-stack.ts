@@ -1,10 +1,11 @@
-import * as cdk from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as apiGateway from "@aws-cdk/aws-apigateway";
-import * as dynamo from "@aws-cdk/aws-dynamodb";
-import { Code, Runtime } from "@aws-cdk/aws-lambda";
-import { TableEncryption } from "@aws-cdk/aws-dynamodb";
-import { RemovalPolicy, CfnOutput } from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as apiGateway from "aws-cdk-lib/aws-apigateway";
+import * as dynamo from "aws-cdk-lib/aws-dynamodb";
+import { Code, Runtime } from "aws-cdk-lib/aws-lambda";
+import { TableEncryption } from "aws-cdk-lib/aws-dynamodb";
+import { RemovalPolicy } from "aws-cdk-lib";
+import { Construct } from "constructs";
 
 
 interface SurveyServiceStackProps extends cdk.NestedStackProps {
@@ -14,7 +15,7 @@ interface SurveyServiceStackProps extends cdk.NestedStackProps {
 export class SurveyServiceStack extends cdk.NestedStack {
   public readonly api: apiGateway.RestApi;
 
-  constructor(scope: cdk.Construct, id: string, props: SurveyServiceStackProps) {
+  constructor(scope: Construct, id: string, props: SurveyServiceStackProps) {
     super(scope, id);
 
     const tableName = `Feedbacks-${this.node.addr}`;

@@ -1,15 +1,16 @@
 #!/usr/bin/env node
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as s3deploy from '@aws-cdk/aws-s3-deployment';
-import * as core from '@aws-cdk/core';
-import * as targets from "@aws-cdk/aws-route53-targets";
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+import * as core from 'aws-cdk-lib';
+import * as targets from "aws-cdk-lib/aws-route53-targets";
 import * as bootstrapKit from "aws-bootstrap-kit";
 import {
     DnsValidatedCertificate,
     CertificateValidation,
-} from "@aws-cdk/aws-certificatemanager";
-import * as route53 from "@aws-cdk/aws-route53";
+} from "aws-cdk-lib/aws-certificatemanager";
+import * as route53 from "aws-cdk-lib/aws-route53";
+import { Construct } from 'constructs';
 
 
 export interface FrontendStackProps extends core.StackProps {
@@ -25,7 +26,7 @@ export class FrontendStack extends core.NestedStack {
     public readonly distribution: cloudfront.CloudFrontWebDistribution;
     public readonly frontendUrl: string;
     public readonly siteBucket: s3.Bucket;
-    constructor(parent: core.Construct, name: string, props: FrontendStackProps) {
+    constructor(parent: Construct, name: string, props: FrontendStackProps) {
         super(parent, name);
 
         core.Tags.of(this).add(
