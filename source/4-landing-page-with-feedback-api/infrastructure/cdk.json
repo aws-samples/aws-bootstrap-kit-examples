@@ -1,9 +1,0 @@
-{
-  "app": "npx ts-node bin/main.ts",
-  "context": {
-"service_name": "mylandingpage",
-    "github_alias": "<YOUR GITHUB ALIAS>",
-    "github_repo_name": "<YOUR REPO NAME>",
-    "github_repo_branch": "main"
-  }
-}
