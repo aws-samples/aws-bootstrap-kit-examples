@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import FormLabel from '@material-ui/core/FormLabel';
 import { makeStyles } from "@material-ui/core/styles";
 import Header from "./Header";
-import SubmissionResult from "./SubmissionResult";
 import { submitForm } from "../services";
 
   const useStyles = makeStyles({
@@ -54,10 +53,7 @@ import { submitForm } from "../services";
 
     return (
       <div>
-        <Header />
-        {failed ? <SubmissionResult variant="error" open={failed} onClose={()=>setFailed(false)} /> : null}
-        {submitted ? <SubmissionResult variant="success" open={submitted} onClose={()=>setSubmitted(false)} /> : null}
-        <div className={classes.form}>
+        <Header /><div className={classes.form}>
           <div className={classes.field}><FormLabel>Any feedback or comments ?</FormLabel></div>
           <Input className={classes.field} label="Name" onChange={setName} />
           <Input className={classes.field} label="Email" onChange={setEmail} />
