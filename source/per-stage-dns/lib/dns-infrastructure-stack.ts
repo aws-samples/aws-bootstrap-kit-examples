@@ -1,12 +1,13 @@
-import * as cdk from '@aws-cdk/core';
-import * as route53 from '@aws-cdk/aws-route53';
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as route53 from 'aws-cdk-lib/aws-route53';
 
 interface DNSInfrastructureStackProps extends cdk.StackProps {
   stageName: string;
 }
 
 export class DNSInfrastructureStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: DNSInfrastructureStackProps) {
+  constructor(scope: Construct, id: string, props: DNSInfrastructureStackProps) {
     super(scope, id, props);
 
     const stageDomainMapping = this.node.tryGetContext('stageDomainMapping');

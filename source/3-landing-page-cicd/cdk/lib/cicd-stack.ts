@@ -1,9 +1,9 @@
 import { Stack, StackProps, Stage, StageProps, SecretValue, DefaultStackSynthesizer } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
-import { LandingPageStack } from './landing-page-stack';
 import { config, SharedIniFileCredentials, Organizations, STS, CloudFormation, AWSError } from 'aws-sdk';
-import { PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import {  PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { LandingPageStack } from './landing-page-stack';
 
 export class LandingPageStage extends Stage {
   constructor(scope: Construct, id: string, props: StageProps) {

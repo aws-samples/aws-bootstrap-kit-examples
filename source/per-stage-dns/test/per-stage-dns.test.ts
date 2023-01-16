@@ -1,5 +1,5 @@
 import "@aws-cdk/assert/jest";
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import * as PerStageDns from "../lib/dns-infrastructure-stack";
 
 test("Empty Stack", () => {
