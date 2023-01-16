@@ -1,0 +1,32 @@
+{
+  "name": "landingpage",
+  "version": "0.3.13",
+  "bin": {
+    "backend": "bin/main.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:all": "cd ../ui && npm ci && npm run build && cd - && npm run build",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "2.60.0",
+    "@types/jest": "^26.0.10",
+    "@types/node": "10.17.27",
+    "@types/aws-lambda": "8.10.109",
+    "aws-cdk": "2.60.0",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^10.0.0",
+    "typescript": "~4.9.4"
+  },
+  "dependencies": {
+    "@aws-solutions-constructs/aws-cloudfront-s3": "2.30.0",
+    "aws-bootstrap-kit": "0.7.7",
+    "aws-cdk-lib": "2.60.0",
+    "aws-sdk": "^2.1295.0",
+    "constructs": "10.0.5"
+  }
+}
