@@ -24,7 +24,7 @@
     "@aws-solutions-constructs/aws-cloudfront-s3": "2.30.0",
     "aws-bootstrap-kit": "0.7.7",
     "aws-cdk-lib": "2.60.0",
-    "aws-sdk": "^2.1295.0",
+    "aws-sdk": "^2.1354.0",
     "constructs": "10.0.5"
   }
 }
