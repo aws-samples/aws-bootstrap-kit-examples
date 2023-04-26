@@ -25,7 +25,7 @@
   "dependencies": {
     "aws-bootstrap-kit": "0.7.7",
     "aws-cdk-lib": "2.60.0",
-    "aws-sdk": "^2.1295.0",
+    "aws-sdk": "^2.1354.0",
     "constructs": "10.0.5",
     "@types/uuid": "9.0.0",
     "aws-embedded-metrics": "4.0.0",
