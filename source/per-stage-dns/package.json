@@ -26,7 +26,7 @@
     "@aws-cdk/aws-iam": "1.188.0",
     "@aws-cdk/core": "1.188.0",
     "@aws-cdk/pipelines": "1.188.0",
-    "aws-sdk": "^2.1295.0",
+    "aws-sdk": "^2.1354.0",
     "source-map-support": "^0.5.21"
   }
 }
