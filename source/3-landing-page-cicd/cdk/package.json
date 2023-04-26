@@ -23,7 +23,7 @@
   "dependencies": {
     "aws-bootstrap-kit": "0.7.7",
     "aws-cdk-lib": "2.60.0",
-    "aws-sdk": "^2.1294.0",
+    "aws-sdk": "^2.1365.0",
     "constructs": "10.0.5"
   }
 }
