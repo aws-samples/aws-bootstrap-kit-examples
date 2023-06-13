@@ -43,7 +43,11 @@
     "shell-quote": "^1.7.3",
     "ejs": "^3.1.7",
     "hermes-engine": "^0.10.0",
-    "axios": "^0.21.2"
+    "axios": "^0.21.2",
+    "fast-xml-parser": "^4.2.4"
+  },
+  "overrides": {
+    "fast-xml-parser": "^4.2.4"
   },
   "jest": {
     "preset": "react-native"

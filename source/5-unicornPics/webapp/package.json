@@ -53,6 +53,8 @@
     "shell-quote": "^1.7.3",
     "ejs": "^3.1.7",
     "axios": "^0.21.2",
-    "@aws-sdk/shared-ini-file-loader": "3.0.0"
+    "@aws-sdk/shared-ini-file-loader": "3.0.0",
+    "fast-xml-parser": "^4.2.4",
+    "nth-check": "2.1.1"
   }
 }
