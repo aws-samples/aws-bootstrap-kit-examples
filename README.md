@@ -1,3 +1,6 @@
+# Deprecation Notice
+Current package is deprecated and will not be maintained anymore. AWS Bootstrap Kit implementation has been moved to leverage the new [AWS Landing Zone Accelerator solution](https://aws.amazon.com/solutions/implementations/landing-zone-accelerator-on-aws/) ([github](https://github.com/awslabs/landing-zone-accelerator-on-aws)).
+
 # AWS Bootstrap Kit Examples Overview
 
 - [AWS Bootstrap Kit Examples Overview](#aws-bootstrap-kit-examples-overview)
